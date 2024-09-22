@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/editTextEventTitle"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="39dp"
+        android:ems="10"
+        android:hint="Event Title"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@id/editTextAddress"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/editTextAddress"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="39dp"
+        android:ems="10"
+        android:hint="Event Title"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@id/editTextCity"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextEventTitle" />
+
+    <EditText
+        android:id="@+id/editTextCity"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="39dp"
+        android:ems="10"
+        android:hint="Street Address"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@id/editTextZipCode"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextAddress" />
+
+    <EditText
+        android:id="@+id/editTextZipCode"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="39dp"
+        android:ems="10"
+        android:hint="Zip Code"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@id/editTextDate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextCity" />
+
+    <EditText
+        android:id="@+id/editTextDate"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="39dp"
+        android:ems="10"
+        android:hint="Event Date"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@id/editTextStartTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextZipCode" />
+
+    <EditText
+        android:id="@+id/editTextStartTime"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="39dp"
+        android:ems="10"
+        android:hint="Event Start Time"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@id/editTextEndTime"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextDate" />
+
+    <EditText
+        android:id="@+id/editTextEndTime"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="39dp"
+        android:ems="10"
+        android:hint="Event End Time"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@id/editCategory"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextStartTime" />
+
+    <EditText
+        android:id="@+id/editCategory"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="39dp"
+        android:ems="10"
+        android:hint="Choose Event Category"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@id/editAttendanceType"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editTextEndTime" />
+
+    <EditText
+        android:id="@+id/editAttendanceType"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="39dp"
+        android:ems="10"
+        android:hint="Choose Attendance Type"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@id/editDescription"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editCategory" />
+
+    <EditText
+        android:id="@+id/editDescription"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="72dp"
+        android:layout_marginEnd="39dp"
+        android:ems="10"
+        android:hint="Event Description"
+        android:inputType="date"
+        app:layout_constraintBottom_toTopOf="@id/button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/editAttendanceType" />
+
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="139dp"
+        android:layout_marginTop="664dp"
+        android:layout_marginEnd="140dp"
+        android:text="Submit Event"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

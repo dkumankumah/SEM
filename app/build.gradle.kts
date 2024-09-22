@@ -36,7 +36,8 @@ android {
 }
 
 dependencies {
-
+    implementation("androidx.appcompat:appcompat:1.7.0")
+    implementation ("androidx.constraintlayout:constraintlayout:2.1.3")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
