@@ -5,35 +5,36 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 public class ShowAllEvents extends AppCompatActivity {
-    private ListView mListViewEvents;
+    private ArrayList<Event> eventsList;
+    private RecyclerView recyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_events);
+        recyclerView = findViewById(R.id.recycler_view_events);
+        eventsList = new ArrayList<>();
 
-        ArrayList<Event> events = loadEventData();
-        EventListAdapter adapter = new EventListAdapter(ShowAllEvents.this, events);
+        eventsList = loadEventData();
+        
+        setAdapter();
+    }
 
-        mListViewEvents = findViewById(R.id.listview_events);
-        mListViewEvents.setAdapter(adapter);
-        mListViewEvents.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                Event selectedEvent = (Event) parent.getItemAtPosition(position);
-
-                Intent intent = new Intent(ShowAllEvents.this, EventOnClick.class);
-                intent.putExtra("selected_event", selectedEvent);
-                startActivity(intent);
-            }
-        });
+    private void setAdapter() {
+        recyclerAdapter adapter = new recyclerAdapter(eventsList);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
     }
 
     private ArrayList<Event> loadEventData(){

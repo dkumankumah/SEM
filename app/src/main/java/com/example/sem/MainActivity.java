@@ -21,11 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
     }
     public void onShowAllEventsClicked(View view){
-        String name = "Hello Java";
-        int mData = 25;
         Intent intent = new Intent(MainActivity.this, ShowAllEvents.class);
-        intent.putExtra("text", name);
-        intent.putExtra("data", mData);
         startActivity(intent);
     }
 }
