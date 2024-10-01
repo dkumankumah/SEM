@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">SEM</string>
+    <string name="upcoming_events">Upcoming Events</string>
+    <string name="event_category">Event Category</string>
+    <string name="acadamics">Acadamics</string>
+    <string name="extracurricular">Extracurricular</string>
+    <string name="clubs">Clubs</string>
+    <string name="charity">Charity</string>
+    <string name="upcoming_event_name">placeholder event</string>
+    <string name="event_image_placeholder">Event Image Placeholder</string>
 </resources>
