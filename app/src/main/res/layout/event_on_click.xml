@@ -20,13 +20,6 @@
         android:textSize="18sp"/>
 
     <TextView
-        android:id="@+id/textview_zipcode"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text = "Zip Code"
-        android:textSize="18sp"/>
-
-    <TextView
         android:id="@+id/textview_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,17 +27,12 @@
         android:textSize="18sp"/>
 
     <TextView
-        android:id="@+id/textview_start_time"
+        android:id="@+id/textview_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text = "Start Time"
         android:textSize="18sp"/>
-    <TextView
-        android:id="@+id/textview_end_time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text = "End Time"
-        android:textSize="18sp"/>
+
     <TextView
         android:id="@+id/textview_category"
         android:layout_width="wrap_content"

@@ -3,6 +3,7 @@ package com.example.sem;
 import java.io.Serializable;
 
 public class Event implements Serializable {
+    private int eventId;
     private String title;
     private String address;
     private int zipCode;
@@ -13,7 +14,8 @@ public class Event implements Serializable {
     private String attendanceType;
     private String description;
 
-    public Event(String title, String address, int zipCode, int date, int startTime, int endTime, String category, String attendanceType, String description){
+    public Event(int eventId, String title, String address, int zipCode, int date, int startTime, int endTime, String category, String attendanceType, String description){
+        this.eventId = eventId;
         this.title = title;
         this.address = address;
         this.zipCode = zipCode;
@@ -25,9 +27,8 @@ public class Event implements Serializable {
         this.description = description;
     }
 
-    public String getTitle(){
-        return title;
-    }
+    public int getEventId(){return eventId;}
+    public String getTitle(){return title;}
     public String getAddress(){
         return address;
     }

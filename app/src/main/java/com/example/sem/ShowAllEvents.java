@@ -4,8 +4,6 @@ package com.example.sem;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ShowAllEvents extends AppCompatActivity {
+public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
     private ArrayList<Event> eventsList;
     private RecyclerView recyclerView;
 
@@ -25,12 +23,20 @@ public class ShowAllEvents extends AppCompatActivity {
         eventsList = new ArrayList<>();
 
         eventsList = loadEventData();
-        
         setAdapter();
     }
+    @Override
+    public void recyclerViewListClicked(View v, int position) {
+        Event selectedEvent = eventsList.get(position);
+        Intent intent = new Intent(ShowAllEvents.this, EventOnClick.class);
+        intent.putExtra("selected_event", selectedEvent);
+        startActivity(intent);
+    }
+
+
 
     private void setAdapter() {
-        recyclerAdapter adapter = new recyclerAdapter(eventsList);
+        recyclerAdapter adapter = new recyclerAdapter(eventsList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -39,8 +45,8 @@ public class ShowAllEvents extends AppCompatActivity {
 
     private ArrayList<Event> loadEventData(){
         ArrayList<Event> events = new ArrayList<>();
-        events.add(new Event("title1", "address1", 111, 111, 111, 111, "academic", "mandatory", "Final Exams" ));
-        events.add(new Event("title2", "address2", 222, 222, 222, 222, "charity", "optional", "River Cleanup" ));
+        events.add(new Event(11111, "title1", "address1", 111, 111, 111, 111, "academic", "mandatory", "Final Exams" ));
+        events.add(new Event(22222, "title2", "address2", 222, 222, 222, 222, "charity", "optional", "River Cleanup" ));
 
         return events;
     }

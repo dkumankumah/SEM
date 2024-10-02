@@ -9,10 +9,8 @@ import androidx.appcompat.app.AppCompatActivity;
 public class EventOnClick extends AppCompatActivity {
     private TextView mTextViewTitle;
     private TextView mTextViewAddress;
-    private TextView mTextViewZipCode;
     private TextView mTextViewEventDate;
-    private TextView mTextViewStartTime;
-    private TextView mTextViewEndTime;
+    private TextView mTextViewTime;
     private TextView mTextViewCategory;
     private TextView mTextViewAttendanceType;
     private TextView mTextViewDescription;
@@ -26,23 +24,27 @@ public class EventOnClick extends AppCompatActivity {
 
         mTextViewTitle = findViewById(R.id.textview_title);
         mTextViewAddress = findViewById(R.id.textview_address);
-        mTextViewZipCode = findViewById(R.id.textview_zipcode);
         mTextViewEventDate = findViewById(R.id.textview_date);
-        mTextViewStartTime = findViewById(R.id.textview_start_time);
-        mTextViewEndTime = findViewById(R.id.textview_end_time);
+        mTextViewTime = findViewById(R.id.textview_time);
         mTextViewCategory = findViewById(R.id.textview_category);
         mTextViewAttendanceType = findViewById(R.id.textview_attendance_type);
         mTextViewDescription = findViewById(R.id.textview_description);
 
-        mTextViewTitle.setText(String.valueOf(selectedEvent.getTitle()));
-        mTextViewAddress.setText(String.valueOf(selectedEvent.getAddress()));
-        mTextViewZipCode.setText(String.valueOf(selectedEvent.getZipCode()));
-        mTextViewEventDate.setText(String.valueOf(selectedEvent.getDate()));
-        mTextViewStartTime.setText(String.valueOf(selectedEvent.getStartTime()));
-        mTextViewEndTime.setText(String.valueOf(selectedEvent.getEndTime()));
-        mTextViewCategory.setText(String.valueOf(selectedEvent.getCategory()));
-        mTextViewAttendanceType.setText(String.valueOf(selectedEvent.getAttendanceType()));
-        mTextViewDescription.setText(String.valueOf(selectedEvent.getDescription()));
+        String title = "Event title: " + selectedEvent.getTitle();
+        String address = "Street Address: " + selectedEvent.getAddress() + selectedEvent.getZipCode();
+        String date = "Date: " + selectedEvent.getDate();
+        String time = "From " + selectedEvent.getStartTime() + " until: " + selectedEvent.getEndTime();
+        String category = "Type of Event: " + selectedEvent.getCategory();
+        String attendance = "Your attendance is " + selectedEvent.getAttendanceType();
+        String description = "Details: " + selectedEvent.getDescription();
+
+        mTextViewTitle.setText(title);
+        mTextViewAddress.setText(address);
+        mTextViewEventDate.setText(date);
+        mTextViewTime.setText(time);
+        mTextViewCategory.setText(category);
+        mTextViewAttendanceType.setText(attendance);
+        mTextViewDescription.setText(description);
 
     }
 }
