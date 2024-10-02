@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">SEM</string>
+    <string name="event_type_prompt">Select Event Type</string>
+    <string-array name="grade_options">
+        <item>Class 9</item>
+        <item>Class 10</item>
+        <item>Class 11</item>
+        <item>Class 12</item>
+    </string-array>
 </resources>
