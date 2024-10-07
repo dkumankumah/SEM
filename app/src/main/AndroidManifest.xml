@@ -15,12 +15,17 @@
         <activity
             android:name=".ShowAllEvents"
             android:exported="false"
-            android:label="@string/app_name">
+            android:label="School Event Manager: All Events">
         </activity>
         <activity
             android:name=".EventOnClick"
             android:exported="false"
-            android:label="@string/app_name">
+            android:label="Event Details">
+        </activity>
+        <activity
+            android:name=".ShowMyEvents"
+            android:exported="false"
+            android:label="School Event Manager: My Events">
         </activity>
         <activity
             android:name=".MainActivity"
