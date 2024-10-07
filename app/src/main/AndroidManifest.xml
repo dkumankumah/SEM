@@ -28,6 +28,11 @@
             android:label="School Event Manager: My Events">
         </activity>
         <activity
+            android:name=".ShowInterestedEvents"
+            android:exported="false"
+            android:label="School Event Manager: Events I'm Following">
+        </activity>
+        <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"

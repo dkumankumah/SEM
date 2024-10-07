@@ -4,7 +4,6 @@ package com.example.sem;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -18,7 +17,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
     private ArrayList<Event> allEventsList;
     private RecyclerView recyclerView;
     public static ArrayList<Event> myEventsList;
-    public ArrayList<Event> followingEventsList;
+    public static ArrayList<Event> interestedEventsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +26,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         recyclerView = findViewById(R.id.recycler_view_events);
         allEventsList = new ArrayList<>();
         myEventsList = new ArrayList<>();
-        followingEventsList = new ArrayList<>();
+        interestedEventsList = new ArrayList<>();
 
         allEventsList = loadAllEventData();
 
@@ -51,20 +50,21 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
             switch(direction){
                 case ItemTouchHelper.LEFT:
                     //do left action
-                    Event swipedEvent = allEventsList.get(position);
-                    myEventsList.add(swipedEvent);
+                    Event swipedLeftEvent = allEventsList.get(position);
+                    myEventsList.add(swipedLeftEvent);
                     allEventsList.remove(position);
                     recyclerView.getAdapter().notifyItemRemoved(position);
-                    Intent intent = new Intent(ShowAllEvents.this, ShowMyEvents.class);
-                    intent.putExtra("swiped_event", swipedEvent);
-                    startActivity(intent);
+                    Intent intentLeft = new Intent(ShowAllEvents.this, ShowMyEvents.class);
+                    startActivity(intentLeft);
                     break;
                 case ItemTouchHelper.RIGHT:
                     //do right action
+                    Event swipedRightEvent = allEventsList.get(position);
+                    interestedEventsList.add(swipedRightEvent);
                     allEventsList.remove(position);
                     recyclerView.getAdapter().notifyItemRemoved(position);
-                    Toast toastRight = Toast.makeText(recyclerView.getContext(), "TODO: place vent on Interested list", Toast.LENGTH_SHORT);
-                    toastRight.show();
+                    Intent intentRight = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
+                    startActivity(intentRight);
                     break;
             }
         }
@@ -101,7 +101,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
     public static ArrayList<Event> getMyEventsList(){
         return myEventsList;
     }
-    public ArrayList<Event> getFollowingEventsList(){
-        return followingEventsList;
+    public static ArrayList<Event> getFollowingEventsList(){
+        return interestedEventsList;
     }
 }

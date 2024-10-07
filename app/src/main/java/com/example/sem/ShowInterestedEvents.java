@@ -4,10 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
-    public ArrayList<Event> myEventsList;
+public class ShowInterestedEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
+    public ArrayList<Event> interestedEventsList;
     private RecyclerView recyclerView;
 
 
@@ -26,7 +24,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         setContentView(R.layout.all_events);
         recyclerView = findViewById(R.id.recycler_view_events);
 
-        myEventsList = ShowAllEvents.getMyEventsList();
+        interestedEventsList = ShowAllEvents.getFollowingEventsList();
 
         setAdapter();
 
@@ -35,7 +33,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         itemTouchHelper.attachToRecyclerView(recyclerView);
     }
 
-    ItemTouchHelper.SimpleCallback callBackMethod = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+    ItemTouchHelper.SimpleCallback callBackMethod = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT) {
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -45,10 +43,10 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
 
-            switch(direction){
+            switch (direction) {
                 case ItemTouchHelper.LEFT:
                     //do left action
-                    myEventsList.remove(position);
+                    interestedEventsList.remove(position);
                     recyclerView.getAdapter().notifyItemRemoved(position);
                     Toast toastLeft = Toast.makeText(recyclerView.getContext(), "TODO: place item on All Events List", Toast.LENGTH_SHORT);
                     toastLeft.show();
@@ -58,17 +56,17 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         }
 
     };
+
     public void recyclerViewListClicked(View v, int position) {
-        Event selectedEvent = myEventsList.get(position);
-        Intent intent = new Intent(ShowMyEvents.this, EventOnClick.class);
+        Event selectedEvent = interestedEventsList.get(position);
+        Intent intent = new Intent(ShowInterestedEvents.this, EventOnClick.class);
         intent.putExtra("selected_event", selectedEvent);
         startActivity(intent);
     }
 
 
-
     private void setAdapter() {
-        recyclerAdapter adapter = new recyclerAdapter(myEventsList, this);
+        recyclerAdapter adapter = new recyclerAdapter(interestedEventsList, this);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
