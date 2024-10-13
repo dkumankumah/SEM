@@ -13,8 +13,8 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+//import com.google.firebase.firestore.ktx.firestore
+//import com.google.firebase.ktx.Firebase
 import java.util.*
 
 class EventFormActivity : AppCompatActivity() {
@@ -36,7 +36,7 @@ class EventFormActivity : AppCompatActivity() {
 
     private val PICK_IMAGE_REQUEST = 1
 
-    private val db = Firebase.firestore
+//    private val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -206,17 +206,34 @@ class EventFormActivity : AppCompatActivity() {
             )
 
             // Add the event to Firestore
-            db.collection("events")
-                .add(event)
-                .addOnSuccessListener { documentReference ->
-                    Log.d("EventForm", "Event added with ID: ${documentReference.id}")
-                    Toast.makeText(this, "Event Created", Toast.LENGTH_SHORT).show()
-                    finish() // Close the form after submission
-                }
-                .addOnFailureListener { e ->
-                    Log.w("EventForm", "Error adding event", e)
-                    Toast.makeText(this, "Failed to create event", Toast.LENGTH_SHORT).show()
-                }
+//            db.collection("events")
+//                .add(event)
+//                .addOnSuccessListener { documentReference ->
+//                    Log.d("EventForm", "Event added with ID: ${documentReference.id}")
+//                    Toast.makeText(this, "Event Created", Toast.LENGTH_SHORT).show()
+//                    finish() // Close the form after submission
+//                }
+//                .addOnFailureListener { e ->
+//                    Log.w("EventForm", "Error adding event", e)
+//                    Toast.makeText(this, "Failed to create event", Toast.LENGTH_SHORT).show()
+//                }
+            // Log the event data instead of saving to Firestore
+            Log.d("EventForm", "Event Details: $event")
+            Toast.makeText(this, "Event details logged", Toast.LENGTH_SHORT).show()
+
+            // You can also print individual details if you prefer
+            Log.d("EventForm", "Title: $title")
+            Log.d("EventForm", "Description: $description")
+            Log.d("EventForm", "Date: $date")
+            Log.d("EventForm", "Time: $time")
+            Log.d("EventForm", "Location: $location")
+            Log.d("EventForm", "Attendance Details: $attendanceDetailsText")
+            Log.d("EventForm", "Event Type: $eventType")
+
+            Toast.makeText(this, "Event Created", Toast.LENGTH_LONG).show()
+
+            finish()
+
         }
     }
 
