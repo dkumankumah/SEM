@@ -14,7 +14,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/upcoming_events"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -30,7 +30,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_upcomingEvents"
         android:layout_width="match_parent"
-        android:layout_height="300dp"
+        android:layout_height="0dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -57,12 +57,13 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="@string/event_category"
-        android:textSize="16sp"
+        android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -92,8 +93,8 @@
             android:layout_height="70dp"
             android:layout_marginBottom="8dp"
             android:backgroundTint="#E87A3D"
-            android:text="@string/extracurricular"
             android:gravity="start|center_vertical"
+            android:text="@string/extracurricular"
             android:textSize="24sp"
             android:textStyle="bold"
             app:cornerRadius="6dp" />
@@ -104,8 +105,8 @@
             android:layout_height="70dp"
             android:layout_marginBottom="8dp"
             android:backgroundTint="#EAAB43"
-            android:text="@string/clubs"
             android:gravity="start|center_vertical"
+            android:text="@string/clubs"
             android:textSize="24sp"
             android:textStyle="bold"
             app:cornerRadius="6dp" />
@@ -115,10 +116,26 @@
             android:layout_width="match_parent"
             android:layout_height="70dp"
             android:backgroundTint="#F5D0BC"
-            android:text="@string/charity"
             android:gravity="start|center_vertical"
+            android:text="@string/charity"
             android:textSize="24sp"
             android:textStyle="bold"
             app:cornerRadius="6dp" />
     </LinearLayout>
+
+    <Button
+        android:id="@+id/add_event_btn"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:backgroundTint="#3F51B5"
+        android:text="@string/add_new_event"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:cornerRadius="6dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -8,4 +8,5 @@
     <string name="charity">Charity</string>
     <string name="upcoming_event_name">placeholder event</string>
     <string name="event_image_placeholder">Event Image Placeholder</string>
+    <string name="add_new_event">Add New Event</string>
 </resources>

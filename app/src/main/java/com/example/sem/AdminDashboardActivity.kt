@@ -36,6 +36,7 @@ class AdminDashboardActivity : AppCompatActivity() {
         val clubsBtn = findViewById<Button>(R.id.clubs_btn)
         val extraBtn = findViewById<Button>(R.id.extra_btn)
         val charityBtn = findViewById<Button>(R.id.charity_btn)
+        val addBtn = findViewById<Button>(R.id.add_event_btn)
         var rvEvents = findViewById<RecyclerView>(R.id.rv_upcomingEvents)
 
         var adapter = UpcomingEventAdapter(events) { event ->
