@@ -1,0 +1,9 @@
+<resources>
+    <string-array name="event_type_options">
+        <item>Academic</item>
+        <item>Sports</item>
+        <item>ExtraCurricular</item>
+        <item>Cultural</item>
+        <item>Other</item>
+    </string-array>
+</resources>
