@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation = "vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/textview_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Title"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/textview_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Address"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/textview_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Date"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/textview_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Start Time"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/textview_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Event Category"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/textview_attendance_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Attendance Type"
+        android:textSize="18sp"/>
+    <TextView
+        android:id="@+id/textview_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text = "Event Description"
+        android:textSize="18sp"/>
+</LinearLayout>
