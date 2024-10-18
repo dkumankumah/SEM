@@ -1,5 +1,6 @@
 package com.example.sem
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -21,11 +22,6 @@ class AdminDashboardActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_admin_dashboard)
-//        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-//            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-//            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-//            insets
-//        }
 
         var events = loadevent()
         Log.d("EventListSize", "Size: ${events.size}")
@@ -46,6 +42,11 @@ class AdminDashboardActivity : AppCompatActivity() {
         rvEvents.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false )
         rvEvents.adapter = adapter
 
+        addBtn.setOnClickListener {
+            val intent = Intent(this, EventFormActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
     private fun loadevent(): ArrayList<Event> {
@@ -58,7 +59,7 @@ class AdminDashboardActivity : AppCompatActivity() {
             eventDate = Date(2024 - 1900, 9, 2),
             attendingCount = 0,
             dateCreated = Date(),
-            forClass = arrayOf(11, 12), // juniors and seniors
+            forClass = listOf(11, 12), // juniors and seniors
             location = "School Gymnasium"
         ))
         events.add(Event(
@@ -69,7 +70,7 @@ class AdminDashboardActivity : AppCompatActivity() {
             eventDate = Date(2024 - 1900, 9, 1),
             attendingCount = 0,
             dateCreated = Date(),
-            forClass = arrayOf(9, 10, 11, 12), // All high school classes
+            forClass = listOf(9, 10, 11, 12), // All high school classes
             location = "Football Stadium"
         ))
         events.add(Event(
@@ -80,7 +81,7 @@ class AdminDashboardActivity : AppCompatActivity() {
             eventDate = Date(2024 - 1900, 9, 14),
             attendingCount = 0,
             dateCreated = Date(),
-            forClass = arrayOf(11, 12), // Juniors and seniors
+            forClass = listOf(11, 12), // Juniors and seniors
             location = "Auditorium"
         ))
         events.add(Event(
@@ -91,7 +92,7 @@ class AdminDashboardActivity : AppCompatActivity() {
             eventDate = Date(2024 - 1900, 9, 10),
             attendingCount = 0,
             dateCreated = Date(),
-            forClass = arrayOf(9, 10, 11, 12), // All high school classes
+            forClass = listOf(9, 10, 11, 12), // All high school classes
             location = "School Hallways"
         ))
 

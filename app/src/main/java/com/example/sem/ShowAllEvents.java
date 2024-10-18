@@ -53,9 +53,10 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         recyclerView = findViewById(R.id.recycler_view_events);
         eventsList = new ArrayList<>();
 
+        fetchEventData();
+
         setAdapter();
 
-        fetchEventData();
 
         //implement swipe left/right
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
@@ -75,7 +76,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                             for (QueryDocumentSnapshot document : documents) {
                                 // Convert Firestore document to Event object
                                 Event event = document.toObject(Event.class);
-                                eventsList.add(event);
+                                allEventsList.add(event);
                                 // Log event details
                                 Log.d(TAG, "Event: " + event.getEventName() + ", Date: " + event.getEventDate());
                             }
@@ -108,7 +109,6 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                     recyclerView.getAdapter().notifyItemRemoved(position);
                     Intent intentLeft = new Intent(ShowAllEvents.this, ShowMyEvents.class);
                     startActivity(intentLeft);
-                    eventsList.remove(position);
                     if (recyclerView.getAdapter() != null) {
                         recyclerView.getAdapter().notifyItemRemoved(position);
                     }
@@ -123,7 +123,6 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                     recyclerView.getAdapter().notifyItemRemoved(position);
                     Intent intentRight = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
                     startActivity(intentRight);
-                    eventsList.remove(position);
                     if (recyclerView.getAdapter() != null) {
                         recyclerView.getAdapter().notifyItemRemoved(position);
                     }
@@ -150,24 +149,6 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         recyclerView.setAdapter(adapter);
     }
 
-//    private ArrayList<Event> loadAllEventData(){
-//        ArrayList<Event> events = new ArrayList<>();
-//        events.add(new Event(11111, "title1", "address1", 111, 111, 111, 111, "academic", "mandatory", "Final Exams" ));
-//        events.add(new Event(22222, "title2", "address2", 222, 222, 222, 222, "charity", "optional", "River Cleanup" ));
-//        events.add(new Event(33333, "title3", "address3", 333, 333, 333, 333, "extracurricular", "optional", "Prom" ));
-//        events.add(new Event(44444, "title4", "address4", 444, 444, 444, 444, "academic", "mandatory", "River Cleanup" ));
-//        events.add(new Event(55555, "title5", "address5", 555, 555, 555, 555, "athletics", "optional", "Football versus Carver" ));
-//        events.add(new Event(66666, "title6", "address6", 666, 666, 666, 666, "athletics", "optional", "Soccer versus Holy Cross" ));
-//        events.add(new Event(77777, "title7", "address7", 777, 777, 777, 777, "extracurricular", "optional", "APC performance" ));
-//        return events;
-//        if (recyclerView != null) {
-//            recyclerAdapter adapter = new recyclerAdapter(eventsList, this); // Pass eventsList and listener
-//            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-//            recyclerView.setLayoutManager(layoutManager);
-//            recyclerView.setItemAnimator(new DefaultItemAnimator());
-//            recyclerView.setAdapter(adapter);
-//        }
-//    }
     public static ArrayList<Event> getMyEventsList(){
         return myEventsList;
     }

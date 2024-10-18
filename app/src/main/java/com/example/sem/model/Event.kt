@@ -4,14 +4,16 @@ import java.io.Serializable
 import java.util.*
 
 data class Event(
-    val id: Int,
-    val eventName: String,
-    val eventManager: String,
-    val eventDescription: String,
-    val eventDate: Date,
-    val attendingCount: Int,
-    val dateCreated: Date,
-    val forClass: Array<Int>,
-    val location: String,
-//    val imageUrl: String
-) : Serializable
+    var id: Int = 0,
+    var eventName: String = "",
+    var eventManager: String = "",
+    var eventDescription: String = "",
+    var eventDate: Date = Date(),
+    var attendingCount: Int = 0,
+    var dateCreated: Date = Date(),
+    var forClass: List<Int> = emptyList(),
+    var location: String = ""
+) : Serializable {
+    // No-argument constructor for Firebase
+    constructor() : this(0, "", "", "", Date(), 0, Date(), emptyList(), "")
+}
