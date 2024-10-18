@@ -52,7 +52,10 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
 
     @Override
     public int getItemCount() {
-        return eventsList.size();
+        if(eventsList != null) {
+            return eventsList.size();
+        }
+        return 0;
     }
 
 }
