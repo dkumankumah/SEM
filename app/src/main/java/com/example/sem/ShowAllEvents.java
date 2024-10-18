@@ -28,7 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
-    private ArrayList<com.example.sem.model.Event> eventsList; // Use the correct package name
+    private ArrayList<Event> eventsList;
     private ArrayList<Event> allEventsList;
     private RecyclerView recyclerView;
     public static ArrayList<Event> myEventsList;
@@ -77,7 +77,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                                 Event event = document.toObject(Event.class);
                                 eventsList.add(event);
                                 // Log event details
-                                Log.d(TAG, "Event: " + event.getEventName() + ", Date: " + event.getDate());
+                                Log.d(TAG, "Event: " + event.getEventName() + ", Date: " + event.getEventDate());
                             }
                             // Notify RecyclerView adapter of data changes
                             recyclerView.getAdapter().notifyDataSetChanged();
@@ -138,7 +138,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
     public void recyclerViewListClicked(View v, int position) {
         Event selectedEvent = allEventsList.get(position);
         Intent intent = new Intent(ShowAllEvents.this, EventOnClick.class);
-        intent.putExtra("selected_event", selectedEvent); // Pass the Parcelable event
+        intent.putExtra("selected_event", selectedEvent); // Pass the serializable event
         startActivity(intent);
     }
 
@@ -168,10 +168,10 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
 //            recyclerView.setAdapter(adapter);
 //        }
 //    }
-//    public static ArrayList<Event> getMyEventsList(){
-//        return myEventsList;
-//    }
-//    public static ArrayList<Event> getFollowingEventsList(){
-//        return interestedEventsList;
-//    }
+    public static ArrayList<Event> getMyEventsList(){
+        return myEventsList;
+    }
+    public static ArrayList<Event> getFollowingEventsList(){
+        return interestedEventsList;
+    }
 }

@@ -50,10 +50,50 @@ class AdminDashboardActivity : AppCompatActivity() {
 
     private fun loadevent(): ArrayList<Event> {
         val events = ArrayList<Event>()
-        events.add(Event(1, "Highschool Prom", "Who is gonna be prom King and queen?", Date(2024,10,2), ""))
-        events.add(Event(2, "Football Game", "We are PENN STATE", Date(2024,10,1), ""))
-        events.add(Event(3, "Keynote", "career fair", Date(2024,10,14), ""))
-        events.add(Event(4, "Elections", "Presidents Elections", Date(2024,10,10), ""))
+        events.add(Event(
+            id = 1,
+            eventName = "Highschool Prom",
+            eventManager = "Prom Committee",
+            eventDescription = "Who is gonna be prom King and queen?",
+            eventDate = Date(2024 - 1900, 9, 2),
+            attendingCount = 0,
+            dateCreated = Date(),
+            forClass = arrayOf(11, 12), // juniors and seniors
+            location = "School Gymnasium"
+        ))
+        events.add(Event(
+            id = 2,
+            eventName = "Football Game",
+            eventManager = "Athletics Department",
+            eventDescription = "We are PENN STATE",
+            eventDate = Date(2024 - 1900, 9, 1),
+            attendingCount = 0,
+            dateCreated = Date(),
+            forClass = arrayOf(9, 10, 11, 12), // All high school classes
+            location = "Football Stadium"
+        ))
+        events.add(Event(
+            id = 3,
+            eventName = "Keynote",
+            eventManager = "Career Services",
+            eventDescription = "Career fair",
+            eventDate = Date(2024 - 1900, 9, 14),
+            attendingCount = 0,
+            dateCreated = Date(),
+            forClass = arrayOf(11, 12), // Juniors and seniors
+            location = "Auditorium"
+        ))
+        events.add(Event(
+            id = 4,
+            eventName = "Elections",
+            eventManager = "Student Council",
+            eventDescription = "Presidents Elections",
+            eventDate = Date(2024 - 1900, 9, 10),
+            attendingCount = 0,
+            dateCreated = Date(),
+            forClass = arrayOf(9, 10, 11, 12), // All high school classes
+            location = "School Hallways"
+        ))
 
         return events
     }

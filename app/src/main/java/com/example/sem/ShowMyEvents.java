@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.sem.model.Event;
+
 import java.util.ArrayList;
 
 public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
-    public ArrayList<Event> myEventsList;
+    public ArrayList<com.example.sem.model.Event> myEventsList;
     private RecyclerView recyclerView;
 
 
