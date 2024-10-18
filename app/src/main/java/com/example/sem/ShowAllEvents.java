@@ -29,7 +29,10 @@ import java.util.ArrayList;
 
 public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
     private ArrayList<com.example.sem.model.Event> eventsList; // Use the correct package name
+    private ArrayList<Event> allEventsList;
     private RecyclerView recyclerView;
+    public static ArrayList<Event> myEventsList;
+    public static ArrayList<Event> interestedEventsList;
     private Context context;
     private FirebaseFirestore db;
 
@@ -38,7 +41,9 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_events);
         recyclerView = findViewById(R.id.recycler_view_events);
-        eventsList = new ArrayList<>();
+        allEventsList = new ArrayList<>();
+        myEventsList = new ArrayList<>();
+        interestedEventsList = new ArrayList<>();
 
         // Initialize Firestore and Firebase
         FirebaseApp.initializeApp(this);
@@ -47,6 +52,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.recycler_view_events);
         eventsList = new ArrayList<>();
+
         setAdapter();
 
         fetchEventData();
@@ -54,6 +60,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         //implement swipe left/right
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
     }
 
     // Method to fetch 20 events from Firestore
@@ -92,10 +99,15 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-
             switch(direction){
                 case ItemTouchHelper.LEFT:
                     //do left action
+                    Event swipedLeftEvent = allEventsList.get(position);
+                    myEventsList.add(swipedLeftEvent);
+                    allEventsList.remove(position);
+                    recyclerView.getAdapter().notifyItemRemoved(position);
+                    Intent intentLeft = new Intent(ShowAllEvents.this, ShowMyEvents.class);
+                    startActivity(intentLeft);
                     eventsList.remove(position);
                     if (recyclerView.getAdapter() != null) {
                         recyclerView.getAdapter().notifyItemRemoved(position);
@@ -105,6 +117,12 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                     break;
                 case ItemTouchHelper.RIGHT:
                     //do right action
+                    Event swipedRightEvent = allEventsList.get(position);
+                    interestedEventsList.add(swipedRightEvent);
+                    allEventsList.remove(position);
+                    recyclerView.getAdapter().notifyItemRemoved(position);
+                    Intent intentRight = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
+                    startActivity(intentRight);
                     eventsList.remove(position);
                     if (recyclerView.getAdapter() != null) {
                         recyclerView.getAdapter().notifyItemRemoved(position);
@@ -118,19 +136,42 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
     };
 
     public void recyclerViewListClicked(View v, int position) {
-        Event selectedEvent = eventsList.get(position);
+        Event selectedEvent = allEventsList.get(position);
         Intent intent = new Intent(ShowAllEvents.this, EventOnClick.class);
         intent.putExtra("selected_event", selectedEvent); // Pass the Parcelable event
         startActivity(intent);
     }
 
     private void setAdapter() {
-        if (recyclerView != null) {
-            recyclerAdapter adapter = new recyclerAdapter(eventsList, this); // Pass eventsList and listener
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(adapter);
-        }
+        recyclerAdapter adapter = new recyclerAdapter(allEventsList, this);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
     }
+
+//    private ArrayList<Event> loadAllEventData(){
+//        ArrayList<Event> events = new ArrayList<>();
+//        events.add(new Event(11111, "title1", "address1", 111, 111, 111, 111, "academic", "mandatory", "Final Exams" ));
+//        events.add(new Event(22222, "title2", "address2", 222, 222, 222, 222, "charity", "optional", "River Cleanup" ));
+//        events.add(new Event(33333, "title3", "address3", 333, 333, 333, 333, "extracurricular", "optional", "Prom" ));
+//        events.add(new Event(44444, "title4", "address4", 444, 444, 444, 444, "academic", "mandatory", "River Cleanup" ));
+//        events.add(new Event(55555, "title5", "address5", 555, 555, 555, 555, "athletics", "optional", "Football versus Carver" ));
+//        events.add(new Event(66666, "title6", "address6", 666, 666, 666, 666, "athletics", "optional", "Soccer versus Holy Cross" ));
+//        events.add(new Event(77777, "title7", "address7", 777, 777, 777, 777, "extracurricular", "optional", "APC performance" ));
+//        return events;
+//        if (recyclerView != null) {
+//            recyclerAdapter adapter = new recyclerAdapter(eventsList, this); // Pass eventsList and listener
+//            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
+//            recyclerView.setLayoutManager(layoutManager);
+//            recyclerView.setItemAnimator(new DefaultItemAnimator());
+//            recyclerView.setAdapter(adapter);
+//        }
+//    }
+//    public static ArrayList<Event> getMyEventsList(){
+//        return myEventsList;
+//    }
+//    public static ArrayList<Event> getFollowingEventsList(){
+//        return interestedEventsList;
+//    }
 }
