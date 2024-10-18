@@ -13,7 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.sem.ShowAllEvents;
 
 public class MainActivity extends AppCompatActivity {
-
+    //adding to github
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
