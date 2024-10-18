@@ -20,7 +20,7 @@ public class EventOnClick extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_on_click);
 
-        Event selectedEvent = (Event) getIntent().getSerializableExtra("selected_event");
+        Event selectedEvent = getIntent().getParcelableExtra("selected_event");
 
         mTextViewTitle = findViewById(R.id.textview_title);
         mTextViewAddress = findViewById(R.id.textview_address);

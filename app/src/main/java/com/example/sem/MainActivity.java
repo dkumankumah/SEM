@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.main_activity);
     }
     public void onShowAllEventsClicked(View view){
-        Intent intent = new Intent(MainActivity.this, EventFormActivity.class);
+        Intent intent = new Intent(MainActivity.this, ShowAllEvents.class);
         startActivity(intent);
     }
 }
