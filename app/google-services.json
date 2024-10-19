@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "446084748459",
+    "project_id": "semi-b77d7",
+    "storage_bucket": "semi-b77d7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446084748459:android:b24e89c8a81424919813ee",
+        "android_client_info": {
+          "package_name": "com.example.sem"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAILXz5832tY7siOKLFeFJQPphqk8RUEzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:446084748459:android:7c13d06b8093f0f59813ee",
+        "android_client_info": {
+          "package_name": "com.psu.edu"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAILXz5832tY7siOKLFeFJQPphqk8RUEzg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.google.services)
 }
 
 android {
@@ -37,8 +38,9 @@ android {
 
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.7.0")
-    implementation ("androidx.constraintlayout:constraintlayout:2.1.3")
+    implementation("com.google.firebase:firebase-firestore-ktx:24.7.1") // Already present
+    implementation("com.google.firebase:firebase-storage-ktx:20.2.1")   // If you need Firebase Storage
+    implementation("com.google.firebase:firebase-analytics-ktx:21.3.0") // Optional, for Analytics
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

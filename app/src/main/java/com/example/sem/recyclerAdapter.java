@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.example.sem.model.Event;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,8 +13,7 @@ import java.util.ArrayList;
 
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
     private ArrayList<Event> eventsList;
-    private static RecyclerViewClickListener itemListener;
-
+    private  RecyclerViewClickListener itemListener;
 
     public interface RecyclerViewClickListener {
         void recyclerViewListClicked(View v, int position);
@@ -22,6 +22,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     public recyclerAdapter(ArrayList<Event> eventsList, RecyclerViewClickListener recyclerViewClickListener) {
         this.eventsList = eventsList;
         this.itemListener = recyclerViewClickListener;
+
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -31,6 +32,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             eventTitle = view.findViewById(R.id.textview_event_title);
             view.setOnClickListener(this);
         }
+
+        @Override
         public void onClick(View v) {
             itemListener.recyclerViewListClicked(v, getAdapterPosition());
         }
@@ -45,9 +48,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull recyclerAdapter.MyViewHolder holder, int position) {
-        String title = eventsList.get(position).getTitle();
+        String title = eventsList.get(position).getEventName();  // Corrected getter
         holder.eventTitle.setText(title);
-
     }
 
     @Override
@@ -57,5 +59,5 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         }
         return 0;
     }
-
 }
+

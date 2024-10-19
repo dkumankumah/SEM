@@ -6,6 +6,8 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.sem.model.Event;
+
 public class EventOnClick extends AppCompatActivity {
     private TextView mTextViewTitle;
     private TextView mTextViewAddress;
@@ -20,7 +22,7 @@ public class EventOnClick extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_on_click);
 
-        Event selectedEvent = (Event) getIntent().getSerializableExtra("selected_event");
+        Event selectedEvent = getIntent().getParcelableExtra("selected_event");
 
         mTextViewTitle = findViewById(R.id.textview_title);
         mTextViewAddress = findViewById(R.id.textview_address);
@@ -30,21 +32,21 @@ public class EventOnClick extends AppCompatActivity {
         mTextViewAttendanceType = findViewById(R.id.textview_attendance_type);
         mTextViewDescription = findViewById(R.id.textview_description);
 
-        String title = "Event title: " + selectedEvent.getTitle();
-        String address = "Street Address: " + selectedEvent.getAddress() + selectedEvent.getZipCode();
-        String date = "Date: " + selectedEvent.getDate();
-        String time = "From " + selectedEvent.getStartTime() + " until: " + selectedEvent.getEndTime();
-        String category = "Type of Event: " + selectedEvent.getCategory();
-        String attendance = "Your attendance is " + selectedEvent.getAttendanceType();
-        String description = "Details: " + selectedEvent.getDescription();
+//        String title = "Event title: " + selectedEvent.getTitle();
+//        String address = "Street Address: " + selectedEvent.getAddress() + selectedEvent.getZipCode();
+//        String date = "Date: " + selectedEvent.getDate();
+//        String time = "From " + selectedEvent.getStartTime() + " until: " + selectedEvent.getEndTime();
+//        String category = "Type of Event: " + selectedEvent.getCategory();
+//        String attendance = "Your attendance is " + selectedEvent.getAttendanceType();
+//        String description = "Details: " + selectedEvent.getDescription();
 
-        mTextViewTitle.setText(title);
-        mTextViewAddress.setText(address);
-        mTextViewEventDate.setText(date);
-        mTextViewTime.setText(time);
-        mTextViewCategory.setText(category);
-        mTextViewAttendanceType.setText(attendance);
-        mTextViewDescription.setText(description);
+//        mTextViewTitle.setText(title);
+//        mTextViewAddress.setText(address);
+//        mTextViewEventDate.setText(date);
+//        mTextViewTime.setText(time);
+//        mTextViewCategory.setText(category);
+//        mTextViewAttendanceType.setText(attendance);
+//        mTextViewDescription.setText(description);
 
     }
 }

@@ -13,8 +13,9 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-//import com.google.firebase.firestore.ktx.firestore
-//import com.google.firebase.ktx.Firebase
+import com.google.firebase.FirebaseApp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.util.*
 
 class EventFormActivity : AppCompatActivity() {
@@ -36,7 +37,7 @@ class EventFormActivity : AppCompatActivity() {
 
     private val PICK_IMAGE_REQUEST = 1
 
-//    private val db = Firebase.firestore
+    private val db = Firebase.firestore
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +57,9 @@ class EventFormActivity : AppCompatActivity() {
         submitButton = findViewById(R.id.submitBtn)
         gradeSpinner = findViewById(R.id.gradeSpinner)
         chipGroupGrades = findViewById(R.id.chipGroupGrades)
+
+        //Initialize Firebase DB Connection
+        FirebaseApp.initializeApp(this)
 
         val grades = arrayOf("Class 9", "Class 10", "Class 11", "Class 12")
         val gradeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, grades)
@@ -206,17 +210,18 @@ class EventFormActivity : AppCompatActivity() {
             )
 
             // Add the event to Firestore
-//            db.collection("events")
-//                .add(event)
-//                .addOnSuccessListener { documentReference ->
-//                    Log.d("EventForm", "Event added with ID: ${documentReference.id}")
-//                    Toast.makeText(this, "Event Created", Toast.LENGTH_SHORT).show()
-//                    finish() // Close the form after submission
-//                }
-//                .addOnFailureListener { e ->
-//                    Log.w("EventForm", "Error adding event", e)
-//                    Toast.makeText(this, "Failed to create event", Toast.LENGTH_SHORT).show()
-//                }
+            db.collection("events")
+                .add(event)
+                .addOnSuccessListener { documentReference ->
+                    Log.d("EventForm", "Event added with ID: ${documentReference.id}")
+                    Toast.makeText(this, "Event Created", Toast.LENGTH_SHORT).show()
+                    finish() // Close the form after submission
+                }
+                .addOnFailureListener { e ->
+                    Log.w("EventForm", "Error adding event", e)
+                    Toast.makeText(this, "Failed to create event", Toast.LENGTH_SHORT).show()
+                }
+
             // Log the event data instead of saving to Firestore
             Log.d("EventForm", "Event Details: $event")
             Toast.makeText(this, "Event details logged", Toast.LENGTH_SHORT).show()
