@@ -26,6 +26,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
     private ArrayList<Event> eventsList;
@@ -40,6 +41,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_events);
+
         recyclerView = findViewById(R.id.recycler_view_events);
         allEventsList = new ArrayList<>();
         myEventsList = new ArrayList<>();

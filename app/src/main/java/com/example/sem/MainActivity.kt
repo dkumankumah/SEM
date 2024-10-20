@@ -46,7 +46,6 @@ class MainActivity : AppCompatActivity() {
         val extraBtn = findViewById<Button>(R.id.extra_btn)
         val charityBtn = findViewById<Button>(R.id.charity_btn)
         val addBtn = findViewById<Button>(R.id.add_event_btn)
-        val arrowIcon = findViewById<ImageView>(R.id.arrow_icon)
 
         rvEvents.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvEvents.adapter = adapter
@@ -56,10 +55,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        arrowIcon.setOnClickListener {
-            val intent = Intent(this, ShowAllEvents::class.java)
-            startActivity(intent)
-        }
+//        arrowIcon.setOnClickListener {
+//            val intent = Intent(this, ShowAllEvents::class.java)
+//            startActivity(intent)
+//        }
 
         // Set click listeners for other buttons as needed
     }
