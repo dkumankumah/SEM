@@ -3,11 +3,16 @@ package com.example.sem;
 
 import static android.content.ContentValues.TAG;
 
+import static java.lang.String.valueOf;
+
 import android.content.Context;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -32,10 +37,11 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
     private ArrayList<Event> eventsList;
     private ArrayList<Event> allEventsList;
     private RecyclerView recyclerView;
-    public static ArrayList<Event> myEventsList;
-    public static ArrayList<Event> interestedEventsList;
-    private Context context;
+    public static ArrayList<Event> myEventsList = new ArrayList<>();
+    public static ArrayList<Event> interestedEventsList = new ArrayList<>();
     private FirebaseFirestore db;
+    private Button showMyEventsButton;
+    private Button showInterestedEventsButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +49,16 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         setContentView(R.layout.all_events);
 
         recyclerView = findViewById(R.id.recycler_view_events);
+        showMyEventsButton = (Button)findViewById(R.id.show_my_events);
+        showInterestedEventsButton = (Button)findViewById(R.id.show_interested_events);
         allEventsList = new ArrayList<>();
-        myEventsList = new ArrayList<>();
-        interestedEventsList = new ArrayList<>();
 
-        // Initialize Firestore and Firebase
+       // Initialize Firestore and Firebase
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
 
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.recycler_view_events);
-        eventsList = new ArrayList<>();
 
         fetchEventData();
 
@@ -64,6 +69,19 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
+        showMyEventsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowAllEvents.this, ShowMyEvents.class);
+                startActivity(intent);
+            }
+        });
+
+        showInterestedEventsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // Method to fetch 20 events from Firestore
@@ -102,33 +120,29 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            switch(direction){
+            switch(direction) {
                 case ItemTouchHelper.LEFT:
-                    //do left action
+                    //do left action (RSVP Yes)
                     Event swipedLeftEvent = allEventsList.get(position);
                     myEventsList.add(swipedLeftEvent);
-                    allEventsList.remove(position);
-                    recyclerView.getAdapter().notifyItemRemoved(position);
-                    Intent intentLeft = new Intent(ShowAllEvents.this, ShowMyEvents.class);
-                    startActivity(intentLeft);
-                    if (recyclerView.getAdapter() != null) {
-                        recyclerView.getAdapter().notifyItemRemoved(position);
+                    if (interestedEventsList.contains(swipedLeftEvent)) {
+                        interestedEventsList.remove(swipedLeftEvent);
                     }
-                    Toast toastLeft = Toast.makeText(recyclerView.getContext(), "item removed", Toast.LENGTH_SHORT);
+                    //update imageview to have a checkmark
+                    recyclerView.getAdapter().notifyItemChanged(position);
+                    Toast toastLeft = Toast.makeText(recyclerView.getContext(), "See you there!", Toast.LENGTH_SHORT);
                     toastLeft.show();
                     break;
                 case ItemTouchHelper.RIGHT:
                     //do right action
                     Event swipedRightEvent = allEventsList.get(position);
                     interestedEventsList.add(swipedRightEvent);
-                    allEventsList.remove(position);
-                    recyclerView.getAdapter().notifyItemRemoved(position);
-                    Intent intentRight = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
-                    startActivity(intentRight);
-                    if (recyclerView.getAdapter() != null) {
-                        recyclerView.getAdapter().notifyItemRemoved(position);
+                    if(myEventsList.contains(swipedRightEvent)){
+                        myEventsList.remove(swipedRightEvent);
                     }
-                    Toast toastRight = Toast.makeText(recyclerView.getContext(), "item removed", Toast.LENGTH_SHORT);
+                    //update imageview to eyeball
+                    recyclerView.getAdapter().notifyItemChanged(position);
+                    Toast toastRight = Toast.makeText(recyclerView.getContext(), "Subscribed to Updates!", Toast.LENGTH_SHORT);
                     toastRight.show();
                     break;
             }

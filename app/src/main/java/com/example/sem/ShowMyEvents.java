@@ -3,6 +3,7 @@ package com.example.sem;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -18,15 +19,16 @@ import com.example.sem.model.Event;
 import java.util.ArrayList;
 
 public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
-    public ArrayList<com.example.sem.model.Event> myEventsList;
+    public ArrayList<Event> myEventsList;
     private RecyclerView recyclerView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.all_events);
+        setContentView(R.layout.my_events);
         recyclerView = findViewById(R.id.recycler_view_events);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -37,6 +39,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         //implement swipe left/right
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
     }
 
     ItemTouchHelper.SimpleCallback callBackMethod = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
@@ -54,7 +57,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                     //do left action
                     myEventsList.remove(position);
                     recyclerView.getAdapter().notifyItemRemoved(position);
-                    Toast toastLeft = Toast.makeText(recyclerView.getContext(), "TODO: place item on All Events List", Toast.LENGTH_SHORT);
+                    Toast toastLeft = Toast.makeText(recyclerView.getContext(), "You are no longer attending this event :(", Toast.LENGTH_SHORT);
                     toastLeft.show();
                     break;
 
