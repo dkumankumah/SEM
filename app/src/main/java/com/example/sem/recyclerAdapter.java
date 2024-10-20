@@ -16,7 +16,6 @@ import java.util.Date;
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
     private ArrayList<Event> eventsList;
     private  RecyclerViewClickListener itemListener;
-    private int interestStatus = ShowAllEvents.getInterestIndicator();
 
     public interface RecyclerViewClickListener {
         void recyclerViewListClicked(View v, int position);
@@ -56,13 +55,11 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull recyclerAdapter.MyViewHolder holder, int position) {
         String title = eventsList.get(position).getEventName();
-        //this should represent the category: academic, extra curricular, athletic, service
         String category = eventsList.get(position).getEventDescription();
         ArrayList<Event> myEventsList = ShowAllEvents.getMyEventsList();
         ArrayList<Event> myInterestedEvents = ShowAllEvents.getFollowingEventsList();
         holder.eventTitle.setText(title);
         holder.eventCategory.setText(category);
-
         if(myEventsList.contains(eventsList.get(position))){
             holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
         }

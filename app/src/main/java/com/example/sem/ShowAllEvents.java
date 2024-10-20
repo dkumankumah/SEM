@@ -38,9 +38,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
     private RecyclerView recyclerView;
     public static ArrayList<Event> myEventsList = new ArrayList<>();
     public static ArrayList<Event> interestedEventsList = new ArrayList<>();
-    private Context context;
     private FirebaseFirestore db;
-    public static int interestStatus;
     private Button showMyEventsButton;
     private Button showInterestedEventsButton;
 
@@ -120,11 +118,14 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            switch(direction){
+            switch(direction) {
                 case ItemTouchHelper.LEFT:
                     //do left action (RSVP Yes)
                     Event swipedLeftEvent = allEventsList.get(position);
                     myEventsList.add(swipedLeftEvent);
+                    if (interestedEventsList.contains(swipedLeftEvent)) {
+                        interestedEventsList.remove(swipedLeftEvent);
+                    }
                     //update imageview to have a checkmark
                     recyclerView.getAdapter().notifyItemChanged(position);
                     Toast toastLeft = Toast.makeText(recyclerView.getContext(), "See you there!", Toast.LENGTH_SHORT);
@@ -134,6 +135,9 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                     //do right action
                     Event swipedRightEvent = allEventsList.get(position);
                     interestedEventsList.add(swipedRightEvent);
+                    if(myEventsList.contains(swipedRightEvent)){
+                        myEventsList.remove(swipedRightEvent);
+                    }
                     //update imageview to eyeball
                     recyclerView.getAdapter().notifyItemChanged(position);
                     Toast toastRight = Toast.makeText(recyclerView.getContext(), "Subscribed to Updates!", Toast.LENGTH_SHORT);
@@ -165,5 +169,4 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
     public static ArrayList<Event> getFollowingEventsList(){
         return interestedEventsList;
     }
-    public static int getInterestIndicator(){return interestStatus;}
 }
