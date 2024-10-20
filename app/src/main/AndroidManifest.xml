@@ -9,16 +9,21 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="ListViewPractice"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/semlogo"
+        android:label="SEM"
+        android:roundIcon="@drawable/semlogo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
-        <activity android:name=".EventFormActivity" />
+        <activity
+            android:name=".EventFormActivity"
+            android:label="New Event Form"
+            android:theme="@style/AppTheme"
+            android:parentActivityName=".AdminDashboardActivity"/>
         <activity
             android:name=".AdminDashboardActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Admin Dashboard" />
         <activity
             android:name=".ShowAllEvents"
             android:exported="false"
@@ -47,7 +52,10 @@
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.Light">
+            android:theme="@style/AppTheme"/>
+        <activity
+            android:name=".SplashScreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -10,33 +10,49 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sem.R
 
-class UpcomingEventAdapter(private val events: List<Event>,
-                           private val onItemClick: (Event) -> Unit) :
-    RecyclerView.Adapter<UpcomingEventAdapter.EventViewHolder>() {
+class UpcomingEventAdapter(
+    private var events: List<Event>,
+    private val onItemClick: (Event) -> Unit
+) : RecyclerView.Adapter<UpcomingEventAdapter.EventViewHolder>() {
 
-    class EventViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class EventViewHolder(itemView: View, val onClick: (Event) -> Unit) : RecyclerView.ViewHolder(itemView) {
         val eventName: TextView = itemView.findViewById(R.id.upcoming_eventName)
         val eventImage: ImageView = itemView.findViewById(R.id.upcomingevent_image)
+        // Only include these if they are present in your layout
+        val eventTitle: TextView? = itemView.findViewById(R.id.eventTitle)
+        val eventManager: TextView? = itemView.findViewById(R.id.eventManager)
+        private lateinit var currentEvent: Event
+
+        fun bind(event: Event) {
+            currentEvent = event
+            eventName.text = event.eventName
+            eventTitle?.text = event.eventName // Adjust as needed
+            eventManager?.text = event.eventManager
+
+            itemView.setOnClickListener {
+                onClick(currentEvent)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EventViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_upcoming_event, parent, false)
-        return EventViewHolder(view)
+        return EventViewHolder(view, onItemClick)
     }
 
     override fun onBindViewHolder(holder: EventViewHolder, position: Int) {
-        val event = events[position]
-        holder.eventName.text = event.eventName
-        holder.eventImage.setImageResource(R.drawable.event1)
-
-        holder.itemView.setOnClickListener {
-            onItemClick(event)
-        }
+        holder.bind(events[position])
     }
 
     override fun getItemCount() = events.size
+
+    fun updateEvents(newEvents: List<Event>) {
+        this.events = newEvents
+        notifyDataSetChanged()
+    }
 }
+
 
 //class UpcomingEventAdapter(context: Context, events: List<Event>):
 //    ArrayAdapter<Event?>(context, R.layout.item_upcoming_event, events) {
