@@ -17,40 +17,41 @@
         tools:targetApi="31">
         <activity
             android:name=".EventFormActivity"
-            android:label="New Event"/>
+            android:label="New Event" />
         <activity
             android:name=".AdminDashboardActivity"
             android:exported="false"
-            android:label="Admin Dashboard"/>
+            android:label="Admin Dashboard" />
         <activity
             android:name=".ShowAllEvents"
             android:exported="false"
-            android:label="School Event Manager: All Events">
-        </activity>
+            android:label="School Event Manager: All Events" />
         <activity
             android:name=".EventOnClick"
             android:exported="false"
-            android:label="Event Details">
-        </activity>
+            android:label="Event Details" />
         <activity
             android:name=".ShowMyEvents"
             android:exported="false"
-            android:label="School Event Manager: My Events">
-        </activity>
+            android:label="School Event Manager: My Events" />
         <activity
             android:name=".ShowInterestedEvents"
             android:exported="false"
-            android:label="School Event Manager: Events I'm Following">
-        </activity>
+            android:label="School Event Manager: Events I&apos;m Following" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.AppCompat.Light">
+            android:theme="@style/Theme.AppCompat.Light"/>
+        <activity
+            android:name=".SplashScreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 </manifest>
