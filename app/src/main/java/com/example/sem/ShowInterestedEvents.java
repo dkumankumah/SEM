@@ -16,15 +16,16 @@ import com.example.sem.model.Event;
 import java.util.ArrayList;
 
 public class ShowInterestedEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
-    public ArrayList<com.example.sem.model.Event> interestedEventsList;
+    public ArrayList<Event> interestedEventsList;
     private RecyclerView recyclerView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.all_events);
+        setContentView(R.layout.my_events);
         recyclerView = findViewById(R.id.recycler_view_events);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         interestedEventsList = ShowAllEvents.getFollowingEventsList();
 

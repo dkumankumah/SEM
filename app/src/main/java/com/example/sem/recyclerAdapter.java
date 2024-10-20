@@ -3,6 +3,7 @@ package com.example.sem;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.sem.model.Event;
 
@@ -10,10 +11,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
     private ArrayList<Event> eventsList;
     private  RecyclerViewClickListener itemListener;
+    private int interestStatus = ShowAllEvents.getInterestIndicator();
 
     public interface RecyclerViewClickListener {
         void recyclerViewListClicked(View v, int position);
@@ -27,9 +30,13 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView eventTitle;
+        private TextView eventCategory;
+        private ImageView rsvpImage;
         public MyViewHolder(final View view){
             super(view);
             eventTitle = view.findViewById(R.id.textview_event_title);
+            eventCategory = view.findViewById(R.id.textview_event_category);
+            rsvpImage = view.findViewById(R.id.event_status);
             view.setOnClickListener(this);
         }
 
@@ -48,8 +55,20 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull recyclerAdapter.MyViewHolder holder, int position) {
-        String title = eventsList.get(position).getEventName();  // Corrected getter
+        String title = eventsList.get(position).getEventName();
+        //this should represent the category: academic, extra curricular, athletic, service
+        String category = eventsList.get(position).getEventDescription();
+        ArrayList<Event> myEventsList = ShowAllEvents.getMyEventsList();
+        ArrayList<Event> myInterestedEvents = ShowAllEvents.getFollowingEventsList();
         holder.eventTitle.setText(title);
+        holder.eventCategory.setText(category);
+
+        if(myEventsList.contains(eventsList.get(position))){
+            holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
+        }
+        else if(myInterestedEvents.contains(eventsList.get(position))){
+            holder.rsvpImage.setImageResource(R.drawable.watching);
+        }
     }
 
     @Override

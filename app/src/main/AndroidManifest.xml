@@ -22,22 +22,26 @@
         <activity
             android:name=".ShowAllEvents"
             android:exported="false"
-            android:label="School Event Manager: All Events">
+            android:label="School Event Manager: All Events"
+            android:parentActivityName=".AdminDashboardActivity">
         </activity>
         <activity
             android:name=".EventOnClick"
             android:exported="false"
-            android:label="Event Details">
+            android:label="Event Details"
+            android:parentActivityName=".ShowAllEvents">
         </activity>
         <activity
             android:name=".ShowMyEvents"
             android:exported="false"
-            android:label="School Event Manager: My Events">
+            android:label="School Event Manager: My Events"
+            android:parentActivityName=".ShowAllEvents">
         </activity>
         <activity
             android:name=".ShowInterestedEvents"
             android:exported="false"
-            android:label="School Event Manager: Events I'm Following">
+            android:label="School Event Manager: Events I'm Following"
+            android:parentActivityName=".ShowAllEvents">
         </activity>
         <activity
             android:name=".MainActivity"

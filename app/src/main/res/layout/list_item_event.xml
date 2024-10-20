@@ -1,22 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation = "vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation = "horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="10dp">
 
-    <TextView
-        android:id="@+id/textview_event_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text = "Title"
-        android:textSize="18sp"/>
+    <ImageView
+        android:id="@+id/event_status"
+        android:layout_width="42dp"
+        android:layout_height="38dp"
+        android:layout_margin="10dp"
+        app:srcCompat="@drawable/ic_add_photo" />
+
+    <LinearLayout
+        android:layout_width="290dp"
+        android:layout_height="36dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textview_event_title"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="Title"
+            android:textSize="20sp" />
 
     <TextView
         android:id="@+id/textview_event_category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text = "Event Category"
-        android:textSize="18sp"/>
-
+        android:layout_width="298dp"
+        android:layout_height="40dp"
+        android:text="Category"
+        android:textSize="20sp" />
+</LinearLayout>
 </LinearLayout>
