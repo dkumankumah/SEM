@@ -42,6 +42,26 @@ class AdminDashboardActivity : AppCompatActivity() {
         rvEvents.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false )
         rvEvents.adapter = adapter
 
+        academicBtn.setOnClickListener {
+            val intent = Intent(this, ShowAllEvents::class.java)
+            startActivity(intent)
+        }
+
+        clubsBtn.setOnClickListener {
+            val intent = Intent(this, ShowAllEvents::class.java)
+            startActivity(intent)
+        }
+
+        extraBtn.setOnClickListener {
+            val intent = Intent(this, ShowAllEvents::class.java)
+            startActivity(intent)
+        }
+
+        charityBtn.setOnClickListener {
+            val intent = Intent(this, ShowAllEvents::class.java)
+            startActivity(intent)
+        }
+
         addBtn.setOnClickListener {
             val intent = Intent(this, EventFormActivity::class.java)
             startActivity(intent)
