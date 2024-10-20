@@ -14,6 +14,29 @@
     <string name="clubs">Clubs</string>
     <string name="charity">Charity</string>
     <string name="upcoming_event_name">placeholder event</string>
+    <string name="upcoming_attendance_count">120</string>
     <string name="event_image_placeholder">Event Image Placeholder</string>
     <string name="add_new_event">Add New Event</string>
+
+    <!-- Base application theme. -->
+        <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+            <!-- Customize your theme here. -->
+            <!-- Set your primary and secondary colors -->
+            <item name="colorPrimary">@color/colorPrimary</item>
+            <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+            <item name="colorOnPrimary">@color/colorOnPrimary</item>
+            <item name="colorSecondary">@color/colorSecondary</item>
+            <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+            <item name="colorOnSecondary">@color/colorOnSecondary</item>
+            <!-- Surface and background colors -->
+            <item name="colorSurface">@color/colorSurface</item>
+            <item name="colorOnSurface">@color/colorOnSurface</item>
+            <item name="colorOnBackground">@color/colorOnBackground</item>
+
+            <!-- Error color -->
+            <item name="colorError">@color/colorError</item>
+            <item name="colorOnError">@color/colorOnError</item>
+            <!-- Other theme customizations -->
+        </style>
+
 </resources>

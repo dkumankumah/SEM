@@ -13,16 +13,6 @@
         <!-- Back button -->
 
         <!-- Top layout for Image, Title, Description -->
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="cursive"
-            android:text="New Event Form"
-            android:textAlignment="center"
-            android:textSize="34sp"
-            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/topLayout"
@@ -74,6 +64,14 @@
                     android:maxLines="6"
                     android:scrollbars="vertical"
                     android:overScrollMode="always"
+                    android:padding="8dp" />
+
+                <EditText
+                    android:id="@+id/eventManager"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Event Manager"
+                    android:inputType="text"
                     android:padding="8dp" />
 
             </LinearLayout>
@@ -131,6 +129,16 @@
             android:layout_marginTop="16dp"
             android:padding="16dp" />
 
+        <EditText
+            android:id="@+id/attendingCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Expected Number of Attendees"
+            android:layout_marginHorizontal="16dp"
+            android:inputType="number"
+            android:layout_marginTop="16dp"
+            android:padding="16dp" />
+
         <!-- Audience selection (replacing MultiAutoCompleteTextView) -->
         <TextView
             android:id="@+id/audienceLabel"
@@ -143,6 +151,7 @@
         <!-- ChipGroup to display selected grades -->
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/chipGroupGrades"
+            style="@style/Widget.MaterialComponents.Chip.Entry"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
@@ -157,17 +166,6 @@
             android:layout_marginHorizontal="16dp"
             android:padding="8dp"
             android:spinnerMode="dropdown" />
-
-        <!-- Attendance Details input field -->
-        <EditText
-            android:id="@+id/attendanceDetails"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:hint="Attendance Details (e.g., Formal, Casual)"
-            android:inputType="text"
-            android:layout_marginTop="16dp"
-            android:padding="16dp" />
 
         <!-- Event Type selection -->
         <TextView

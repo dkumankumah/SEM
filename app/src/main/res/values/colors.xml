@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
+
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <!-- Primary color palette -->
+    <color name="colorPrimary">#6200EE</color> <!-- A shade of indigo -->
+    <color name="colorPrimaryVariant">#3700B3</color> <!-- Darker variant -->
+    <color name="colorOnPrimary">#FFFFFF</color> <!-- White text on primary color -->
+
+    <!-- Secondary color palette -->
+    <color name="colorSecondary">#03DAC6</color> <!-- A shade of teal -->
+    <color name="colorSecondaryVariant">#018786</color> <!-- Darker variant -->
+    <color name="colorOnSecondary">#000000</color> <!-- Black text on secondary color -->
+
+    <!-- Additional colors -->
+    <color name="colorSurface">#FFFFFF</color> <!-- Surface color for cards, sheets, etc. -->
+    <color name="colorOnSurface">#000000</color>
+    <color name="colorBackground">#FFFFFF</color> <!-- Background color for activities and fragments -->
+    <color name="colorOnBackground">#000000</color>
+    <color name="colorError">#B00020</color> <!-- Error messages and icons -->
+    <color name="colorOnError">#FFFFFF</color>
 </resources>
