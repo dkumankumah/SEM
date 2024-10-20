@@ -55,7 +55,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                     //do left action
                     myEventsList.remove(position);
                     recyclerView.getAdapter().notifyItemRemoved(position);
-                    Toast toastLeft = Toast.makeText(recyclerView.getContext(), "TODO: place item on All Events List", Toast.LENGTH_SHORT);
+                    Toast toastLeft = Toast.makeText(recyclerView.getContext(), "You are no longer attending this event :(", Toast.LENGTH_SHORT);
                     toastLeft.show();
                     break;
 

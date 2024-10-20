@@ -124,7 +124,6 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                 case ItemTouchHelper.LEFT:
                     //do left action (RSVP Yes)
                     Event swipedLeftEvent = allEventsList.get(position);
-                    //in the user's database this needs to be added to their "attending" column
                     myEventsList.add(swipedLeftEvent);
                     //update imageview to have a checkmark
                     recyclerView.getAdapter().notifyItemChanged(position);
@@ -134,8 +133,8 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                 case ItemTouchHelper.RIGHT:
                     //do right action
                     Event swipedRightEvent = allEventsList.get(position);
-                    //in the user's database this needs to be added to their "interested" column
                     interestedEventsList.add(swipedRightEvent);
+                    //update imageview to eyeball
                     recyclerView.getAdapter().notifyItemChanged(position);
                     Toast toastRight = Toast.makeText(recyclerView.getContext(), "Subscribed to Updates!", Toast.LENGTH_SHORT);
                     toastRight.show();

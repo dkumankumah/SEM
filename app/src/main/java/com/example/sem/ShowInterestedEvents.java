@@ -51,7 +51,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                     //do left action
                     interestedEventsList.remove(position);
                     recyclerView.getAdapter().notifyItemRemoved(position);
-                    Toast toastLeft = Toast.makeText(recyclerView.getContext(), "TODO: place item on All Events List", Toast.LENGTH_SHORT);
+                    Toast toastLeft = Toast.makeText(recyclerView.getContext(), "You are no longer following this event :(", Toast.LENGTH_SHORT);
                     toastLeft.show();
                     break;
 
