@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -45,12 +46,18 @@ class MainActivity : AppCompatActivity() {
         val extraBtn = findViewById<Button>(R.id.extra_btn)
         val charityBtn = findViewById<Button>(R.id.charity_btn)
         val addBtn = findViewById<Button>(R.id.add_event_btn)
+        val arrowIcon = findViewById<ImageView>(R.id.arrow_icon)
 
         rvEvents.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvEvents.adapter = adapter
 
         addBtn.setOnClickListener {
             val intent = Intent(this, EventFormActivity::class.java)
+            startActivity(intent)
+        }
+
+        arrowIcon.setOnClickListener {
+            val intent = Intent(this, ShowAllEvents::class.java)
             startActivity(intent)
         }
 

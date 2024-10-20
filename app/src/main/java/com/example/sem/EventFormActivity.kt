@@ -317,7 +317,9 @@ class EventFormActivity : AppCompatActivity() {
             .addOnSuccessListener { documentReference ->
                 Log.d("EventForm", "Event added with ID: ${documentReference.id}")
                 Toast.makeText(this, "Event Created", Toast.LENGTH_SHORT).show()
-                finish() // Close the form after submission
+                val intent = Intent(this, ShowAllEvents::class.java)
+                startActivity(intent)
+                finish()
             }
             .addOnFailureListener { e ->
                 Log.w("EventForm", "Error adding event", e)
