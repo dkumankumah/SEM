@@ -28,6 +28,8 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         setContentView(R.layout.all_events);
         recyclerView = findViewById(R.id.recycler_view_events);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         myEventsList = ShowAllEvents.getMyEventsList();
 
         setAdapter();

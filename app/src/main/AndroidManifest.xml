@@ -9,15 +9,16 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="ListViewPractice"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/semlogo"
+        android:label="SEM"
+        android:roundIcon="@drawable/semlogo"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
             android:name=".EventFormActivity"
-            android:label="New Event" />
+            android:label="New Event"
+            android:parentActivityName=".AdminDashboardActivity"/>
         <activity
             android:name=".AdminDashboardActivity"
             android:exported="false"
@@ -25,19 +26,23 @@
         <activity
             android:name=".ShowAllEvents"
             android:exported="false"
-            android:label="School Event Manager: All Events" />
+            android:label="School Event Manager: All Events"
+            android:parentActivityName=".AdminDashboardActivity"/>
         <activity
             android:name=".EventOnClick"
             android:exported="false"
-            android:label="Event Details" />
+            android:label="Event Details"
+            android:parentActivityName=".ShowAllEvents"/>
         <activity
             android:name=".ShowMyEvents"
             android:exported="false"
-            android:label="School Event Manager: My Events" />
+            android:label="School Event Manager: My Events"
+            android:parentActivityName=".ShowAllEvents"/>
         <activity
             android:name=".ShowInterestedEvents"
             android:exported="false"
-            android:label="School Event Manager: Events I&apos;m Following" />
+            android:label="School Event Manager: Events I&apos;m Following"
+            android:parentActivityName=".ShowAllEvents"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

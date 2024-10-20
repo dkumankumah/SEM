@@ -40,6 +40,9 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_events);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         recyclerView = findViewById(R.id.recycler_view_events);
         allEventsList = new ArrayList<>();
         myEventsList = new ArrayList<>();

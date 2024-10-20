@@ -30,7 +30,7 @@ class SplashScreen : AppCompatActivity() {
             startActivity(
                 Intent(
                     this@SplashScreen,
-                    MainActivity::class.java
+                    AdminDashboardActivity::class.java
                 )
             )
             finish()
