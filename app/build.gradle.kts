@@ -41,6 +41,8 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore-ktx:24.7.1") // Already present
     implementation("com.google.firebase:firebase-storage-ktx:20.2.1")   // If you need Firebase Storage
     implementation("com.google.firebase:firebase-analytics-ktx:21.3.0") // Optional, for Analytics
+    implementation("com.google.android.gms:play-services-maps:18.1.0") // Google Maps SDK
+    implementation("com.google.android.libraries.places:places:2.7.0") // Google Places SDK
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

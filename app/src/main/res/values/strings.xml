@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">SEM</string>
+    <string name="google_maps_key">AIzaSyAJOdDvEys13exOMR_793MthrEpNiHTcKk</string>
     <string name="event_type_prompt">Select Event Type</string>
     <string-array name="grade_options">
         <item>Class 9</item>

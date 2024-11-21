@@ -12,7 +12,7 @@ data class Event(
     var attendingCount: Int = 0,
     var dateCreated: Date = Date(),
     var forClass: List<Int> = emptyList(),
-    var location: String = ""
+    var location: Any = ""
 ) : Serializable {
     // No-argument constructor for Firebase
     constructor() : this(0, "", "", "", Date(), 0, Date(), emptyList(), "")
