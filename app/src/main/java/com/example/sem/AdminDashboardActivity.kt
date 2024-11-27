@@ -3,6 +3,7 @@ package com.example.sem
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.ListView
@@ -39,6 +40,16 @@ class AdminDashboardActivity : AppCompatActivity() {
         var rvEvents = findViewById<RecyclerView>(R.id.rv_upcomingEvents)
         val arrowIcon = findViewById<ImageView>(R.id.arrow_icon)
 
+        //Intent extra
+        val role = intent.getStringExtra("USER_ROLE")
+
+        if (role != null) {
+            Log.d("ROLE", role)
+        }
+
+        if(role == "STUDENT") {
+            addBtn.visibility= View.INVISIBLE;
+        }
         // Initialize RecyclerView and Adapter with empty list
         adapter = UpcomingEventAdapter(emptyList()) { event ->
             Toast.makeText(this, "Event ${event.eventName} is selected", Toast.LENGTH_LONG).show()

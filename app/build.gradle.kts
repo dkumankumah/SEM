@@ -10,7 +10,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.sem"
-        minSdk = 22
+        minSdk = 23
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -38,14 +38,15 @@ android {
 
 
 dependencies {
-    implementation("com.google.firebase:firebase-firestore-ktx:24.7.1") // Already present
-    implementation("com.google.firebase:firebase-storage-ktx:20.2.1")   // If you need Firebase Storage
-    implementation("com.google.firebase:firebase-analytics-ktx:21.3.0") // Optional, for Analytics
+    implementation(libs.firebase.firestore.ktx) // Already present
+    implementation(libs.firebase.storage.ktx)   // If you need Firebase Storage
+    implementation(libs.firebase.analytics.ktx) // Optional, for Analytics
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.firebase.auth.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
