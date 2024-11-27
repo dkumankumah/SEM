@@ -16,10 +16,16 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
+            android:name=".model.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".EventFormActivity"
             android:label="New Event Form"
-            android:theme="@style/AppTheme"
-            android:parentActivityName=".AdminDashboardActivity"/>
+            android:parentActivityName=".AdminDashboardActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".AdminDashboardActivity"
             android:exported="false"
@@ -28,38 +34,36 @@
             android:name=".ShowAllEvents"
             android:exported="false"
             android:label="School Event Manager: All Events"
-            android:parentActivityName=".AdminDashboardActivity">
-        </activity>
+            android:parentActivityName=".AdminDashboardActivity" />
         <activity
             android:name=".EventOnClick"
             android:exported="false"
             android:label="Event Details"
-            android:parentActivityName=".ShowAllEvents">
-        </activity>
+            android:parentActivityName=".ShowAllEvents" />
         <activity
             android:name=".ShowMyEvents"
             android:exported="false"
             android:label="School Event Manager: My Events"
-            android:parentActivityName=".ShowAllEvents">
-        </activity>
+            android:parentActivityName=".ShowAllEvents" />
         <activity
             android:name=".ShowInterestedEvents"
             android:exported="false"
-            android:label="School Event Manager: Events I'm Following"
-            android:parentActivityName=".ShowAllEvents">
-        </activity>
+            android:label="School Event Manager: Events I&apos;m Following"
+            android:parentActivityName=".ShowAllEvents" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".SplashScreen"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
     </application>
+
 </manifest>
