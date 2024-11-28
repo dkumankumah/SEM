@@ -29,7 +29,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        interestedEventsList = ShowAllEvents.getFollowingEventsList();
+//        interestedEventsList = ShowAllEvents.getFollowingEventsList();
 
         setAdapter();
 

@@ -32,7 +32,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        myEventsList = ShowAllEvents.getMyEventsList();
+//        myEventsList = ShowAllEvents.getMyEventsList();
 
         setAdapter();
 
