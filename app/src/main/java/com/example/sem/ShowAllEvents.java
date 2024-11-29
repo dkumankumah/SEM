@@ -2,17 +2,11 @@ package com.example.sem;
 
 
 import static android.content.ContentValues.TAG;
-
-import static java.lang.String.valueOf;
-
-import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,31 +16,21 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.sem.model.Event;
 
-import com.example.sem.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.Firebase;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.lang.ref.Reference;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Objects;
+
 
 public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
     private ArrayList<Event> allEventsList;
@@ -156,13 +140,11 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                                     }
                                     else{
                                         Toast.makeText(recyclerView.getContext(), "See you there!", Toast.LENGTH_SHORT).show();
-
-                                        //this is not updating properly at firebase
                                         userAttendingEventsList.add(swipedLeftEventId);
-                                        //get a reference to the path users -> uid -> attending
-                                        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId).child("attending");
-                                        //set new node with userAttendingEventsList
-                                        databaseReference.setValue(userAttendingEventsList);
+                                        //https://firebase.google.com/docs/firestore/manage-data/add-data#java_24
+                                        DocumentReference userListReference = db.collection("users").document(userId);
+                                        // Atomically add a new eventId to the "attending" array field.
+                                        userListReference.update("attending", FieldValue.arrayUnion(swipedLeftEventId));
                                     }
                                 }
                                 else{
@@ -189,14 +171,17 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                             if(task.isSuccessful()){
                                 DocumentSnapshot document = task.getResult();
                                 if(document.exists()){
-                                    userAttendingEventsList = (ArrayList<String>) document.get("attending");
-                                    if(userAttendingEventsList.contains(swipedRightEventId)){
+                                    userFollowingEventsList = (ArrayList<String>) document.get("following");
+                                    if(userFollowingEventsList.contains(swipedRightEventId)){
                                         Toast.makeText(recyclerView.getContext(), "You are following this event.", Toast.LENGTH_SHORT).show();
                                     }
                                     else{
-                                        userAttendingEventsList.add(swipedRightEventId);
+                                        userFollowingEventsList.add(swipedRightEventId);
                                         Toast.makeText(recyclerView.getContext(), "Subscribed to updates!", Toast.LENGTH_SHORT).show();
-                                        //TO DO add the eventID into user's firebase "following" field
+                                        userFollowingEventsList.add(swipedRightEventId);
+                                        DocumentReference userListReference = db.collection("users").document(userId);
+                                        // Atomically add a new eventId to the "attending" array field.
+                                        userListReference.update("following", FieldValue.arrayUnion(swipedRightEventId));
                                     }
                                 }
                                 else{
