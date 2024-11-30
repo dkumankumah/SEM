@@ -69,27 +69,23 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         databaseReference = FirebaseDatabase.getInstance().getReference();
         DocumentReference docRef = db.collection("users").document(userId);
         docRef.get().addOnCompleteListener(task -> {
-            if(task.isSuccessful()){
-                DocumentSnapshot document = task.getResult();
-                if(document.exists()){
-                    ArrayList<String> stringList = (ArrayList<String>) document.get("attending");
-                    for(String str : stringList){
-                        userAttendingEventsIds.add(str);
-                    }
-                    for(Event event : allEventsList){
-                        String checkId = event.getEventId();
-                        if(userAttendingEventsIds.contains(checkId)){
-                            userAttendingEventsList.add(event);
-                        }
-                    }
-                    // Notify RecyclerView adapter of data changes
-                    recyclerView.getAdapter().notifyDataSetChanged();
+            DocumentSnapshot document = task.getResult();
+            ArrayList<String> stringList = (ArrayList<String>) document.get("attending");
+            for(String str : stringList){
+                userAttendingEventsIds.add(str);
+            }
+            for(Event event : allEventsList){
+                String checkId = event.getEventId();
+                if(userAttendingEventsIds.contains(checkId)){
+                    userAttendingEventsList.add(event);
                 }
             }
-                else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-            });
+            Log.d("arrays", "Line 83" + userAttendingEventsList.toString());
+            // Notify RecyclerView adapter of data changes
+            recyclerView.getAdapter().notifyDataSetChanged();
+        });
+
+
 
         setAdapter();
 

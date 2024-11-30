@@ -133,13 +133,12 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                             if(task.isSuccessful()){
                                 DocumentSnapshot document = task.getResult();
                                 userAttendingEventsList = (ArrayList<String>) document.get("attending");
-                                ArrayList <String> userSwipedLeftEventIds = new ArrayList<>();
                                 if(document.exists()){
                                     if(userAttendingEventsList.contains(swipedLeftEventId)){
-                                        Toast.makeText(recyclerView.getContext(), "You are attending this event.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ShowAllEvents.this, "You are attending this event.", Toast.LENGTH_SHORT).show();
                                     }
                                     else{
-                                        Toast.makeText(recyclerView.getContext(), "See you there!", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(ShowAllEvents.this, "See you there!", Toast.LENGTH_SHORT).show();
                                         userAttendingEventsList.add(swipedLeftEventId);
                                         //https://firebase.google.com/docs/firestore/manage-data/add-data#java_24
                                         DocumentReference userListReference = db.collection("users").document(userId);
