@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,6 +26,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
@@ -35,6 +35,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.EventListener;
 
 public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
     private ArrayList<Event> allEventsList;
@@ -42,56 +43,53 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
     private ArrayList<String> userAttendingEventsIds;
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
-    private String userId;
+    private DatabaseReference databaseReference;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.my_events);
+        setContentView(R.layout.all_events);
 
         recyclerView = findViewById(R.id.recycler_view_events);
         allEventsList = new ArrayList<>();
-        userAttendingEventsIds = new ArrayList<>();
         userAttendingEventsList = new ArrayList<>();
-        userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        userAttendingEventsIds = new ArrayList<>();
 
         // Initialize Firestore and Firebase
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
 
-        // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recycler_view_events);
 
-        //populate allEventsList by fetching data from Firestore
         fetchEventData();
 
-        //retrieve eventIds from firebase and store in an array called "attendingEventIds"
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
-        databaseReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    String data = childSnapshot.getValue(String.class);
-                    userAttendingEventsIds.add(data);
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        //make reference to database to retreive data from attending events path
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        DocumentReference docRef = db.collection("users").document(userId);
+        docRef.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                DocumentSnapshot document = task.getResult();
+                if(document.exists()){
+                    ArrayList<String> stringList = (ArrayList<String>) document.get("attending");
+                    for(String str : stringList){
+                        userAttendingEventsIds.add(str);
+                    }
+                    for(Event event : allEventsList){
+                        String checkId = event.getEventId();
+                        if(userAttendingEventsIds.contains(checkId)){
+                            userAttendingEventsList.add(event);
+                        }
+                    }
+                    // Notify RecyclerView adapter of data changes
+                    recyclerView.getAdapter().notifyDataSetChanged();
                 }
             }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                // Handle any errors
-            }
-        });
-
-        //check to see if the IDs on the allEventsList are included userAttendingEventsIds is
-        for(Event event : allEventsList){
-            String checkId = event.getEventId();
-            if(userAttendingEventsIds.contains(checkId)){
-                userAttendingEventsList.add(event);
-            }
-        }
-
-
+                else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+            });
 
         setAdapter();
 
@@ -99,6 +97,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         //implement swipe left/right
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
         itemTouchHelper.attachToRecyclerView(recyclerView);
+
     }
 
     // Method to fetch events from Firestore
@@ -127,7 +126,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                 });
     }
 
-    ItemTouchHelper.SimpleCallback callBackMethod = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
+    ItemTouchHelper.SimpleCallback callBackMethod = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT){
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
             return false;
@@ -136,22 +135,40 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
             DocumentReference userRef = db.collection("users").document(userId);
-
-            switch(direction){
+            switch(direction) {
                 case ItemTouchHelper.LEFT:
-                    //do left action
-                    Event swipedLeftEvent = userAttendingEventsList.get(position);
+                    //remove from userAttendingEventsList
+                    Event swipedLeftEvent = allEventsList.get(position);
+                    userAttendingEventsList.remove(swipedLeftEvent);
+                    //grab eventId
                     String swipedLeftEventId = swipedLeftEvent.getEventId();
-                    userAttendingEventsList.remove(position);
-                    recyclerView.getAdapter().notifyItemRemoved(position);
-                    Toast.makeText(recyclerView.getContext(), "You are no longer attending this event :(", Toast.LENGTH_SHORT).show();
-                    //https://firebase.google.com/docs/firestore/manage-data/add-data#java_24
-                    DocumentReference userListReference = db.collection("users").document(userId);
-                    // Atomically remove eventId from the "attending" array field.
-                    userListReference.update("attending", FieldValue.arrayRemove(swipedLeftEventId));
+                    //remove from userAttendingEventsIds
+                    userAttendingEventsIds.remove(swipedLeftEventId);
+                    //remove event ID from firebase "attending" array
+                    userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task){
+                            if(task.isSuccessful()){
+                                DocumentSnapshot document = task.getResult();
+                                DocumentReference userListReference = db.collection("users").document(userId);
+                                // Atomically remove eventId to the "attending" array field.
+                                userListReference.update("attending", FieldValue.arrayRemove(swipedLeftEventId));
+                                if(document.exists()){
+                                    Toast.makeText(recyclerView.getContext(), "We will miss you :(", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    //document does not exist.  failure, do nothing.
+                                }
+                            }
+                            else{
+                                //task was not successful.  failure, do nothing
+                            }
+                        }
+                    });
+                    recyclerView.getAdapter().notifyItemChanged(position);
                     break;
-
             }
         }
     };
@@ -170,139 +187,4 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
     }
-
 }
-
-//public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
-//    private ArrayList<Event> allEventsList;
-//    private ArrayList<Event> myEventsList;
-//    ArrayList<String> attendingEventIds;
-//    private RecyclerView recyclerView;
-//    private FirebaseFirestore db;
-//    private ArrayList<String> userFollowingEventsList = new ArrayList<>();
-//    private String userId;
-//
-//
-//
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.my_events);
-//        recyclerView = findViewById(R.id.recycler_view_events);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        allEventsList = new ArrayList<>();
-//        attendingEventIds = new ArrayList<>();
-//
-//        // Initialize Firestore and Firebase
-//        FirebaseApp.initializeApp(this);
-//        db = FirebaseFirestore.getInstance();
-//        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("users").child(userId);
-//
-//        //retrieve eventIds from firebase and store in an array called "attendingEventIds"
-//        databaseReference.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-//                    String data = childSnapshot.getValue(String.class);
-//                    attendingEventIds.add(data);
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                // Handle any errors
-//            }
-//        });
-//
-//        fetchEventData();
-//
-//        for(Event event : allEventsList){
-//            myEventsList = new ArrayList<>();
-//            String eventId = event.getEventId();
-//            if(attendingEventIds.contains(eventId)){
-//                myEventsList.add(event);
-//            }
-//        }
-//
-////        Log.d("arrayData", attendingEventIds.toString());
-//        Log.d("arrayData", "line 89 alleventsList" + allEventsList.toString());
-//        Log.d("arrayData", myEventsList.toString());
-//
-//        setAdapter();
-//
-//        //implement swipe left/right
-//        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
-//        itemTouchHelper.attachToRecyclerView(recyclerView);
-//
-//    }
-//
-//    ItemTouchHelper.SimpleCallback callBackMethod = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){
-//        @Override
-//        public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
-//            return false;
-//        }
-//
-//        @Override
-//        public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
-//            int position = viewHolder.getAdapterPosition();
-//
-//            switch(direction){
-//                case ItemTouchHelper.LEFT:
-//                    //do left action
-//                    Event swipedLeftEvent = myEventsList.get(position);
-//                    String swipedLeftEventId = swipedLeftEvent.getEventId();
-//                    myEventsList.remove(position);
-//                    recyclerView.getAdapter().notifyItemRemoved(position);
-//                    Toast.makeText(recyclerView.getContext(), "You are no longer attending this event :(", Toast.LENGTH_SHORT).show();
-//                    //https://firebase.google.com/docs/firestore/manage-data/add-data#java_24
-//                    DocumentReference userListReference = db.collection("users").document(userId);
-//                    // Atomically remove eventId from the "attending" array field.
-//                    userListReference.update("attending", FieldValue.arrayRemove(swipedLeftEventId));
-//                    break;
-//
-//            }
-//        }
-//    };
-//
-//    public void recyclerViewListClicked(View v, int position) {
-//        Event selectedEvent = myEventsList.get(position);
-//        Intent intent = new Intent(ShowMyEvents.this, EventOnClick.class);
-//        intent.putExtra("selected_event", selectedEvent);
-//        startActivity(intent);
-//    }
-//
-//    // Method to fetch events from Firestore
-//    private void fetchEventData() {
-//        db.collection("eventsForTest")
-//                .get()
-//                .addOnCompleteListener(task -> {
-//                    if (task.isSuccessful()) {
-//                        QuerySnapshot documents = task.getResult();
-//                        if (!documents.isEmpty()) {
-//                            for (QueryDocumentSnapshot document : documents) {
-//                                // Convert Firestore document to Event object
-//                                Event event = document.toObject(Event.class);
-//                                allEventsList.add(event);
-//                                // Log event details
-//                                Log.d(TAG, "Event: " + event.getEventName() + ", Date: " + event.getEventDate());
-//                            }
-//                            // Notify RecyclerView adapter of data changes
-//                            recyclerView.getAdapter().notifyDataSetChanged();
-//                        } else {
-//                            Log.d(TAG, "No events found");
-//                        }
-//                    } else {
-//                        Log.w(TAG, "Error getting events.", task.getException());
-//                    }
-//                });
-//    }
-//
-//    private void setAdapter() {
-//        recyclerAdapter adapter = new recyclerAdapter(myEventsList, this);
-//        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-//        recyclerView.setLayoutManager(layoutManager);
-//        recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.setAdapter(adapter);
-//    }
-//}

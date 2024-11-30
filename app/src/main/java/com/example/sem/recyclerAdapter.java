@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.sem.model.Event;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,7 @@ import java.util.Date;
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
     private ArrayList<Event> eventsList;
     private  RecyclerViewClickListener itemListener;
+    private ValueEventListener valueEventListener;
 
     public interface RecyclerViewClickListener {
         void recyclerViewListClicked(View v, int position);
