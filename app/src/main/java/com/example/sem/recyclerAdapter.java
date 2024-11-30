@@ -58,8 +58,6 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     public void onBindViewHolder(@NonNull recyclerAdapter.MyViewHolder holder, int position) {
         String title = eventsList.get(position).getEventName();
         String category = eventsList.get(position).getEventCategory();
-//        ArrayList<Event> myEventsList = ShowAllEvents.getMyEventsList();
-//        ArrayList<Event> myInterestedEvents = ShowAllEvents.getFollowingEventsList();
         holder.eventTitle.setText(title);
         holder.eventCategory.setText(category);
 //        if(myEventsList.contains(eventsList.get(position))){

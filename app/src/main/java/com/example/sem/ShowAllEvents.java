@@ -33,13 +33,14 @@ import java.util.ArrayList;
 
 
 public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
-    private ArrayList<Event> allEventsList;
-    private ArrayList<String> userAttendingEventsList = new ArrayList<>();
-    private ArrayList<String> userFollowingEventsList;
+    public static ArrayList<Event> allEventsList;
+    public static ArrayList<String> userAttendingEventsIds;
+    private ArrayList<String> userInterestedEventsIds;
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private Button showMyEventsButton;
     private Button showInterestedEventsButton;
+
 
 
     @Override
@@ -60,6 +61,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         recyclerView = findViewById(R.id.recycler_view_events);
 
         fetchEventData();
+        fetchUserRSVPlists();
 
         setAdapter();
 
@@ -109,6 +111,29 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                 });
     }
 
+    private void fetchUserRSVPlists(){
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DocumentReference userRef = db.collection("users").document(userId);
+
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task){
+                DocumentSnapshot document = task.getResult();
+                userAttendingEventsIds = new ArrayList<>();
+                userInterestedEventsIds = new ArrayList<>();
+                ArrayList<String> attendingEventIds = (ArrayList<String>) document.get("attending");
+                for(String str : attendingEventIds){
+                    userAttendingEventsIds.add(str);
+                }
+                ArrayList<String> interestedEventIds = (ArrayList<String>) document.get("following");
+                for(String str : interestedEventIds){
+                    userInterestedEventsIds.add(str);
+                }
+            }
+        });
+    }
+
+
     ItemTouchHelper.SimpleCallback callBackMethod = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT){
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -130,32 +155,24 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                     userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task){
-                            if(task.isSuccessful()){
                                 DocumentSnapshot document = task.getResult();
-                                userAttendingEventsList = (ArrayList<String>) document.get("attending");
-                                if(document.exists()){
-                                    if(userAttendingEventsList.contains(swipedLeftEventId)){
-                                        Toast.makeText(ShowAllEvents.this, "You are attending this event.", Toast.LENGTH_SHORT).show();
-                                    }
-                                    else{
-                                        Toast.makeText(ShowAllEvents.this, "See you there!", Toast.LENGTH_SHORT).show();
-                                        userAttendingEventsList.add(swipedLeftEventId);
-                                        //https://firebase.google.com/docs/firestore/manage-data/add-data#java_24
-                                        DocumentReference userListReference = db.collection("users").document(userId);
-                                        // Atomically add a new eventId to the "attending" array field.
-                                        userListReference.update("attending", FieldValue.arrayUnion(swipedLeftEventId));
-                                    }
+                                ArrayList<String> eventIds = (ArrayList<String>) document.get("attending");
+                                for(String str : eventIds){
+                                    userAttendingEventsIds.add(str);
                                 }
-                                else{
-                                    //document does not exist.  failure, do nothing.
-                                }
-                            }
-                            else{
-                                //task was not successful.  failure, do nothing
-                            }
+                            //https://firebase.google.com/docs/firestore/manage-data/add-data#java_24
+                            DocumentReference userListReference = db.collection("users").document(userId);
+                            // Atomically add a new eventId to the "attending" array field.
+                            userListReference.update("attending", FieldValue.arrayUnion(swipedLeftEventId));
                         }
                     });
-
+                    if(userAttendingEventsIds.contains(swipedLeftEventId)){
+                        Toast.makeText(ShowAllEvents.this, "You are attending this event.", Toast.LENGTH_SHORT).show();
+                    }
+                    else{
+                        Toast.makeText(ShowAllEvents.this, "See you there!", Toast.LENGTH_SHORT).show();
+                        userAttendingEventsIds.add(swipedLeftEventId);
+                    }
                     recyclerView.getAdapter().notifyItemChanged(position);
                     break;
                 case ItemTouchHelper.RIGHT:
@@ -167,29 +184,19 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                     userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task){
-                            if(task.isSuccessful()){
-                                DocumentSnapshot document = task.getResult();
-                                if(document.exists()){
-                                    userFollowingEventsList = (ArrayList<String>) document.get("following");
-                                    if(userFollowingEventsList.contains(swipedRightEventId)){
-                                        Toast.makeText(recyclerView.getContext(), "You are following this event.", Toast.LENGTH_SHORT).show();
-                                    }
-                                    else{
-                                        userFollowingEventsList.add(swipedRightEventId);
-                                        Toast.makeText(recyclerView.getContext(), "Subscribed to updates!", Toast.LENGTH_SHORT).show();
-                                        userFollowingEventsList.add(swipedRightEventId);
-                                        DocumentReference userListReference = db.collection("users").document(userId);
-                                        // Atomically add a new eventId to the "attending" array field.
-                                        userListReference.update("following", FieldValue.arrayUnion(swipedRightEventId));
-                                    }
+                            DocumentSnapshot document = task.getResult();
+                            userInterestedEventsIds = (ArrayList<String>) document.get("following");
+                                if(userInterestedEventsIds.contains(swipedRightEventId)){
+                                    Toast.makeText(recyclerView.getContext(), "You are following this event.", Toast.LENGTH_SHORT).show();
                                 }
                                 else{
-                                    //document does not exist.  failure, do nothing.
+                                    userInterestedEventsIds.add(swipedRightEventId);
+                                    Toast.makeText(recyclerView.getContext(), "Subscribed to updates!", Toast.LENGTH_SHORT).show();
+                                    userInterestedEventsIds.add(swipedRightEventId);
+                                    DocumentReference userListReference = db.collection("users").document(userId);
+                                    // Atomically add a new eventId to the "attending" array field.
+                                    userListReference.update("following", FieldValue.arrayUnion(swipedRightEventId));
                                 }
-                            }
-                            else{
-                                //task was not successful.  failure, do nothing
-                            }
                         }
                     });
                     recyclerView.getAdapter().notifyItemChanged(position);
@@ -200,10 +207,10 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
     };
 
     public void recyclerViewListClicked(View v, int position) {
-        Event selectedEvent = allEventsList.get(position);
-        Intent intent = new Intent(ShowAllEvents.this, EventOnClick.class);
-        intent.putExtra("selected_event", selectedEvent); // Pass the serializable event
-        startActivity(intent);
+//        Event selectedEvent = allEventsList.get(position);
+//        Intent intent = new Intent(ShowAllEvents.this, EventOnClick.class);
+//        intent.putExtra("selected_event", selectedEvent); // Pass the serializable event
+//        startActivity(intent);
     }
 
     private void setAdapter() {
@@ -212,5 +219,13 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+    }
+
+    public static ArrayList<Event> getAllEvents(){
+        return allEventsList;
+    }
+
+    public static ArrayList<String> getAttendingEventIds(){
+        return userAttendingEventsIds;
     }
 }
