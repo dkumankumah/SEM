@@ -86,26 +86,29 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
             DocumentReference userRef = db.collection("users").document(userId);
             switch(direction) {
                 case ItemTouchHelper.LEFT:
-                    //do left action (RSVP Yes)
-                    Event swipedLeftEvent = userAttendingEventsList.get(position);
-                    //grab eventId
-                    String swipedLeftEventId = swipedLeftEvent.getEventId();
+                    Toast.makeText(ShowMyEvents.this, "To delete, swipe in the other direction", Toast.LENGTH_SHORT).show();
+                    break;
+                case ItemTouchHelper.RIGHT:
+                    Event swipedRightEvent = userAttendingEventsList.get(position);
+//                    //grab eventId
+                    String swipedRightEventId = swipedRightEvent.getEventId();
                     //check if eventId is on user's attending array
-                    Toast.makeText(ShowMyEvents.this, "Sorry to see you go!", Toast.LENGTH_SHORT).show();
-                    userAttendingEventsList.remove(swipedLeftEvent);
+                    Toast.makeText(ShowMyEvents.this, "Sorry to miss you :(", Toast.LENGTH_SHORT).show();
+
+
+                    //THIS LINE IS CAUSING AN UNKNOWN CRASH!
+                    //userAttendingEventsList.remove(swipedRightEvent);
 
 
                     userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task){
-                            DocumentSnapshot document = task.getResult();
-                            userRef.update("attending", FieldValue.arrayRemove(swipedLeftEventId));
-                            }
+                            DocumentReference userListReference = db.collection("users").document(userId);
+                            userListReference.update("attending", FieldValue.arrayRemove(swipedRightEventId));
+                        }
                     });
-
-
                     recyclerView.getAdapter().notifyItemChanged(position);
-                break;
+                    break;
             }
         }
     };

@@ -18,6 +18,8 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     private ArrayList<Event> eventsList;
     private  RecyclerViewClickListener itemListener;
     private ValueEventListener valueEventListener;
+    private ArrayList<String> userAttendingEventIds;
+    private ArrayList<String> userFollowingEventIds;
 
     public interface RecyclerViewClickListener {
         void recyclerViewListClicked(View v, int position);
@@ -60,12 +62,14 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         String category = eventsList.get(position).getEventCategory();
         holder.eventTitle.setText(title);
         holder.eventCategory.setText(category);
-//        if(myEventsList.contains(eventsList.get(position))){
-//            holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
-//        }
-//        else if(myInterestedEvents.contains(eventsList.get(position))){
-//            holder.rsvpImage.setImageResource(R.drawable.watching);
-//        }
+        userAttendingEventIds = ShowAllEvents.getAttendingEventIds();
+        userFollowingEventIds = ShowAllEvents.getInterestedEventIds();
+        if(userAttendingEventIds.contains(eventsList.get(position).getEventId())){
+            holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
+        }
+        else if(userFollowingEventIds.contains(eventsList.get(position).getEventId())){
+            holder.rsvpImage.setImageResource(R.drawable.watching);
+        }
     }
 
     @Override
