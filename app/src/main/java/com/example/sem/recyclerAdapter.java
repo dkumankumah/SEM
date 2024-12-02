@@ -46,6 +46,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         @Override
         public void onClick(View v) {
             itemListener.recyclerViewListClicked(v, getAdapterPosition());
+
         }
     }
 

@@ -221,9 +221,10 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
 
     public void recyclerViewListClicked(View v, int position) {
         Event selectedEvent = allEventsList.get(position);
-        Intent intent = new Intent(ShowAllEvents.this, EventOnClick.class);
-        intent.putExtra("selected_event", selectedEvent); // Pass the serializable event
+        Intent intent = new Intent(this, EventOnClick.class);
+        intent.putExtra("selected_event", selectedEvent);
         startActivity(intent);
+
     }
 
     private void setAdapter() {

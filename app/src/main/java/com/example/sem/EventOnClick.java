@@ -1,12 +1,15 @@
 package com.example.sem;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.sem.model.Event;
+
+import java.util.Date;
 
 public class EventOnClick extends AppCompatActivity {
     private TextView mTextViewTitle;
@@ -23,33 +26,32 @@ public class EventOnClick extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.event_on_click);
 
-        Event selectedEvent = getIntent().getParcelableExtra("selected_event");
+        // Get the intent from the sending activity
+        Intent myIntent = getIntent();
+        // Get the event object from the intent's extras
+        Event selectedEvent = (Event) myIntent.getSerializableExtra("selected_event");
+
+
 
         mTextViewTitle = findViewById(R.id.textview_title);
         mTextViewAddress = findViewById(R.id.textview_address);
         mTextViewEventDate = findViewById(R.id.textview_date);
         mTextViewTime = findViewById(R.id.textview_time);
         mTextViewCategory = findViewById(R.id.textview_category);
-        mTextViewAttendanceType = findViewById(R.id.textview_number_attending);
-        mTextViewFollowingType = findViewById(R.id.textview_number_following);
         mTextViewDescription = findViewById(R.id.textview_description);
 
         String title = "Event title: " + selectedEvent.getEventName();
-        String address = "Street Address:  TODO convert coordinates to street address";
-        String date = "Date: TODO parce date object for date of event ";
-        String time = "Starting at: TODO parce date object for start time of event ";
+        String address = "Street Address: " + selectedEvent.getLocation();
+        String date = "Date: " + selectedEvent.getEventDate();
+        String time = "Starting at: " + selectedEvent.getEventTime();
         String category = "Type of Event: " + selectedEvent.getEventCategory();
         String description = "Details: " + selectedEvent.getEventDescription();
-        String numberAttending = "Number Attending: TODO get number attending ";
-        String numberFollowing = "Number Attending: TODO get number following ";
 
         mTextViewTitle.setText(title);
         mTextViewAddress.setText(address);
         mTextViewEventDate.setText(date);
         mTextViewTime.setText(time);
         mTextViewCategory.setText(category);
-        mTextViewAttendanceType.setText(numberAttending);
-        mTextViewFollowingType.setText(numberFollowing);
         mTextViewDescription.setText(description);
 
     }

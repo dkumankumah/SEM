@@ -1,10 +1,7 @@
 package com.example.sem;
 
-import static android.content.ContentValues.TAG;
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -21,14 +18,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 
 
@@ -63,6 +56,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                 userAttendingEventsList.add(event);
             }
         }
+
         setAdapter();
 
 
@@ -89,15 +83,18 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                     recyclerView.getAdapter().notifyItemChanged(position);
                     break;
                 case ItemTouchHelper.RIGHT:
+                    //get the swiped event
                     Event swipedRightEvent = userAttendingEventsList.get(position);
                     //grab eventId
                     String swipedRightEventId = swipedRightEvent.getEventId();
-                    //check if eventId is on user's attending array
-                    Toast.makeText(ShowMyEvents.this, "Sorry to miss you :(", Toast.LENGTH_SHORT).show();
-
-                    DocumentReference userRef = db.collection("users").document(userId);
-                    //THIS LINE IS CAUSING AN UNKNOWN CRASH!
+                    //remove the event from the list and update the adapter.
                     userAttendingEventsList.remove(swipedRightEvent);
+                    recyclerView.getAdapter().notifyItemRemoved(position);
+
+                    Toast.makeText(ShowMyEvents.this, "Sorry to miss you :(", Toast.LENGTH_SHORT).show();
+                    //make reference to database storage location
+                    DocumentReference userRef = db.collection("users").document(userId);
+                    //deleting event from firebase
                     userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task){
@@ -105,7 +102,6 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                             userListReference.update("attending", FieldValue.arrayRemove(swipedRightEventId));
                         }
                     });
-                    recyclerView.getAdapter().notifyItemChanged(position);
                     break;
             }
         }

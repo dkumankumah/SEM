@@ -93,7 +93,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                             userListReference.update("attending", FieldValue.arrayUnion(swipedLeftEventId));
                         }
                     });
-                    recyclerView.getAdapter().notifyItemChanged(position);
+                    recyclerView.getAdapter().notifyItemRemoved(position);
                     break;
                 case ItemTouchHelper.RIGHT:
                     Event swipedRightEvent = userInterestedEventsList.get(position);
@@ -109,7 +109,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                             userListReference.update("following", FieldValue.arrayRemove(swipedRightEventId));
                         }
                     });
-                    recyclerView.getAdapter().notifyItemChanged(position);
+                    recyclerView.getAdapter().notifyItemRemoved(position);
                     break;
             }
         }
