@@ -83,23 +83,21 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
             String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            DocumentReference userRef = db.collection("users").document(userId);
             switch(direction) {
                 case ItemTouchHelper.LEFT:
                     Toast.makeText(ShowMyEvents.this, "To delete, swipe in the other direction", Toast.LENGTH_SHORT).show();
+                    recyclerView.getAdapter().notifyItemChanged(position);
                     break;
                 case ItemTouchHelper.RIGHT:
                     Event swipedRightEvent = userAttendingEventsList.get(position);
-//                    //grab eventId
+                    //grab eventId
                     String swipedRightEventId = swipedRightEvent.getEventId();
                     //check if eventId is on user's attending array
                     Toast.makeText(ShowMyEvents.this, "Sorry to miss you :(", Toast.LENGTH_SHORT).show();
 
-
+                    DocumentReference userRef = db.collection("users").document(userId);
                     //THIS LINE IS CAUSING AN UNKNOWN CRASH!
-                    //userAttendingEventsList.remove(swipedRightEvent);
-
-
+                    userAttendingEventsList.remove(swipedRightEvent);
                     userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<DocumentSnapshot> task){
