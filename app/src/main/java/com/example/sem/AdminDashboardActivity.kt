@@ -7,22 +7,23 @@ import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sem.model.Event
 import com.example.sem.model.UpcomingEventAdapter
+import com.example.sem.model.User
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import java.util.Date
 
 
 class AdminDashboardActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var adapter: UpcomingEventAdapter
+    private lateinit var firebaseAuth: FirebaseAuth
+    private lateinit var userId: String
+    private lateinit var addBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,32 +32,32 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         db = FirebaseFirestore.getInstance()
 
+        // Initialize Firebase Auth
+        firebaseAuth = FirebaseAuth.getInstance()
+
+        userId = firebaseAuth.currentUser!!.uid
+
         // View initialization
+        addBtn = findViewById<Button>(R.id.add_event_btn)
+        addBtn.visibility = View.INVISIBLE;
+
+        checkAdmin()
+
         val academicBtn = findViewById<Button>(R.id.btn_eduction)
         val clubsBtn = findViewById<Button>(R.id.clubs_btn)
         val extraBtn = findViewById<Button>(R.id.extra_btn)
         val charityBtn = findViewById<Button>(R.id.charity_btn)
-        val addBtn = findViewById<Button>(R.id.add_event_btn)
         val rvEvents = findViewById<RecyclerView>(R.id.rv_upcomingEvents)
         val arrowIcon = findViewById<ImageView>(R.id.arrow_icon)
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
 
-        //Intent extra
-        val role = intent.getStringExtra("USER_ROLE")
-
-        if (role != null) {
-            Log.d("ROLE", role)
-        }
-
-        if(role == "STUDENT") {
-            addBtn.visibility= View.INVISIBLE;
-        }
         // Initialize RecyclerView and Adapter with empty list
         adapter = UpcomingEventAdapter(emptyList()) { event ->
             Toast.makeText(this, "Event ${event.eventName} is selected", Toast.LENGTH_LONG).show()
         }
         rvEvents.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvEvents.adapter = adapter
+
 
         fetchEvents()
 
@@ -138,13 +139,24 @@ class AdminDashboardActivity : AppCompatActivity() {
             }
     }
 
-//    private fun setupRecyclerView(events: List<Event>) {
-//        val rvEvents = findViewById<RecyclerView>(R.id.rv_upcomingEvents)
-//        val adapter = UpcomingEventAdapter(events) { event ->
-//            Toast.makeText(this, "Event ${event.eventName} is selected", Toast.LENGTH_LONG).show()
-//        }
-//        rvEvents.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-//        rvEvents.adapter = adapter
-//    }
+    private fun checkAdmin() {
+//        addBtn = findViewById<Button>(R.id.add_event_btn)
+
+        // Fething user data from the firestore database
+        db.collection("users")
+            .document(userId)
+            .get()
+            .addOnSuccessListener { document ->
+                if (document != null) {
+                    val user = document.toObject(User::class.java)!!
+                    val role = user.role
+
+                    if(role == "ADMIN") {
+                        addBtn.visibility= View.VISIBLE;
+                    }
+                }
+            }
+    }
+
 
 }

@@ -72,28 +72,33 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
 
-                    val userId = firebaseAuth.currentUser?.uid
+                    // Login success, navigate to Dashboard activity
+                    val intent = Intent(this, AdminDashboardActivity::class.java)
+                    startActivity(intent)
+                    finish()
+
+//                    val userId = firebaseAuth.currentUser?.uid
 
                     //Fething user data from the firestore database
-                    if (userId != null) {
-                       db.collection("users")
-                            .document(userId)
-                            .get()
-                            .addOnSuccessListener { document ->
-                                if (document != null) {
-                                    val user = document.toObject(User::class.java)!!
-                                    role = user.role
+//                    if (userId != null) {
+//                       db.collection("users")
+//                            .document(userId)
+//                            .get()
+//                            .addOnSuccessListener { document ->
+//                                if (document != null) {
+//                                    val user = document.toObject(User::class.java)!!
+//                                    role = user.role
+//
+//                                    // Login success, navigate to Dashboard activity
+////                                    val intent = Intent(this, AdminDashboardActivity::class.java)
+////                                    intent.putExtra("USER_ROLE", role) // If you need to pass user data
+////                                    startActivity(intent)
+////                                    finish()
+//
+//                                }                            }
+//
 
-                                    // Login success, navigate to Dashboard activity
-                                    val intent = Intent(this, AdminDashboardActivity::class.java)
-                                    intent.putExtra("USER_ROLE", role) // If you need to pass user data
-                                    startActivity(intent)
-                                    finish()
 
-                                }                            }
-
-
-                    }
 
 
                 } else {

@@ -2,6 +2,7 @@ package com.example.sem
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.activity.enableEdgeToEdge
@@ -17,6 +18,7 @@ class ProfileActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var user: User
+    private lateinit var logoutBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +29,9 @@ class ProfileActivity : AppCompatActivity() {
 //        val email = findViewById<TextView>(R.id.tv_email)
 //        val classof = findViewById<TextView>(R.id.tv_classOf)
 //        val role = findViewById<TextView>(R.id.tv_role)
+
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottomNav)
+        logoutBtn = findViewById(R.id.btn_logout)
 
         // Initialize Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance()
@@ -68,6 +72,14 @@ class ProfileActivity : AppCompatActivity() {
                 }
                 else -> false
             }
+        }
+
+        logoutBtn.setOnClickListener {
+            firebaseAuth.signOut()
+
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 

@@ -65,12 +65,15 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         holder.eventCategory.setText(category);
         userAttendingEventIds = ShowAllEvents.getAttendingEventIds();
         userFollowingEventIds = ShowAllEvents.getInterestedEventIds();
-        if(userAttendingEventIds.contains(eventsList.get(position).getEventId())){
-            holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
+        if(userAttendingEventIds != null && userFollowingEventIds != null) {
+            if(userAttendingEventIds.contains(eventsList.get(position).getEventId())){
+                holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
+            }
+            else if(userFollowingEventIds.contains(eventsList.get(position).getEventId())){
+                holder.rsvpImage.setImageResource(R.drawable.watching);
+            }
         }
-        else if(userFollowingEventIds.contains(eventsList.get(position).getEventId())){
-            holder.rsvpImage.setImageResource(R.drawable.watching);
-        }
+
     }
 
     @Override

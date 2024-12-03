@@ -36,23 +36,19 @@
         <activity
             android:name=".ShowAllEvents"
             android:exported="false"
-            android:label="School Event Manager: All Events"
-            android:parentActivityName=".AdminDashboardActivity" />
+            android:label="School Event Manager: All Events" />
         <activity
             android:name=".EventOnClick"
             android:exported="false"
-            android:label="Event Details"
-            android:parentActivityName=".ShowAllEvents" />
+            android:label="Event Details" />
         <activity
             android:name=".ShowMyEvents"
             android:exported="false"
-            android:label="School Event Manager: My Events"
-            android:parentActivityName=".ShowAllEvents" />
+            android:label="School Event Manager: My Events" />
         <activity
             android:name=".ShowInterestedEvents"
             android:exported="false"
-            android:label="School Event Manager: Events I&apos;m Following"
-            android:parentActivityName=".ShowAllEvents" />
+            android:label="School Event Manager: Events I&apos;m Following" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

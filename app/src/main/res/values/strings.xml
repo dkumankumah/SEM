@@ -34,6 +34,7 @@
     <string name="fullname">FULLNAME</string>
     <string name="role">role</string>
     <string name="maps">MAPS</string>
+    <string name="logout">LOGOUT</string>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
