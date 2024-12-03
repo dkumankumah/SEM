@@ -25,8 +25,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        val events = loadEvents()
-        Log.d("EventListSize", "Size: ${events.size}")
 
         db = FirebaseFirestore.getInstance()
 
@@ -64,10 +62,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun fetchEvents() {
-        db.collection("events").get()
+        var eventId: Int
+        db.collection("eventsForTest").get()
             .addOnSuccessListener { documents ->
                 val eventsList = documents.mapNotNull { document ->
-                    document.toObject(Event::class.java).apply { id = document.id.hashCode() }
+                    document.toObject(Event::class.java).apply { eventId = document.id.hashCode() }
                 }
                 adapter.updateEvents(eventsList)
             }
@@ -85,52 +84,52 @@ class MainActivity : AppCompatActivity() {
         rvEvents.adapter = adapter
     }
 
-    private fun loadEvents(): ArrayList<Event> {
-        val events = ArrayList<Event>()
-        events.add(Event(
-            id = 1,
-            eventName = "Highschool Prom",
-            eventManager = "Prom Committee",
-            eventDescription = "Who is gonna be prom King and Queen?",
-            eventDate = Date(2024 - 1900, 9, 2),
-            attendingCount = 0,
-            dateCreated = Date(),
-            forClass = listOf(11, 12),
-            location = "School Gymnasium"
-        ))
-        events.add(Event(
-            id = 2,
-            eventName = "Football Game",
-            eventManager = "Athletics Department",
-            eventDescription = "We are PENN STATE",
-            eventDate = Date(2024 - 1900, 9, 1),
-            attendingCount = 0,
-            dateCreated = Date(),
-            forClass = listOf(9, 10, 11, 12),
-            location = "Football Stadium"
-        ))
-        events.add(Event(
-            id = 3,
-            eventName = "Keynote",
-            eventManager = "Career Services",
-            eventDescription = "Career fair",
-            eventDate = Date(2024 - 1900, 9, 14),
-            attendingCount = 0,
-            dateCreated = Date(),
-            forClass = listOf(11, 12),
-            location = "Auditorium"
-        ))
-        events.add(Event(
-            id = 4,
-            eventName = "Elections",
-            eventManager = "Student Council",
-            eventDescription = "Presidents Elections",
-            eventDate = Date(2024 - 1900, 9, 10),
-            attendingCount = 0,
-            dateCreated = Date(),
-            forClass = listOf(9, 10, 11, 12),
-            location = "School Hallways"
-        ))
-        return events
-    }
+//    private fun loadEvents(): ArrayList<Event> {
+//        val events = ArrayList<Event>()
+//        events.add(Event(
+//            id = 1,
+//            eventName = "Highschool Prom",
+//            eventManager = "Prom Committee",
+//            eventDescription = "Who is gonna be prom King and Queen?",
+//            eventDate = Date(2024 - 1900, 9, 2),
+//            attendingCount = 0,
+//            dateCreated = Date(),
+//            forClass = listOf(11, 12),
+//            location = "School Gymnasium"
+//        ))
+//        events.add(Event(
+//            id = 2,
+//            eventName = "Football Game",
+//            eventManager = "Athletics Department",
+//            eventDescription = "We are PENN STATE",
+//            eventDate = Date(2024 - 1900, 9, 1),
+//            attendingCount = 0,
+//            dateCreated = Date(),
+//            forClass = listOf(9, 10, 11, 12),
+//            location = "Football Stadium"
+//        ))
+//        events.add(Event(
+//            id = 3,
+//            eventName = "Keynote",
+//            eventManager = "Career Services",
+//            eventDescription = "Career fair",
+//            eventDate = Date(2024 - 1900, 9, 14),
+//            attendingCount = 0,
+//            dateCreated = Date(),
+//            forClass = listOf(11, 12),
+//            location = "Auditorium"
+//        ))
+//        events.add(Event(
+//            id = 4,
+//            eventName = "Elections",
+//            eventManager = "Student Council",
+//            eventDescription = "Presidents Elections",
+//            eventDate = Date(2024 - 1900, 9, 10),
+//            attendingCount = 0,
+//            dateCreated = Date(),
+//            forClass = listOf(9, 10, 11, 12),
+//            location = "School Hallways"
+//        ))
+//        return events
+//    }
 }

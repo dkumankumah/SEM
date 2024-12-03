@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.sem.model.Event;
+import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,6 +17,9 @@ import java.util.Date;
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
     private ArrayList<Event> eventsList;
     private  RecyclerViewClickListener itemListener;
+    private ValueEventListener valueEventListener;
+    private ArrayList<String> userAttendingEventIds;
+    private ArrayList<String> userFollowingEventIds;
 
     public interface RecyclerViewClickListener {
         void recyclerViewListClicked(View v, int position);
@@ -42,6 +46,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         @Override
         public void onClick(View v) {
             itemListener.recyclerViewListClicked(v, getAdapterPosition());
+
         }
     }
 
@@ -55,15 +60,15 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     @Override
     public void onBindViewHolder(@NonNull recyclerAdapter.MyViewHolder holder, int position) {
         String title = eventsList.get(position).getEventName();
-        String category = eventsList.get(position).getEventDescription();
-        ArrayList<Event> myEventsList = ShowAllEvents.getMyEventsList();
-        ArrayList<Event> myInterestedEvents = ShowAllEvents.getFollowingEventsList();
+        String category = eventsList.get(position).getEventCategory();
         holder.eventTitle.setText(title);
         holder.eventCategory.setText(category);
-        if(myEventsList.contains(eventsList.get(position))){
+        userAttendingEventIds = ShowAllEvents.getAttendingEventIds();
+        userFollowingEventIds = ShowAllEvents.getInterestedEventIds();
+        if(userAttendingEventIds.contains(eventsList.get(position).getEventId())){
             holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
         }
-        else if(myInterestedEvents.contains(eventsList.get(position))){
+        else if(userFollowingEventIds.contains(eventsList.get(position).getEventId())){
             holder.rsvpImage.setImageResource(R.drawable.watching);
         }
     }
