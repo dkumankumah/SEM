@@ -1,4 +1,4 @@
-package com.example.sem.model
+package com.example.sem
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,9 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.sem.AdminDashboardActivity
-import com.example.sem.LoginActivity
-import com.example.sem.R
+import com.example.sem.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 

@@ -16,7 +16,10 @@
         android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
         <activity
-            android:name=".model.SignUpActivity"
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpActivity"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
@@ -29,27 +32,23 @@
         <activity
             android:name=".AdminDashboardActivity"
             android:exported="false"
-            android:label="Admin Dashboard" />
+            android:label="Dashboard" />
         <activity
             android:name=".ShowAllEvents"
             android:exported="false"
-            android:label="School Event Manager: All Events"
-            android:parentActivityName=".AdminDashboardActivity" />
+            android:label="School Event Manager: All Events" />
         <activity
             android:name=".EventOnClick"
             android:exported="false"
-            android:label="Event Details"
-            android:parentActivityName=".ShowAllEvents" />
+            android:label="Event Details" />
         <activity
             android:name=".ShowMyEvents"
             android:exported="false"
-            android:label="School Event Manager: My Events"
-            android:parentActivityName=".ShowAllEvents" />
+            android:label="School Event Manager: My Events" />
         <activity
             android:name=".ShowInterestedEvents"
             android:exported="false"
-            android:label="School Event Manager: Events I&apos;m Following"
-            android:parentActivityName=".ShowAllEvents" />
+            android:label="School Event Manager: Events I&apos;m Following" />
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -5,6 +5,7 @@ import static android.content.ContentValues.TAG;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import com.example.sem.model.Event;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -40,6 +42,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
     private FirebaseFirestore db;
     private Button showMyEventsButton;
     private Button showInterestedEventsButton;
+    private BottomNavigationView bottomNav;
 
 
 
@@ -49,11 +52,12 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         setContentView(R.layout.all_events);
 
         recyclerView = findViewById(R.id.recycler_view_events);
-        showMyEventsButton = (Button)findViewById(R.id.show_my_events);
-        showInterestedEventsButton = (Button)findViewById(R.id.show_interested_events);
+//        showMyEventsButton = (Button)findViewById(R.id.show_my_events);
+//        showInterestedEventsButton = (Button)findViewById(R.id.show_interested_events);
         allEventsList = new ArrayList<>();
+        bottomNav = findViewById(R.id.bottomNav);
 
-       // Initialize Firestore and Firebase
+        // Initialize Firestore and Firebase
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
 
@@ -70,23 +74,61 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-        showMyEventsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(ShowAllEvents.this, ShowMyEvents.class);
-                startActivity(intent);
+//        showMyEventsButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(ShowAllEvents.this, ShowMyEvents.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        showInterestedEventsButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
+//                startActivity(intent);
+//            }
+//        });
+
+        // Set the initial selected item
+        bottomNav.setSelectedItemId(R.id.nav_list);
+
+        // Navigation bar to all other activities
+        bottomNav.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_home:
+                        // Navigate to AdminDashboardActivity
+                        Intent intent = new Intent(ShowAllEvents.this, AdminDashboardActivity.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.nav_list:
+                        // Navigate to MyListActivity
+                        Intent intent1 = new Intent(ShowAllEvents.this, ShowMyEvents.class);
+                        startActivity(intent1);
+                        return true;
+                    case R.id.nav_following:
+                        // Navigate to ShowInterestedEvents
+                        Intent intent2 = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
+                        startActivity(intent2);
+                        return true;
+                    case R.id.nav_maps:
+                        // Navigate to Maps
+                        return true;
+                    case R.id.nav_account:
+                        // Navigate to ProfileActivity
+                        Intent intent4 = new Intent(ShowAllEvents.this, ProfileActivity.class);
+                        startActivity(intent4);
+                        return true;
+                    default:
+                        return false;
+                }
             }
         });
 
-        showInterestedEventsButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
-                startActivity(intent);
-            }
-        });
     }
 
     // Method to fetch events from Firestore
-    private void fetchEventData() {
+    public void fetchEventData() {
         db.collection("eventsForTest")
                 .get()
                 .addOnCompleteListener(task -> {

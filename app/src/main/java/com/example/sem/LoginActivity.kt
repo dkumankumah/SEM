@@ -2,20 +2,15 @@ package com.example.sem
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import com.example.sem.model.Event
-import com.example.sem.model.SignUpActivity
 import com.example.sem.model.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
-import com.google.firebase.firestore.toObject
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
@@ -26,7 +21,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+//        enableEdgeToEdge()
         setContentView(R.layout.activity_login)
 
         // Initialize Firebase Auth
@@ -77,28 +72,33 @@ class LoginActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
 
-                    val userId = firebaseAuth.currentUser?.uid
+                    // Login success, navigate to Dashboard activity
+                    val intent = Intent(this, AdminDashboardActivity::class.java)
+                    startActivity(intent)
+                    finish()
+
+//                    val userId = firebaseAuth.currentUser?.uid
 
                     //Fething user data from the firestore database
-                    if (userId != null) {
-                       db.collection("users")
-                            .document(userId)
-                            .get()
-                            .addOnSuccessListener { document ->
-                                if (document != null) {
-                                    val user = document.toObject(User::class.java)!!
-                                    role = user.role
+//                    if (userId != null) {
+//                       db.collection("users")
+//                            .document(userId)
+//                            .get()
+//                            .addOnSuccessListener { document ->
+//                                if (document != null) {
+//                                    val user = document.toObject(User::class.java)!!
+//                                    role = user.role
+//
+//                                    // Login success, navigate to Dashboard activity
+////                                    val intent = Intent(this, AdminDashboardActivity::class.java)
+////                                    intent.putExtra("USER_ROLE", role) // If you need to pass user data
+////                                    startActivity(intent)
+////                                    finish()
+//
+//                                }                            }
+//
 
-                                    // Login success, navigate to Dashboard activity
-                                    val intent = Intent(this, AdminDashboardActivity::class.java)
-                                    intent.putExtra("USER_ROLE", role) // If you need to pass user data
-                                    startActivity(intent)
-                                    finish()
 
-                                }                            }
-
-
-                    }
 
 
                 } else {
