@@ -40,6 +40,39 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
+        // Set the initial selected item
+//        bottomNav.setSelectedItemId(R.id.nav_account)
+
+        // Navigation bar to all other activities
+//        bottomNav.setOnItemSelectedListener { item ->
+//                when(item.itemId) {
+//            R.id.nav_home -> {
+//                // Navigate to AccountActivity
+//                startActivity(Intent(this, AdminDashboardActivity::class.java))
+//                true
+//            }
+//            R.id.nav_list -> {
+//                // Navigate to MyListActivity
+//                true
+//            }
+//            R.id.nav_following -> {
+//                // Navigate to FollowingActivity
+//                startActivity(Intent(this, ShowInterestedEvents::class.java))
+//                true
+//            }
+//            R.id.nav_maps -> {
+//                // Navigate to Maps
+//                true
+//            }
+//            R.id.nav_account -> {
+//                // Navigate to FollowingActivity
+//                startActivity(Intent(this, ProfileActivity::class.java))
+//                true
+//            }
+//                else -> false
+//            }
+//        }
+
     }
 
     ItemTouchHelper.SimpleCallback callBackMethod = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.LEFT){

@@ -27,6 +27,13 @@
     <string name="retype_password">RE-TYPE PASSWORD</string>
     <string name="already_account">Already Have An Account? Log In Here!</string>
     <string name="graduation_year">GRADUATION YEAR</string>
+    <string name="home">HOME</string>
+    <string name="my_list">MY LIST</string>
+    <string name="following">FOLLOWING</string>
+    <string name="account">ACCOUNT</string>
+    <string name="fullname">FULLNAME</string>
+    <string name="role">role</string>
+    <string name="maps">MAPS</string>
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
