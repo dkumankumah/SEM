@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.ListView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -62,21 +61,25 @@ class AdminDashboardActivity : AppCompatActivity() {
         fetchEvents()
 
         academicBtn.setOnClickListener {
+            //get academic events list and send through intent
             val intent = Intent(this, ShowAllEvents::class.java)
             startActivity(intent)
         }
 
         clubsBtn.setOnClickListener {
+            //get clubs events list and send through intent
             val intent = Intent(this, ShowAllEvents::class.java)
             startActivity(intent)
         }
 
         extraBtn.setOnClickListener {
+            //get extracurricular events list and send through intent
             val intent = Intent(this, ShowAllEvents::class.java)
             startActivity(intent)
         }
 
         charityBtn.setOnClickListener {
+            //get charity events list and send through intent
             val intent = Intent(this, ShowAllEvents::class.java)
             startActivity(intent)
         }
@@ -122,10 +125,11 @@ class AdminDashboardActivity : AppCompatActivity() {
     }
 
     private fun fetchEvents() {
-        db.collection("events").get()
+        var eventId: Int
+        db.collection("eventsForTest").get()
             .addOnSuccessListener { documents ->
                 val eventsList = documents.mapNotNull { document ->
-                    document.toObject(Event::class.java).apply { id = document.id.hashCode() }
+                    document.toObject(Event::class.java).apply { eventId = document.id.hashCode() }
                 }
                 adapter.updateEvents(eventsList)
             }
