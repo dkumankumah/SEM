@@ -66,7 +66,16 @@ class MainActivity : AppCompatActivity() {
         db.collection("eventsForTest").get()
             .addOnSuccessListener { documents ->
                 val eventsList = documents.mapNotNull { document ->
-                    document.toObject(Event::class.java).apply { eventId = document.id.hashCode() }
+                    val event = document.toObject(Event::class.java).apply { eventId = document.id.hashCode() }
+
+                    // Check if location is a Map and contains the address
+                    val locationField = document.get("location")
+                    if (locationField is Map<*, *> && locationField.containsKey("address")) {
+                        event.location = locationField.toString() // Store the location as a Map
+                        event // Include this event in the final list
+                    } else {
+                        null // Exclude events without a nested address
+                    }
                 }
                 adapter.updateEvents(eventsList)
             }

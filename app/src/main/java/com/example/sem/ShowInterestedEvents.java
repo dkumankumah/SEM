@@ -156,7 +156,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
 
     public void recyclerViewListClicked(View v, int position) {
         Event selectedEvent = userInterestedEventsList.get(position);
-        Intent intent = new Intent(ShowInterestedEvents.this, EventOnClick.class);
+        Intent intent = new Intent(ShowInterestedEvents.this, MapHostActivity.class);
         intent.putExtra("selected_event", selectedEvent); // Pass the serializable event
         startActivity(intent);
     }

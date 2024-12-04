@@ -186,6 +186,21 @@
             android:entries="@array/event_type_options"
             android:prompt="@string/event_type_prompt" />
 
+        <AutoCompleteTextView
+            android:id="@+id/placeAutoComplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter location"
+            android:padding="16dp"
+            android:inputType="text" />
+
+        <fragment
+            android:id="@+id/mapFragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_marginTop="16dp" />
+
         <!-- Submit Button -->
         <Button
             android:id="@+id/submitBtn"
