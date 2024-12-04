@@ -2,12 +2,12 @@ package com.example.sem;
 
 
 import static android.content.ContentValues.TAG;
-
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,33 +17,45 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.sem.model.Event;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
+
 public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
-    private ArrayList<Event> eventsList;
-    private ArrayList<Event> allEventsList;
+    public static ArrayList<Event> allEventsList;
+    public static ArrayList<String> userAttendingEventsIds;
+    public static ArrayList<String> userInterestedEventsIds;
     private RecyclerView recyclerView;
-    public static ArrayList<Event> myEventsList;
-    public static ArrayList<Event> interestedEventsList;
-    private Context context;
     private FirebaseFirestore db;
+    private Button showMyEventsButton;
+    private Button showInterestedEventsButton;
+    private BottomNavigationView bottomNav;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_events);
+
         recyclerView = findViewById(R.id.recycler_view_events);
+//        showMyEventsButton = (Button)findViewById(R.id.show_my_events);
+//        showInterestedEventsButton = (Button)findViewById(R.id.show_interested_events);
         allEventsList = new ArrayList<>();
-        myEventsList = new ArrayList<>();
-        interestedEventsList = new ArrayList<>();
+        bottomNav = findViewById(R.id.bottomNav);
 
         // Initialize Firestore and Firebase
         FirebaseApp.initializeApp(this);
@@ -51,9 +63,9 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
 
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.recycler_view_events);
-        eventsList = new ArrayList<>();
 
         fetchEventData();
+        fetchUserRSVPlists();
 
         setAdapter();
 
@@ -62,12 +74,62 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
+//        showMyEventsButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(ShowAllEvents.this, ShowMyEvents.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        showInterestedEventsButton.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
+//                startActivity(intent);
+//            }
+//        });
+
+        // Set the initial selected item
+        bottomNav.setSelectedItemId(R.id.nav_list);
+
+        // Navigation bar to all other activities
+        bottomNav.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_home:
+                        // Navigate to AdminDashboardActivity
+                        Intent intent = new Intent(ShowAllEvents.this, AdminDashboardActivity.class);
+                        startActivity(intent);
+                        return true;
+                    case R.id.nav_list:
+                        // Navigate to MyListActivity
+                        Intent intent1 = new Intent(ShowAllEvents.this, ShowMyEvents.class);
+                        startActivity(intent1);
+                        return true;
+                    case R.id.nav_following:
+                        // Navigate to ShowInterestedEvents
+                        Intent intent2 = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
+                        startActivity(intent2);
+                        return true;
+                    case R.id.nav_maps:
+                        // Navigate to Maps
+                        return true;
+                    case R.id.nav_account:
+                        // Navigate to ProfileActivity
+                        Intent intent4 = new Intent(ShowAllEvents.this, ProfileActivity.class);
+                        startActivity(intent4);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
     }
 
-    // Method to fetch 20 events from Firestore
-    private void fetchEventData() {
-        db.collection("events")
-                .limit(20) // Fetch the first 20 events
+    // Method to fetch events from Firestore
+    public void fetchEventData() {
+        db.collection("eventsForTest")
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -77,7 +139,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                                 // Convert Firestore document to Event object
                                 Event event = document.toObject(Event.class);
                                 allEventsList.add(event);
-                                // Log event details
+                            // Log event details
                                 Log.d(TAG, "Event: " + event.getEventName() + ", Date: " + event.getEventDate());
                             }
                             // Notify RecyclerView adapter of data changes
@@ -91,6 +153,29 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                 });
     }
 
+    private void fetchUserRSVPlists(){
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DocumentReference userRef = db.collection("users").document(userId);
+
+        userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task){
+                DocumentSnapshot document = task.getResult();
+                userAttendingEventsIds = new ArrayList<>();
+                userInterestedEventsIds = new ArrayList<>();
+                ArrayList<String> attendingEventIds = (ArrayList<String>) document.get("attending");
+                for(String str : attendingEventIds){
+                    userAttendingEventsIds.add(str);
+                }
+                ArrayList<String> interestedEventIds = (ArrayList<String>) document.get("following");
+                for(String str : interestedEventIds){
+                    userInterestedEventsIds.add(str);
+                }
+            }
+        });
+    }
+
+
     ItemTouchHelper.SimpleCallback callBackMethod = new ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT | ItemTouchHelper.LEFT){
         @Override
         public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
@@ -100,45 +185,88 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         @Override
         public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
             int position = viewHolder.getAdapterPosition();
-            switch(direction){
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DocumentReference userRef = db.collection("users").document(userId);
+            switch(direction) {
                 case ItemTouchHelper.LEFT:
-                    //do left action
                     Event swipedLeftEvent = allEventsList.get(position);
-                    myEventsList.add(swipedLeftEvent);
-                    allEventsList.remove(position);
-                    recyclerView.getAdapter().notifyItemRemoved(position);
-                    Intent intentLeft = new Intent(ShowAllEvents.this, ShowMyEvents.class);
-                    startActivity(intentLeft);
-                    if (recyclerView.getAdapter() != null) {
-                        recyclerView.getAdapter().notifyItemRemoved(position);
-                    }
-                    Toast toastLeft = Toast.makeText(recyclerView.getContext(), "item removed", Toast.LENGTH_SHORT);
-                    toastLeft.show();
+                    String swipedLeftId = swipedLeftEvent.getEventId();
+
+                    userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot document = task.getResult();
+                            ArrayList<String> attendingEventIds = (ArrayList<String>) document.get("attending");
+                            ArrayList<String> followingEventIds = (ArrayList<String>) document.get("following");
+                            for(String str : attendingEventIds){
+                                userAttendingEventsIds.add(str);
+                            }
+                            for(String str : followingEventIds){
+                                userInterestedEventsIds.add(str);
+                            }
+                            if(userAttendingEventsIds.contains(swipedLeftId)){
+                                Toast.makeText(ShowAllEvents.this, "You are attending this event.", Toast.LENGTH_SHORT).show();
+                                recyclerView.getAdapter().notifyItemChanged(position);
+                            }
+                            else{
+                                userAttendingEventsIds.add(swipedLeftId);
+                                Toast.makeText(ShowAllEvents.this, "See you there!", Toast.LENGTH_SHORT).show();
+                                //https://firebase.google.com/docs/firestore/manage-data/add-data#java_24
+                                DocumentReference userListReference = db.collection("users").document(userId);
+                                // Atomically add a new eventId to the "attending" array field.
+                                userListReference.update("attending", FieldValue.arrayUnion(swipedLeftId));
+                                recyclerView.getAdapter().notifyItemChanged(position);
+                                if(userInterestedEventsIds.contains(swipedLeftId)){
+                                    userInterestedEventsIds.remove(swipedLeftId);
+                                    // Atomically add a new eventId to the "attending" array field.
+                                    userListReference.update("following", FieldValue.arrayRemove(swipedLeftId));
+
+                                }
+                            }
+
+                        }
+                    });
                     break;
                 case ItemTouchHelper.RIGHT:
-                    //do right action
                     Event swipedRightEvent = allEventsList.get(position);
-                    interestedEventsList.add(swipedRightEvent);
-                    allEventsList.remove(position);
-                    recyclerView.getAdapter().notifyItemRemoved(position);
-                    Intent intentRight = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
-                    startActivity(intentRight);
-                    if (recyclerView.getAdapter() != null) {
-                        recyclerView.getAdapter().notifyItemRemoved(position);
+                    String swipedRightId = swipedRightEvent.getEventId();
+
+                    //check if it's already on interestedeventslist
+                        //yes say "you're already following this event"
+                        //if no, check if it's on the attending events list
+                            //if yes say "you're already attending this event"
+                            //if no, add to interestedeventsList and interestedevents db
+                    if(userInterestedEventsIds.contains(swipedRightId)){
+                        Toast.makeText(ShowAllEvents.this, "You are following this event.", Toast.LENGTH_SHORT).show();
                     }
-                    Toast toastRight = Toast.makeText(recyclerView.getContext(), "item removed", Toast.LENGTH_SHORT);
-                    toastRight.show();
+                    else{
+                        if (userAttendingEventsIds.contains(swipedRightId)) {
+                            Toast.makeText(ShowAllEvents.this, "You are attending this event.", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            userInterestedEventsIds.add(swipedRightId);
+                            // Atomically add a new eventId to the "attending" array field.
+                            Toast.makeText(ShowAllEvents.this, "Subscribed to updates!", Toast.LENGTH_SHORT).show();
+                            DocumentReference userListReference = db.collection("users").document(userId);
+                            userListReference.update("following", FieldValue.arrayUnion(swipedRightId));
+
+                        }
+                        }
+                    recyclerView.getAdapter().notifyItemChanged(position);
                     break;
             }
-        }
 
+                    }
     };
+
+
 
     public void recyclerViewListClicked(View v, int position) {
         Event selectedEvent = allEventsList.get(position);
-        Intent intent = new Intent(ShowAllEvents.this, EventOnClick.class);
-        intent.putExtra("selected_event", selectedEvent); // Pass the serializable event
+        Intent intent = new Intent(this, EventOnClick.class);
+        intent.putExtra("selected_event", selectedEvent);
         startActivity(intent);
+
     }
 
     private void setAdapter() {
@@ -149,10 +277,15 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         recyclerView.setAdapter(adapter);
     }
 
-    public static ArrayList<Event> getMyEventsList(){
-        return myEventsList;
+    public static ArrayList<Event> getAllEvents(){
+        return allEventsList;
     }
-    public static ArrayList<Event> getFollowingEventsList(){
-        return interestedEventsList;
+
+    public static ArrayList<String> getAttendingEventIds(){
+        return userAttendingEventsIds;
+    }
+
+    public static ArrayList<String> getInterestedEventIds(){
+        return userInterestedEventsIds;
     }
 }

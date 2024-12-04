@@ -18,26 +18,46 @@
     <string name="upcoming_attendance_count">120</string>
     <string name="event_image_placeholder">Event Image Placeholder</string>
     <string name="add_new_event">Add New Event</string>
+    <string name="login">login</string>
+    <string name="email">EMAIL</string>
+    <string name="password">PASSWORD</string>
+    <string name="sign_up_here">No Account? Sign Up Here!</string>
+    <string name="register">register</string>
+    <string name="firstname">FIRSTNAME</string>
+    <string name="lastname">LASTNAME</string>
+    <string name="retype_password">RE-TYPE PASSWORD</string>
+    <string name="already_account">Already Have An Account? Log In Here!</string>
+    <string name="graduation_year">GRADUATION YEAR</string>
+    <string name="home">HOME</string>
+    <string name="my_list">MY LIST</string>
+    <string name="following">FOLLOWING</string>
+    <string name="account">ACCOUNT</string>
+    <string name="fullname">FULLNAME</string>
+    <string name="role">role</string>
+    <string name="maps">MAPS</string>
+    <string name="logout">LOGOUT</string>
 
     <!-- Base application theme. -->
-        <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-            <!-- Customize your theme here. -->
-            <!-- Set your primary and secondary colors -->
-            <item name="colorPrimary">@color/colorPrimary</item>
-            <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
-            <item name="colorOnPrimary">@color/colorOnPrimary</item>
-            <item name="colorSecondary">@color/colorSecondary</item>
-            <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
-            <item name="colorOnSecondary">@color/colorOnSecondary</item>
-            <!-- Surface and background colors -->
-            <item name="colorSurface">@color/colorSurface</item>
-            <item name="colorOnSurface">@color/colorOnSurface</item>
-            <item name="colorOnBackground">@color/colorOnBackground</item>
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <!-- Set your primary and secondary colors -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorOnPrimary">@color/colorOnPrimary</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondaryVariant">@color/colorSecondaryVariant</item>
+        <item name="colorOnSecondary">@color/colorOnSecondary</item>
+        <!-- Surface and background colors -->
+        <item name="colorSurface">@color/colorSurface</item>
+        <item name="colorOnSurface">@color/colorOnSurface</item>
+        <item name="colorOnBackground">@color/colorOnBackground</item>
 
-            <!-- Error color -->
-            <item name="colorError">@color/colorError</item>
-            <item name="colorOnError">@color/colorOnError</item>
-            <!-- Other theme customizations -->
-        </style>
+        <!-- Error color -->
+        <item name="colorError">@color/colorError</item>
+        <item name="colorOnError">@color/colorOnError</item>
+        <!-- Other theme customizations -->
+    </style>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

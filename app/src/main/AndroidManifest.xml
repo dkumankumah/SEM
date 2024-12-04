@@ -10,53 +10,66 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
-        android:label="ListViewPractice"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:icon="@drawable/semlogo"
+        android:label="SEM"
+        android:roundIcon="@drawable/semlogo"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
+        android:theme="@style/Theme.AppCompat.Light"
         tools:targetApi="31">
-        <activity android:name=".EventFormActivity"
-            android:theme="@style/AppTheme"
-            android:label="New Event Form">
-        </activity>
+        <activity
+            android:name=".MapHostActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false" />
+        <activity
+            android:name=".EventFormActivity"
+            android:label="New Event Form"
+            android:parentActivityName=".AdminDashboardActivity"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".AdminDashboardActivity"
             android:exported="false"
-            android:label="Admin Dashboard"/>
+            android:label="Dashboard" />
         <activity
             android:name=".ShowAllEvents"
             android:exported="false"
-            android:label="School Event Manager: All Events">
-        </activity>
+            android:label="School Event Manager: All Events" />
         <activity
             android:name=".EventOnClick"
             android:exported="false"
-            android:label="Event Details">
-        </activity>
+            android:label="Event Details" />
         <activity
             android:name=".ShowMyEvents"
             android:exported="false"
-            android:label="School Event Manager: My Events">
-        </activity>
+            android:label="School Event Manager: My Events" />
         <activity
             android:name=".ShowInterestedEvents"
             android:exported="false"
-            android:label="School Event Manager: Events I'm Following">
-        </activity>
+            android:label="School Event Manager: Events I&apos;m Following" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".SplashScreen"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-        <!-- API Key -->
+        </activity> <!-- API Key -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
     </application>
+
 </manifest>

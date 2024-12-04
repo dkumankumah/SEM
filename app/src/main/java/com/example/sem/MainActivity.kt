@@ -25,8 +25,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        val events = loadEvents()
-        Log.d("EventListSize", "Size: ${events.size}")
 
         db = FirebaseFirestore.getInstance()
 
@@ -46,7 +44,6 @@ class MainActivity : AppCompatActivity() {
         val extraBtn = findViewById<Button>(R.id.extra_btn)
         val charityBtn = findViewById<Button>(R.id.charity_btn)
         val addBtn = findViewById<Button>(R.id.add_event_btn)
-        val arrowIcon = findViewById<ImageView>(R.id.arrow_icon)
 
         rvEvents.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvEvents.adapter = adapter
@@ -56,24 +53,25 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        arrowIcon.setOnClickListener {
-            val intent = Intent(this, ShowAllEvents::class.java)
-            startActivity(intent)
-        }
+//        arrowIcon.setOnClickListener {
+//            val intent = Intent(this, ShowAllEvents::class.java)
+//            startActivity(intent)
+//        }
 
         // Set click listeners for other buttons as needed
     }
 
     private fun fetchEvents() {
-        db.collection("events").get()
+        var eventId: Int
+        db.collection("eventsForTest").get()
             .addOnSuccessListener { documents ->
                 val eventsList = documents.mapNotNull { document ->
-                    val event = document.toObject(Event::class.java).apply { id = document.id.hashCode() }
+                    val event = document.toObject(Event::class.java).apply { eventId = document.id.hashCode() }
 
                     // Check if location is a Map and contains the address
                     val locationField = document.get("location")
                     if (locationField is Map<*, *> && locationField.containsKey("address")) {
-                        event.location = locationField // Store the location as a Map
+                        event.location = locationField.toString() // Store the location as a Map
                         event // Include this event in the final list
                     } else {
                         null // Exclude events without a nested address
@@ -95,53 +93,52 @@ class MainActivity : AppCompatActivity() {
         rvEvents.adapter = adapter
     }
 
-    private fun loadEvents(): ArrayList<Event> {
-        val events = ArrayList<Event>()
-        events.add(Event(
-            id = 1,
-            eventName = "Highschool Prom",
-            eventManager = "Prom Committee",
-            eventDescription = "Who is gonna be prom King and Queen?",
-            eventDate = Date(2024 - 1900, 9, 2),
-            attendingCount = 0,
-            dateCreated = Date(),
-            forClass = listOf(11, 12),
-            location = "School Gymnasium"
-        ))
-        events.add(Event(
-            id = 2,
-            eventName = "Football Game",
-            eventManager = "Athletics Department",
-            eventDescription = "We are PENN STATE",
-            eventDate = Date(2024 - 1900, 9, 1),
-            attendingCount = 0,
-            dateCreated = Date(),
-            forClass = listOf(9, 10, 11, 12),
-            location = "Football Stadium"
-        ))
-        events.add(Event(
-            id = 3,
-            eventName = "Keynote",
-            eventManager = "Career Services",
-            eventDescription = "Career fair",
-            eventDate = Date(2024 - 1900, 9, 14),
-            attendingCount = 0,
-            dateCreated = Date(),
-            forClass = listOf(11, 12),
-            location = "Auditorium"
-        ))
-        events.add(Event(
-            id = 4,
-            eventName = "Elections",
-            eventManager = "Student Council",
-            eventDescription = "Presidents Elections",
-            eventDate = Date(2024 - 1900, 9, 10),
-            attendingCount = 0,
-            dateCreated = Date(),
-            forClass = listOf(9, 10, 11, 12),
-            location = "School Hallways"
-        ))
-        setupRecyclerView(events)
-        return events
-    }
+//    private fun loadEvents(): ArrayList<Event> {
+//        val events = ArrayList<Event>()
+//        events.add(Event(
+//            id = 1,
+//            eventName = "Highschool Prom",
+//            eventManager = "Prom Committee",
+//            eventDescription = "Who is gonna be prom King and Queen?",
+//            eventDate = Date(2024 - 1900, 9, 2),
+//            attendingCount = 0,
+//            dateCreated = Date(),
+//            forClass = listOf(11, 12),
+//            location = "School Gymnasium"
+//        ))
+//        events.add(Event(
+//            id = 2,
+//            eventName = "Football Game",
+//            eventManager = "Athletics Department",
+//            eventDescription = "We are PENN STATE",
+//            eventDate = Date(2024 - 1900, 9, 1),
+//            attendingCount = 0,
+//            dateCreated = Date(),
+//            forClass = listOf(9, 10, 11, 12),
+//            location = "Football Stadium"
+//        ))
+//        events.add(Event(
+//            id = 3,
+//            eventName = "Keynote",
+//            eventManager = "Career Services",
+//            eventDescription = "Career fair",
+//            eventDate = Date(2024 - 1900, 9, 14),
+//            attendingCount = 0,
+//            dateCreated = Date(),
+//            forClass = listOf(11, 12),
+//            location = "Auditorium"
+//        ))
+//        events.add(Event(
+//            id = 4,
+//            eventName = "Elections",
+//            eventManager = "Student Council",
+//            eventDescription = "Presidents Elections",
+//            eventDate = Date(2024 - 1900, 9, 10),
+//            attendingCount = 0,
+//            dateCreated = Date(),
+//            forClass = listOf(9, 10, 11, 12),
+//            location = "School Hallways"
+//        ))
+//        return events
+//    }
 }
