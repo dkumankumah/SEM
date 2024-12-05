@@ -6,18 +6,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.example.sem.model.Event;
-import com.google.firebase.database.ValueEventListener;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import java.util.ArrayList;
-import java.util.Date;
 
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
     private ArrayList<Event> eventsList;
     private  RecyclerViewClickListener itemListener;
-    private ValueEventListener valueEventListener;
     private ArrayList<String> userAttendingEventIds;
     private ArrayList<String> userFollowingEventIds;
 
@@ -72,10 +67,14 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             else if(userFollowingEventIds.contains(eventsList.get(position).getEventId())){
                 holder.rsvpImage.setImageResource(R.drawable.watching);
             }
+            else{
+                holder.rsvpImage.setImageResource(R.drawable.semlogo);
+            }
         }
-
+        else{
+            holder.rsvpImage.setImageResource(R.drawable.semlogo);
+        }
     }
-
     @Override
     public int getItemCount() {
         if(eventsList != null) {

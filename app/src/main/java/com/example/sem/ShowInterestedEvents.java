@@ -54,12 +54,8 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
 
-
+        //method to fetch data from firebase
         fetchEventData();
-//        fetchUserRSVPlists();
-
-//        setAdapter();
-
 
         //implement swipe left/right
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
@@ -219,9 +215,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                     recyclerView.getAdapter().notifyDataSetChanged();
 
                 }
-
             }
-
         });
     }
 }

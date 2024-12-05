@@ -64,24 +64,28 @@ class AdminDashboardActivity : AppCompatActivity() {
         academicBtn.setOnClickListener {
             //get academic events list and send through intent
             val intent = Intent(this, ShowAllEvents::class.java)
+            intent.putExtra("type", "Academics")
             startActivity(intent)
         }
 
         clubsBtn.setOnClickListener {
             //get clubs events list and send through intent
             val intent = Intent(this, ShowAllEvents::class.java)
+            intent.putExtra("type", "Clubs")
             startActivity(intent)
         }
 
         extraBtn.setOnClickListener {
             //get extracurricular events list and send through intent
             val intent = Intent(this, ShowAllEvents::class.java)
+            intent.putExtra("type", "Athletics")
             startActivity(intent)
         }
 
         charityBtn.setOnClickListener {
             //get charity events list and send through intent
             val intent = Intent(this, ShowAllEvents::class.java)
+            intent.putExtra("type", "Service")
             startActivity(intent)
         }
 
