@@ -15,6 +15,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     private  RecyclerViewClickListener itemListener;
     private ArrayList<String> userAttendingEventIds;
     private ArrayList<String> userFollowingEventIds;
+    public String eventImage;
 
     public interface RecyclerViewClickListener {
         void recyclerViewListClicked(View v, int position);
@@ -60,20 +61,82 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         holder.eventCategory.setText(category);
         userAttendingEventIds = ShowAllEvents.getAttendingEventIds();
         userFollowingEventIds = ShowAllEvents.getInterestedEventIds();
-        if(userAttendingEventIds != null && userFollowingEventIds != null) {
-            if(userAttendingEventIds.contains(eventsList.get(position).getEventId())){
-                holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
+        String eventId = eventsList.get(position).getEventId();
+
+        if(userAttendingEventIds != null){
+            if(userFollowingEventIds != null){
+                if(userAttendingEventIds.contains(eventId)){
+                    holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
+                }
+                else if(userFollowingEventIds.contains(eventId)){
+                    holder.rsvpImage.setImageResource(R.drawable.watching);
+                }
+                else{
+                    holder.rsvpImage.setImageResource(R.drawable.semlogo);
+                }
             }
-            else if(userFollowingEventIds.contains(eventsList.get(position).getEventId())){
-                holder.rsvpImage.setImageResource(R.drawable.watching);
+            else if(userAttendingEventIds.contains(eventId)){
+                holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
             }
             else{
                 holder.rsvpImage.setImageResource(R.drawable.semlogo);
             }
         }
         else{
-            holder.rsvpImage.setImageResource(R.drawable.semlogo);
+            if(userFollowingEventIds != null){
+                if(userFollowingEventIds.contains(eventId)){
+                    holder.rsvpImage.setImageResource(R.drawable.watching);
+                }
+                else{
+                    holder.rsvpImage.setImageResource(R.drawable.semlogo);
+                }
+            }
+            else{
+                holder.rsvpImage.setImageResource(R.drawable.semlogo);
+            }
         }
+
+//        if(userAttendingEventIds != null){
+//            if(userFollowingEventIds != null){
+//                if(userAttendingEventIds.contains(eventId)){
+//                    holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
+//                }
+//                else if(userFollowingEventIds.contains(eventId)){
+//                    holder.rsvpImage.setImageResource(R.drawable.watching);
+//                }
+//                else{
+//                    holder.rsvpImage.setImageResource(R.drawable.semlogo);
+//                }
+//            }
+//        }
+//        else if (userAttendingEventIds.contains(eventId)) {
+//                    holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
+//        }
+
+
+
+
+
+
+            //holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
+            //holder.rsvpImage.setImageResource(R.drawable.watching);
+            //holder.rsvpImage.setImageResource(R.drawable.semlogo);
+
+
+
+        //if attendinglist is not null
+            // if attending list contains the eventid
+                //holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
+            //else
+            //holder.rsvpImage.setImageResource(R.drawable.semlogo);
+
+        //if interestedlist is not null
+            // if interested list contains the eventid
+                //holder.rsvpImage.setImageResource(R.drawable.watching);
+        //else
+            //holder.rsvpImage.setImageResource(R.drawable.semlogo);
+
+
     }
     @Override
     public int getItemCount() {

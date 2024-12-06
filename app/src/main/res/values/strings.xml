@@ -8,7 +8,7 @@
         <item>Class 11</item>
         <item>Class 12</item>
     </string-array>
-    <string name="upcoming_events">Upcoming Events</string>
+    <string name="upcoming_events">All Upcoming Events</string>
     <string name="event_category">Event Category</string>
     <string name="acadamics">Acadamics</string>
     <string name="extracurricular">Athletics</string>

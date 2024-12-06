@@ -40,7 +40,8 @@
         <activity
             android:name=".ShowAllEvents"
             android:exported="false"
-            android:label="All Events by Category" />
+            android:label="All Events by Category"
+            android:parentActivityName=".AdminDashboardActivity"/>
         <activity
             android:name=".ShowMyEvents"
             android:exported="false"
@@ -49,11 +50,6 @@
             android:name=".ShowInterestedEvents"
             android:exported="false"
             android:label="My Interested Events" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" />
         <activity
             android:name=".SplashScreen"
             android:exported="true">

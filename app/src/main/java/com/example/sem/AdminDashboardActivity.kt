@@ -96,6 +96,7 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         arrowIcon.setOnClickListener {
             val intent = Intent(this, ShowAllEvents::class.java)
+            intent.putExtra("type", "All")
             startActivity(intent)
         }
 

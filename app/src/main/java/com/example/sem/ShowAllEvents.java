@@ -68,7 +68,6 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
 
         //fetch data from firebase
         fetchEventData();
-        fetchUserRSVPlists();
 
         setAdapter();
 
@@ -78,7 +77,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
         // Set the initial selected item
-        bottomNav.setSelectedItemId(R.id.nav_list);
+        //bottomNav.setSelectedItemId(R.id.nav_list);
 
         // Navigation bar to all other activities
         bottomNav.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
@@ -91,10 +90,10 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                         startActivity(intent);
                         return true;
                     case R.id.nav_list:
-                        // Navigate to MyListActivity
                         Intent intent1 = new Intent(ShowAllEvents.this, ShowMyEvents.class);
                         startActivity(intent1);
                         return true;
+                        // Navigate to MyListActivity
                     case R.id.nav_following:
                         // Navigate to ShowInterestedEvents
                         Intent intent2 = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
@@ -127,7 +126,10 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                             for (QueryDocumentSnapshot document : documents) {
                                 // Convert Firestore document to Event object
                                 Event event = document.toObject(Event.class);
-                                if(event.getEventCategory().equals(eventCategory)) {
+                                if(eventCategory.equals("All")){
+                                    allEventsList.add(event);
+                                }
+                                else if(event.getEventCategory().equals(eventCategory)) {
                                     allEventsList.add(event);
                                 }
                             // Log event details
@@ -141,6 +143,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                     } else {
                         Log.w(TAG, "Error getting events.", task.getException());
                     }
+                    fetchUserRSVPlists();
                 });
     }
 
@@ -162,6 +165,9 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                 for(String str : interestedEventIds){
                     userInterestedEventsIds.add(str);
                 }
+                // Notify RecyclerView adapter of data changes
+                setAdapter();
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
     }

@@ -145,16 +145,11 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                         if(userAttendingEventsIds.contains(checkId)){
                             userAttendingEventsList.add(event);
                         }
+                        // Notify RecyclerView adapter of data changes
+                        setAdapter();
+                        recyclerView.getAdapter().notifyDataSetChanged();
                     }
-
-                    Log.d("myevents", String.valueOf(userAttendingEventsList.size()));
-
-                    // Notify RecyclerView adapter of data changes
-                    setAdapter();
-                    recyclerView.getAdapter().notifyDataSetChanged();
-
                 }
-
             }
         });
     }

@@ -119,6 +119,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
 //                    //check if eventId is on user's attending array
                     Toast.makeText(ShowInterestedEvents.this, "See you there!!", Toast.LENGTH_SHORT).show();
                     userInterestedEventsList.remove(swipedLeftEvent);
+                    recyclerView.getAdapter().notifyItemChanged(position);
 //                    userInterestedEventsList.remove(swipedLeftEvent);
                     userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
@@ -147,6 +148,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                     recyclerView.getAdapter().notifyItemRemoved(position);
                     break;
             }
+            recyclerView.getAdapter().notifyItemChanged(position);
         }
     };
 
@@ -180,7 +182,6 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                                 // Log event details
                                 Log.d(TAG, "Event: " + event.getEventName() + ", Date: " + event.getEventDate());
                             }
-
                             fetchUserRSVPlists();
                         } else {
                             Log.d(TAG, "No events found");
@@ -208,12 +209,10 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                         if(userInterestedEventsIds.contains(checkId)){
                             userInterestedEventsList.add(event);
                         }
+                        // Notify RecyclerView adapter of data changes
+                        setAdapter();
+                        recyclerView.getAdapter().notifyDataSetChanged();
                     }
-
-                    // Notify RecyclerView adapter of data changes
-                    setAdapter();
-                    recyclerView.getAdapter().notifyDataSetChanged();
-
                 }
             }
         });
