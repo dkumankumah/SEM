@@ -112,6 +112,10 @@ class AdminDashboardActivity : AppCompatActivity() {
                 }
                 R.id.nav_maps -> {
                     // Navigate to Maps
+                    val intent = Intent(this, MapHostActivity::class.java)
+                    intent.putExtra("ALL_EVENTS", true) // If you need to pass user data
+                    startActivity(intent)
+//                    startActivity(Intent(this, MapHostActivity::class.java))
                     true
                 }
                 R.id.nav_account -> {

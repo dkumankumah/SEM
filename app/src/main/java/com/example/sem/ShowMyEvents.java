@@ -91,6 +91,9 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                         return true;
                     case R.id.nav_maps:
                         // Navigate to Maps
+                        Intent intent3 = new Intent(ShowMyEvents.this, MapHostActivity.class);
+                        intent3.putExtra("ALL_EVENTS", true);
+                        startActivity(intent3);
                         return true;
                     case R.id.nav_account:
                         // Navigate to ProfileActivity

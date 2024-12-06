@@ -88,6 +88,9 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                         return true;
                     case R.id.nav_maps:
                         // Navigate to Maps
+                        Intent intent3 = new Intent(ShowInterestedEvents.this, MapHostActivity.class);
+                        intent3.putExtra("ALL_EVENTS", true);
+                        startActivity(intent3);
                         return true;
                     case R.id.nav_account:
                         // Navigate to ProfileActivity
