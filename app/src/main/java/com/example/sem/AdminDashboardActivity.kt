@@ -53,7 +53,12 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         // Initialize RecyclerView and Adapter with empty list
         adapter = UpcomingEventAdapter(emptyList()) { event ->
-            Toast.makeText(this, "Event ${event.eventName} is selected", Toast.LENGTH_LONG).show()
+            val intent = Intent(
+                this,
+                MapHostActivity::class.java
+            )
+            intent.putExtra("selected_event", event)
+            startActivity(intent)
         }
         rvEvents.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvEvents.adapter = adapter
@@ -64,24 +69,28 @@ class AdminDashboardActivity : AppCompatActivity() {
         academicBtn.setOnClickListener {
             //get academic events list and send through intent
             val intent = Intent(this, ShowAllEvents::class.java)
+            intent.putExtra("type", "Academics")
             startActivity(intent)
         }
 
         clubsBtn.setOnClickListener {
             //get clubs events list and send through intent
             val intent = Intent(this, ShowAllEvents::class.java)
+            intent.putExtra("type", "Clubs")
             startActivity(intent)
         }
 
         extraBtn.setOnClickListener {
             //get extracurricular events list and send through intent
             val intent = Intent(this, ShowAllEvents::class.java)
+            intent.putExtra("type", "Athletics")
             startActivity(intent)
         }
 
         charityBtn.setOnClickListener {
             //get charity events list and send through intent
             val intent = Intent(this, ShowAllEvents::class.java)
+            intent.putExtra("type", "Service")
             startActivity(intent)
         }
 
@@ -92,6 +101,7 @@ class AdminDashboardActivity : AppCompatActivity() {
 
         arrowIcon.setOnClickListener {
             val intent = Intent(this, ShowAllEvents::class.java)
+            intent.putExtra("type", "All")
             startActivity(intent)
         }
 
@@ -112,6 +122,10 @@ class AdminDashboardActivity : AppCompatActivity() {
                 }
                 R.id.nav_maps -> {
                     // Navigate to Maps
+                    val intent = Intent(this, MapHostActivity::class.java)
+                    intent.putExtra("ALL_EVENTS", true) // If you need to pass user data
+                    startActivity(intent)
+//                    startActivity(Intent(this, MapHostActivity::class.java))
                     true
                 }
                 R.id.nav_account -> {

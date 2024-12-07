@@ -119,15 +119,15 @@
         </LinearLayout>
 
         <!-- Location input field -->
-        <EditText
-            android:id="@+id/eventLocation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Location Details"
-            android:layout_marginHorizontal="16dp"
-            android:inputType="text"
-            android:layout_marginTop="16dp"
-            android:padding="16dp" />
+<!--        <EditText-->
+<!--            android:id="@+id/eventLocation"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:hint="Location Details"-->
+<!--            android:layout_marginHorizontal="16dp"-->
+<!--            android:inputType="text"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:padding="16dp" />-->
 
         <EditText
             android:id="@+id/attendingCount"
@@ -139,33 +139,33 @@
             android:layout_marginTop="16dp"
             android:padding="16dp" />
 
-        <!-- Audience selection (replacing MultiAutoCompleteTextView) -->
-        <TextView
-            android:id="@+id/audienceLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Grade Attendance"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp" />
+<!--        &lt;!&ndash; Audience selection (replacing MultiAutoCompleteTextView) &ndash;&gt;-->
+<!--        <TextView-->
+<!--            android:id="@+id/audienceLabel"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text="Grade Attendance"-->
+<!--            android:layout_marginTop="16dp"-->
+<!--            android:layout_marginStart="16dp" />-->
 
-        <!-- ChipGroup to display selected grades -->
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/chipGroupGrades"
-            style="@style/Widget.MaterialComponents.Chip.Entry"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:chipSpacing="8dp"
-            android:layout_marginBottom="24dp" />
+<!--        &lt;!&ndash; ChipGroup to display selected grades &ndash;&gt;-->
+<!--        <com.google.android.material.chip.ChipGroup-->
+<!--            android:id="@+id/chipGroupGrades"-->
+<!--            style="@style/Widget.MaterialComponents.Chip.Entry"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_margin="16dp"-->
+<!--            app:chipSpacing="8dp"-->
+<!--            android:layout_marginBottom="24dp" />-->
 
         <!-- Spinner for selecting multiple grades -->
-        <Spinner
-            android:id="@+id/gradeSpinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:padding="8dp"
-            android:spinnerMode="dropdown" />
+<!--        <Spinner-->
+<!--            android:id="@+id/gradeSpinner"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginHorizontal="16dp"-->
+<!--            android:padding="8dp"-->
+<!--            android:spinnerMode="dropdown" />-->
 
         <!-- Event Type selection -->
         <TextView

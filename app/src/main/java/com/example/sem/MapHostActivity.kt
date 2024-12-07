@@ -20,18 +20,30 @@ class MapHostActivity : AppCompatActivity() {
         // Get the intent from the sending activity
         val myIntent = intent
 
-        // Get the event object from the intent's extras
-        val selectedEvent = myIntent.getSerializableExtra("selected_event") as Event
-
-        intent.putExtra("event", selectedEvent);
+        //Get navigation value intent
+        val navIntent = myIntent.getBooleanExtra("ALL_EVENTS", false)
 
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentLayout, EventOnClickFragment()).commit()
+        if(navIntent) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentLayout, MapsFragment()).commit()
+        } else {
+
+            // Get the event object from the intent's extras
+            val selectedEvent = myIntent.getSerializableExtra("selected_event") as Event
+            intent.putExtra("event", selectedEvent);
+
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentLayout, EventOnClickFragment()).commit()
+        }
+
+        // Set the initial selected item
+        bottomNav.selectedItemId = R.id.nav_maps
 
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
+                    startActivity(Intent(this, AdminDashboardActivity::class.java))
                     true
                 }
 
@@ -49,8 +61,6 @@ class MapHostActivity : AppCompatActivity() {
 
                 R.id.nav_maps -> {
                     // Navigate to Maps
-                   supportFragmentManager.beginTransaction()
-                    .replace(R.id.fragmentLayout, MapsFragment()).commit()
                     true
                 }
 

@@ -5,20 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.sem.model.Event
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [EventOnClickFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class EventOnClickFragment : Fragment() {
     private lateinit var mTextViewTitle: TextView
     private lateinit var mTextViewAddress: TextView
@@ -27,6 +19,7 @@ class EventOnClickFragment : Fragment() {
     private lateinit var mTextViewCategory: TextView
     private lateinit var mTextViewDescription: TextView
     private lateinit var selectedEvent: Event
+    private lateinit var showMapBtn : Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,16 +28,11 @@ class EventOnClickFragment : Fragment() {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_event_on_click, container, false)
 
+        //TODO add button functionality
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        // Get the intent from the sending activity
-//        val myIntent: Intent = Intent()
-//
-//        // Get the event object from the intent's extras
-//        val selectedEvent = myIntent.getSerializableExtra("event") as Event?
 
         val i = requireActivity().intent
 
@@ -57,20 +45,35 @@ class EventOnClickFragment : Fragment() {
         mTextViewTime = view.findViewById<TextView>(R.id.textview_time)
         mTextViewCategory = view.findViewById<TextView>(R.id.textview_category)
         mTextViewDescription = view.findViewById<TextView>(R.id.textview_description)
+        showMapBtn = view.findViewById(R.id.btn_show_on_map)
 
-        val title = "Event title: " + selectedEvent!!.eventName
-        val address = "Street Address: " + selectedEvent!!.location
-        val date = "Date: " + selectedEvent!!.eventDate
-        val time = "Starting at: " + selectedEvent!!.eventTime
-        val category = "Type of Event: " + selectedEvent!!.eventCategory
-        val description = "Details: " + selectedEvent!!.eventDescription
+        val title = "Event title: " + selectedEvent.eventName
+        val address = "Street Address: " + selectedEvent.location
+        val date = "Date: " + selectedEvent.eventDate
+        val time = "Starting at: " + selectedEvent.eventTime
+        val category = "Type of Event: " + selectedEvent.eventCategory
+        val description = "Details: " + selectedEvent.eventDescription
 
-        mTextViewTitle!!.text = title
-        mTextViewAddress!!.text = address
-        mTextViewEventDate!!.text = date
-        mTextViewTime!!.text = time
-        mTextViewCategory!!.text = category
-        mTextViewDescription!!.text = description
+        mTextViewTitle.text = title
+        mTextViewAddress.text = address
+        mTextViewEventDate.text = date
+        mTextViewTime.text = time
+        mTextViewCategory.text = category
+        mTextViewDescription.text = description
+
+        showMapBtn.setOnClickListener {
+//            Toast.makeText(context, "TESTING", Toast.LENGTH_LONG).show()
+            val fragment = MapsFragment()
+            val bundle = Bundle()
+            bundle.putSerializable("ADDRESS", selectedEvent.eventId)
+            fragment.arguments = bundle
+
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragmentLayout, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
+
     }
 
 }

@@ -54,12 +54,8 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
 
-
+        //method to fetch data from firebase
         fetchEventData();
-//        fetchUserRSVPlists();
-
-//        setAdapter();
-
 
         //implement swipe left/right
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
@@ -88,6 +84,9 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                         return true;
                     case R.id.nav_maps:
                         // Navigate to Maps
+                        Intent intent3 = new Intent(ShowInterestedEvents.this, MapHostActivity.class);
+                        intent3.putExtra("ALL_EVENTS", true);
+                        startActivity(intent3);
                         return true;
                     case R.id.nav_account:
                         // Navigate to ProfileActivity
@@ -123,6 +122,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
 //                    //check if eventId is on user's attending array
                     Toast.makeText(ShowInterestedEvents.this, "See you there!!", Toast.LENGTH_SHORT).show();
                     userInterestedEventsList.remove(swipedLeftEvent);
+                    recyclerView.getAdapter().notifyItemChanged(position);
 //                    userInterestedEventsList.remove(swipedLeftEvent);
                     userRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                         @Override
@@ -151,6 +151,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                     recyclerView.getAdapter().notifyItemRemoved(position);
                     break;
             }
+            recyclerView.getAdapter().notifyItemChanged(position);
         }
     };
 
@@ -184,7 +185,6 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                                 // Log event details
                                 Log.d(TAG, "Event: " + event.getEventName() + ", Date: " + event.getEventDate());
                             }
-
                             fetchUserRSVPlists();
                         } else {
                             Log.d(TAG, "No events found");
@@ -212,16 +212,12 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                         if(userInterestedEventsIds.contains(checkId)){
                             userInterestedEventsList.add(event);
                         }
+                        // Notify RecyclerView adapter of data changes
+                        setAdapter();
+                        recyclerView.getAdapter().notifyDataSetChanged();
                     }
-
-                    // Notify RecyclerView adapter of data changes
-                    setAdapter();
-                    recyclerView.getAdapter().notifyDataSetChanged();
-
                 }
-
             }
-
         });
     }
 }

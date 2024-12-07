@@ -8,12 +8,12 @@
         <item>Class 11</item>
         <item>Class 12</item>
     </string-array>
-    <string name="upcoming_events">Upcoming Events</string>
+    <string name="upcoming_events">All Upcoming Events</string>
     <string name="event_category">Event Category</string>
     <string name="acadamics">Acadamics</string>
-    <string name="extracurricular">Extracurricular</string>
+    <string name="extracurricular">Athletics</string>
     <string name="clubs">Clubs</string>
-    <string name="charity">Charity</string>
+    <string name="charity">Service</string>
     <string name="upcoming_event_name">placeholder event</string>
     <string name="upcoming_attendance_count">120</string>
     <string name="event_image_placeholder">Event Image Placeholder</string>

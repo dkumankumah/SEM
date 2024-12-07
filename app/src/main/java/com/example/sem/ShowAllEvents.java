@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,9 +39,8 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
     public static ArrayList<String> userInterestedEventsIds;
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
-    private Button showMyEventsButton;
-    private Button showInterestedEventsButton;
     private BottomNavigationView bottomNav;
+    private String eventCategory;
 
 
 
@@ -51,9 +49,13 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_events);
 
+        Intent intent = getIntent();
+
+        eventCategory = intent.getStringExtra("type");
+
+
+
         recyclerView = findViewById(R.id.recycler_view_events);
-//        showMyEventsButton = (Button)findViewById(R.id.show_my_events);
-//        showInterestedEventsButton = (Button)findViewById(R.id.show_interested_events);
         allEventsList = new ArrayList<>();
         bottomNav = findViewById(R.id.bottomNav);
 
@@ -64,8 +66,8 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.recycler_view_events);
 
+        //fetch data from firebase
         fetchEventData();
-        fetchUserRSVPlists();
 
         setAdapter();
 
@@ -74,22 +76,8 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
         itemTouchHelper.attachToRecyclerView(recyclerView);
 
-//        showMyEventsButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent(ShowAllEvents.this, ShowMyEvents.class);
-//                startActivity(intent);
-//            }
-//        });
-//
-//        showInterestedEventsButton.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
-//                startActivity(intent);
-//            }
-//        });
-
         // Set the initial selected item
-        bottomNav.setSelectedItemId(R.id.nav_list);
+        //bottomNav.setSelectedItemId(R.id.nav_list);
 
         // Navigation bar to all other activities
         bottomNav.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
@@ -102,10 +90,10 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                         startActivity(intent);
                         return true;
                     case R.id.nav_list:
-                        // Navigate to MyListActivity
                         Intent intent1 = new Intent(ShowAllEvents.this, ShowMyEvents.class);
                         startActivity(intent1);
                         return true;
+                        // Navigate to MyListActivity
                     case R.id.nav_following:
                         // Navigate to ShowInterestedEvents
                         Intent intent2 = new Intent(ShowAllEvents.this, ShowInterestedEvents.class);
@@ -138,7 +126,12 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                             for (QueryDocumentSnapshot document : documents) {
                                 // Convert Firestore document to Event object
                                 Event event = document.toObject(Event.class);
-                                allEventsList.add(event);
+                                if(eventCategory.equals("All")){
+                                    allEventsList.add(event);
+                                }
+                                else if(event.getEventCategory().equals(eventCategory)) {
+                                    allEventsList.add(event);
+                                }
                             // Log event details
                                 Log.d(TAG, "Event: " + event.getEventName() + ", Date: " + event.getEventDate());
                             }
@@ -150,6 +143,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                     } else {
                         Log.w(TAG, "Error getting events.", task.getException());
                     }
+                    fetchUserRSVPlists();
                 });
     }
 
@@ -171,6 +165,9 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                 for(String str : interestedEventIds){
                     userInterestedEventsIds.add(str);
                 }
+                // Notify RecyclerView adapter of data changes
+                setAdapter();
+                recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
     }
@@ -230,20 +227,19 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                 case ItemTouchHelper.RIGHT:
                     Event swipedRightEvent = allEventsList.get(position);
                     String swipedRightId = swipedRightEvent.getEventId();
-
                     //check if it's already on interestedeventslist
-                        //yes say "you're already following this event"
-                        //if no, check if it's on the attending events list
-                            //if yes say "you're already attending this event"
-                            //if no, add to interestedeventsList and interestedevents db
                     if(userInterestedEventsIds.contains(swipedRightId)){
+                        //yes say "you're already following this event"
                         Toast.makeText(ShowAllEvents.this, "You are following this event.", Toast.LENGTH_SHORT).show();
                     }
                     else{
+                        //if no, check if it's on the attending events list
                         if (userAttendingEventsIds.contains(swipedRightId)) {
+                            //if yes say "you're already attending this event"
                             Toast.makeText(ShowAllEvents.this, "You are attending this event.", Toast.LENGTH_SHORT).show();
                         }
                         else{
+                            //if no, add to interestedeventsList and interestedevents db
                             userInterestedEventsIds.add(swipedRightId);
                             // Atomically add a new eventId to the "attending" array field.
                             Toast.makeText(ShowAllEvents.this, "Subscribed to updates!", Toast.LENGTH_SHORT).show();
@@ -255,15 +251,14 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                     recyclerView.getAdapter().notifyItemChanged(position);
                     break;
             }
-
-                    }
+        }
     };
 
 
 
     public void recyclerViewListClicked(View v, int position) {
         Event selectedEvent = allEventsList.get(position);
-        Intent intent = new Intent(this, EventOnClick.class);
+        Intent intent = new Intent(this, MapHostActivity.class);
         intent.putExtra("selected_event", selectedEvent);
         startActivity(intent);
 
@@ -276,11 +271,6 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
     }
-
-    public static ArrayList<Event> getAllEvents(){
-        return allEventsList;
-    }
-
     public static ArrayList<String> getAttendingEventIds(){
         return userAttendingEventsIds;
     }

@@ -28,6 +28,7 @@ class UpcomingEventAdapter(
             eventName.text = event.eventName
             eventTitle?.text = event.eventName // Adjust as needed
             eventManager?.text = event.eventManager
+            eventImage.setImageResource(R.drawable.placeholderimage)
 
             itemView.setOnClickListener {
                 onClick(currentEvent)

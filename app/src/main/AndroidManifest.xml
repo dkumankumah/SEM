@@ -31,8 +31,8 @@
         <activity
             android:name=".EventFormActivity"
             android:label="New Event Form"
-            android:parentActivityName=".AdminDashboardActivity"
-            android:theme="@style/AppTheme" />
+            android:parentActivityName=".EventFormActivity"
+            />
         <activity
             android:name=".AdminDashboardActivity"
             android:exported="false"
@@ -40,24 +40,16 @@
         <activity
             android:name=".ShowAllEvents"
             android:exported="false"
-            android:label="School Event Manager: All Events" />
-        <activity
-            android:name=".EventOnClick"
-            android:exported="false"
-            android:label="Event Details" />
+            android:label="All Events by Category"
+            android:parentActivityName=".AdminDashboardActivity"/>
         <activity
             android:name=".ShowMyEvents"
             android:exported="false"
-            android:label="School Event Manager: My Events" />
+            android:label="My Attending Events" />
         <activity
             android:name=".ShowInterestedEvents"
             android:exported="false"
-            android:label="School Event Manager: Events I&apos;m Following" />
-        <activity
-            android:name=".MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme" />
+            android:label="My Interested Events" />
         <activity
             android:name=".SplashScreen"
             android:exported="true">
