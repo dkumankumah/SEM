@@ -30,6 +30,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 
@@ -203,6 +205,11 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         Intent intent = new Intent(ShowMyEvents.this, MapHostActivity.class);
         intent.putExtra("selected_event", selectedEvent); // Pass the serializable event
         startActivity(intent);
+    }
+
+    @Override
+    public void deleteEvent(@NotNull Event currentEvent, int adapterPosition) {
+
     }
 
     private void setAdapter() {

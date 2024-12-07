@@ -126,6 +126,8 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                             for (QueryDocumentSnapshot document : documents) {
                                 // Convert Firestore document to Event object
                                 Event event = document.toObject(Event.class);
+                                event.setDocId(document.getId()); // Store the Firestore doc ID
+
                                 if(eventCategory.equals("All")){
                                     allEventsList.add(event);
                                 }
@@ -170,6 +172,23 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                 recyclerView.getAdapter().notifyDataSetChanged();
             }
         });
+    }
+
+    public void deleteEvent(Event event, int position) {
+        db.collection("eventsForTest").document(event.getDocId())
+                .delete()
+                .addOnSuccessListener(aVoid -> {
+                    Toast.makeText(ShowAllEvents.this, "Event Deleted", Toast.LENGTH_SHORT).show();
+                    // Remove the event from the list
+                    allEventsList.remove(position);
+                    // Notify adapter of item removed
+                    recyclerView.getAdapter().notifyItemRemoved(position);
+                })
+                .addOnFailureListener(e -> {
+                    Toast.makeText(ShowAllEvents.this, "Failed to delete event", Toast.LENGTH_SHORT).show();
+                    // Notify adapter the item changed (so it doesn't remain swiped away)
+                    recyclerView.getAdapter().notifyItemChanged(position);
+                });
     }
 
 
@@ -271,6 +290,7 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
+
     }
     public static ArrayList<String> getAttendingEventIds(){
         return userAttendingEventsIds;

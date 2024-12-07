@@ -28,6 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class ShowInterestedEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
@@ -162,6 +164,11 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
         startActivity(intent);
     }
 
+    @Override
+    public void deleteEvent(@NotNull Event currentEvent, int adapterPosition) {
+        Log.d(TAG, "deletedEvent: ");
+    }
+
     private void setAdapter() {
         String interested = "interested";
         recyclerAdapter adapter = new recyclerAdapter(userInterestedEventsList, this, interested);
@@ -220,5 +227,10 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                 }
             }
         });
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
     }
 }
