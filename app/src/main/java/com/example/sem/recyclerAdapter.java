@@ -92,7 +92,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             case "Academics":
                 backgroundColor = getColor(holder.itemView.getContext(), R.color.colorAcademics);
                 break;
-            case "Extracurricular":
+            case "Athletics":
                 backgroundColor = getColor(holder.itemView.getContext(), R.color.colorExtracurricular);
                 break;
             case "Clubs":
