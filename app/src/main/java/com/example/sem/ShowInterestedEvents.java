@@ -163,7 +163,8 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
     }
 
     private void setAdapter() {
-        recyclerAdapter adapter = new recyclerAdapter(userInterestedEventsList, this);
+        String interested = "interested";
+        recyclerAdapter adapter = new recyclerAdapter(userInterestedEventsList, this, interested);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

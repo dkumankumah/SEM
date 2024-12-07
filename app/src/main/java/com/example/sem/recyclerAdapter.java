@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
     private ArrayList<Event> eventsList;
@@ -23,14 +24,16 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     private ValueEventListener valueEventListener;
     private ArrayList<String> userAttendingEventIds;
     private ArrayList<String> userFollowingEventIds;
+    private String eventsListType;
 
     public interface RecyclerViewClickListener {
         void recyclerViewListClicked(View v, int position);
     }
 
-    public recyclerAdapter(ArrayList<Event> eventsList, RecyclerViewClickListener recyclerViewClickListener) {
+    public recyclerAdapter(ArrayList<Event> eventsList, RecyclerViewClickListener recyclerViewClickListener, String eventListType) {
         this.eventsList = eventsList;
         this.itemListener = recyclerViewClickListener;
+        this.eventsListType = eventListType;
 
     }
 
@@ -75,14 +78,24 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         holder.eventCategory.setText(category);
         holder.eventDate.setText(eventsList.get(position).getEventDate());
         holder.eventImage.setImageResource(R.drawable.placeholderimage);
-        userAttendingEventIds = ShowAllEvents.getAttendingEventIds();
-        userFollowingEventIds = ShowAllEvents.getInterestedEventIds();
 
-        if (userAttendingEventIds != null && userFollowingEventIds != null) {
-            if (userAttendingEventIds.contains(eventsList.get(position).getEventId())) {
-                holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
-            } else if (userFollowingEventIds.contains(eventsList.get(position).getEventId())) {
-                holder.rsvpImage.setImageResource(R.drawable.watching);
+
+        if(Objects.equals(eventsListType, "myEvents")) {
+            holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
+        }
+        else if(Objects.equals(eventsListType, "interested")) {
+            holder.rsvpImage.setImageResource(R.drawable.watching);
+        }
+        else {
+            userAttendingEventIds = ShowAllEvents.getAttendingEventIds();
+            userFollowingEventIds = ShowAllEvents.getInterestedEventIds();
+
+            if (userAttendingEventIds != null && userFollowingEventIds != null) {
+                if (userAttendingEventIds.contains(eventsList.get(position).getEventId())) {
+                    holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
+                } else if (userFollowingEventIds.contains(eventsList.get(position).getEventId())) {
+                    holder.rsvpImage.setImageResource(R.drawable.watching);
+                }
             }
         }
 

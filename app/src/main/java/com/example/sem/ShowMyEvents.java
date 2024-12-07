@@ -206,7 +206,8 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
     }
 
     private void setAdapter() {
-        recyclerAdapter adapter = new recyclerAdapter(userAttendingEventsList, this);
+        String myEvents = "myEvents";
+        recyclerAdapter adapter = new recyclerAdapter(userAttendingEventsList, this, myEvents);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
