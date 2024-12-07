@@ -53,16 +53,12 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         bottomNav = findViewById(R.id.bottomNav);
 
 
-                // Initialize Firestore and Firebase
+        // Initialize Firestore and Firebase
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
 
-
+        //fetch data from firebase
         fetchEventData();
-//        fetchUserRSVPlists();
-
-//        setAdapter();
-
 
         //implement swipe left/right
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
@@ -106,20 +102,6 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
             }
         });
     }
-
-//    protected void onStart() {
-//        super.onStart();
-//        Log.d("allevents", String.valueOf(allEventsList.size()));
-//        Log.d("myevents", String.valueOf(userAttendingEventsList.size()));
-//        Log.d("ids", String.valueOf(userAttendingEventsIds.size()));
-//
-//        for(Event event : allEventsList){
-//            String checkId = event.getEventId();
-//            if(userAttendingEventsIds.contains(checkId)){
-//                userAttendingEventsList.add(event);
-//            }
-//        }
-//    }
 
     // Method to fetch events from Firestore
     public void fetchEventData() {
@@ -166,18 +148,12 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                         if(userAttendingEventsIds.contains(checkId)){
                             userAttendingEventsList.add(event);
                         }
+                        // Notify RecyclerView adapter of data changes
+                        setAdapter();
+                        recyclerView.getAdapter().notifyDataSetChanged();
                     }
-
-                    Log.d("myevents", String.valueOf(userAttendingEventsList.size()));
-
-                    // Notify RecyclerView adapter of data changes
-                    setAdapter();
-                    recyclerView.getAdapter().notifyDataSetChanged();
-
                 }
-
             }
-
         });
     }
 
@@ -224,7 +200,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
 
     public void recyclerViewListClicked(View v, int position) {
         Event selectedEvent = userAttendingEventsList.get(position);
-        Intent intent = new Intent(ShowMyEvents.this, EventOnClick.class);
+        Intent intent = new Intent(ShowMyEvents.this, MapHostActivity.class);
         intent.putExtra("selected_event", selectedEvent); // Pass the serializable event
         startActivity(intent);
     }

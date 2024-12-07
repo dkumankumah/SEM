@@ -26,10 +26,18 @@ import com.google.firebase.firestore.FirebaseFirestore
  */
 class MapsFragment : Fragment(), OnMapReadyCallback {
 
+    private var value: String? = null
+
     // initialize variables
     private lateinit var mMap: GoogleMap
     private lateinit var db: FirebaseFirestore
     private lateinit var geocoder: Geocoder
+    private lateinit var selectedEvent: Event
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        value = arguments?.getString("ADDRESS")
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +63,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         // initialize view
         setupSearchView(view)
         setupFloatingActionButton(view)
+
+        value?.let { Log.d("VALUE", it) }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -77,8 +87,12 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 
                 // Zoom in the first apartment
                 if (events.isNotEmpty()) {
-                    val firstEvent = events[0]
-                    val location = geocodeAddress(firstEvent)
+                    selectedEvent = if(value == null) {
+                        events[0]
+                    } else {
+                        events.find { e -> e.eventId == value  }!!;
+                    }
+                    val location = selectedEvent?.let { geocodeAddress(it) }
                     location?.let {
                         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(it, 15f)
                         mMap.animateCamera(cameraUpdate)

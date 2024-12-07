@@ -454,7 +454,7 @@ class EventFormActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun addEventToFirestore(event: Event, progressDialog: ProgressDialog) {
-        db.collection("events")
+        db.collection("eventsForTest")
             .add(event)
             .addOnSuccessListener { documentReference ->
                 progressDialog.dismiss()
