@@ -84,7 +84,7 @@ class EventFormActivity : AppCompatActivity(), OnMapReadyCallback {
         eventDescription = findViewById(R.id.eventDescription)
         eventDate = findViewById(R.id.eventDate)
         eventTime = findViewById(R.id.eventTime)
-        eventLocation = findViewById(R.id.eventLocation)
+//        eventLocation = findViewById(R.id.eventLocation)
         eventTypeSpinner = findViewById(R.id.eventTypeSpinner)
         submitButton = findViewById(R.id.submitBtn)
         gradeSpinner = findViewById(R.id.gradeSpinner)
@@ -151,7 +151,7 @@ class EventFormActivity : AppCompatActivity(), OnMapReadyCallback {
         gradeSpinner.adapter = gradeAdapter
 
         // Set up event type spinner with a prompt
-        val eventTypes = arrayOf("Select Event Type", "Seminar", "Workshop", "Lecture", "Social", "Other")
+        val eventTypes = arrayOf("Select Event Type", "Academics", "Extracurricular", "Clubs", "Other")
         val eventTypeAdapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, eventTypes)
         eventTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         eventTypeSpinner.adapter = eventTypeAdapter
@@ -284,15 +284,27 @@ class EventFormActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    private fun parseDateTimeToTimestamp(dateStr: String, timeStr: String): Date? {
+    private fun parseDateTimeToTimestamp(dateStr: String, timeStr: String): Pair<String, String>? {
         val dateTimeStr = "$dateStr $timeStr"
         val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+
+        val dateSdf = SimpleDateFormat("MMMM dd, yyyy", Locale.getDefault())
+        val timeSdf = SimpleDateFormat("h:mm a", Locale.getDefault())
+
         return try {
-            sdf.parse(dateTimeStr)
+            val date = sdf.parse(dateTimeStr)
+            Pair(dateSdf.format(date), timeSdf.format(date))
         } catch (e: Exception) {
             e.printStackTrace()
             null
         }
+
+//        return try {
+//            sdf.parse(dateTimeStr)
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//            null
+//        }
     }
 
     private fun generateEventId(): String {
@@ -328,14 +340,22 @@ class EventFormActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
         // Parse date and time into a timestamp
-        val eventTimestamp = parseDateTimeToTimestamp(dateStr, timeStr)
-        if (eventTimestamp == null) {
+//        val eventTimestamp = parseDateTimeToTimestamp(dateStr, timeStr)
+//        if (eventTimestamp == null) {
+//            Toast.makeText(this, "Invalid date or time format", Toast.LENGTH_SHORT).show()
+//            return
+//        }
+
+        val dateTimeResult = parseDateTimeToTimestamp(dateStr, timeStr)
+        if (dateTimeResult == null) {
             Toast.makeText(this, "Invalid date or time format", Toast.LENGTH_SHORT).show()
             return
         }
 
         // Generate dateCreated timestamp
         val dateCreatedTimestamp = Date()
+
+        val (formattedDate, formattedTime) = dateTimeResult
 
         // Collect 'forClass' as an array of numbers from the ChipGroup
         val selectedGrades = mutableListOf<Int>()
@@ -367,19 +387,34 @@ class EventFormActivity : AppCompatActivity(), OnMapReadyCallback {
         val event = hashMapOf(
             "attendingCount" to attendingCountNumber,
             "dateCreated" to dateCreatedTimestamp,
-            "eventDate" to eventTimestamp,
+            "eventDate" to formattedDate,
+            "eventTime" to formattedTime,
             "eventDescription" to description,
             "eventId" to eventId,
             "eventManager" to eventManagerText,
             "eventName" to title,
             "forClass" to selectedGrades,
-            "eventType" to eventType,
-            "location" to hashMapOf(
-                "latitude" to selectedLocationLatLng!!.latitude,
-                "longitude" to selectedLocationLatLng!!.longitude,
-                "address" to location
-            )
+            "eventCategory" to eventType,
+            "location" to location
         )
+
+//        val event = hashMapOf(
+//            "attendingCount" to attendingCountNumber,
+//            "dateCreated" to dateCreatedTimestamp,
+//            "eventDate" to eventTimestamp,
+//            "eventDescription" to description,
+//            "eventId" to eventId,
+//            "eventManager" to eventManagerText,
+//            "eventName" to title,
+//            "forClass" to selectedGrades,
+//            "eventCategory" to eventType,
+//            "location" to location
+//            "location" to hashMapOf(
+//                "latitude" to selectedLocationLatLng!!.latitude,
+//                "longitude" to selectedLocationLatLng!!.longitude,
+//                "address" to location
+//            )
+//        )
 
         // Show a progress dialog
         val progressDialog = ProgressDialog(this)
@@ -423,7 +458,7 @@ class EventFormActivity : AppCompatActivity(), OnMapReadyCallback {
                 progressDialog.dismiss()
                 Log.d("EventForm", "Event added with ID: ${documentReference.id}")
                 Toast.makeText(this, "Event Created", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, ShowAllEvents::class.java)
+                val intent = Intent(this, AdminDashboardActivity::class.java)
                 startActivity(intent)
                 finish()
             }

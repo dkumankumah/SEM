@@ -22,4 +22,11 @@
     <color name="colorOnBackground">#000000</color>
     <color name="colorError">#B00020</color> <!-- Error messages and icons -->
     <color name="colorOnError">#FFFFFF</color>
+
+    <!-- Color Buttons -->
+    <color name="colorAcademics">#68C6DA</color>
+    <color name="colorExtracurricular">#E87A3D</color>
+    <color name="colorClubs">#EAAB43</color>
+    <color name="colorOthers">#F5D0BC</color>
+
 </resources>

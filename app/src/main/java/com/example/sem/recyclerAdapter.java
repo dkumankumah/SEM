@@ -1,5 +1,7 @@
 package com.example.sem;
 
+import static androidx.core.content.ContextCompat.getColor;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import com.example.sem.model.Event;
 import com.google.firebase.database.ValueEventListener;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
@@ -34,12 +37,19 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     public class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private TextView eventTitle;
         private TextView eventCategory;
+        private TextView eventDate;
         private ImageView rsvpImage;
+        private ImageView eventImage;
+        private CardView cardView;
+
         public MyViewHolder(final View view){
             super(view);
             eventTitle = view.findViewById(R.id.textview_event_title);
             eventCategory = view.findViewById(R.id.textview_event_category);
+            eventDate = view.findViewById(R.id.textView_event_date);
             rsvpImage = view.findViewById(R.id.event_status);
+            eventImage = view.findViewById(R.id.event_image);
+            cardView = view.findViewById(R.id.eventCard);
             view.setOnClickListener(this);
         }
 
@@ -63,17 +73,36 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         String category = eventsList.get(position).getEventCategory();
         holder.eventTitle.setText(title);
         holder.eventCategory.setText(category);
+        holder.eventDate.setText(eventsList.get(position).getEventDate());
+        holder.eventImage.setImageResource(R.drawable.placeholderimage);
         userAttendingEventIds = ShowAllEvents.getAttendingEventIds();
         userFollowingEventIds = ShowAllEvents.getInterestedEventIds();
-        if(userAttendingEventIds != null && userFollowingEventIds != null) {
-            if(userAttendingEventIds.contains(eventsList.get(position).getEventId())){
+
+        if (userAttendingEventIds != null && userFollowingEventIds != null) {
+            if (userAttendingEventIds.contains(eventsList.get(position).getEventId())) {
                 holder.rsvpImage.setImageResource(R.drawable.baseline_fact_check_24);
-            }
-            else if(userFollowingEventIds.contains(eventsList.get(position).getEventId())){
+            } else if (userFollowingEventIds.contains(eventsList.get(position).getEventId())) {
                 holder.rsvpImage.setImageResource(R.drawable.watching);
             }
         }
 
+        // Resolve and set the card background color based on the category
+        int backgroundColor;
+        switch (category) {
+            case "Academics":
+                backgroundColor = getColor(holder.itemView.getContext(), R.color.colorAcademics);
+                break;
+            case "Extracurricular":
+                backgroundColor = getColor(holder.itemView.getContext(), R.color.colorExtracurricular);
+                break;
+            case "Clubs":
+                backgroundColor = getColor(holder.itemView.getContext(), R.color.colorClubs);
+                break;
+            default:
+                backgroundColor = getColor(holder.itemView.getContext(), R.color.colorOthers);
+                break;
+        }
+        holder.cardView.setCardBackgroundColor(backgroundColor);
     }
 
     @Override

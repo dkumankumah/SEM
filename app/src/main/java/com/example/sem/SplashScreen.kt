@@ -21,7 +21,7 @@ class SplashScreen : AppCompatActivity() {
             insets
         }
 
-        val image = findViewById<ImageView>(R.id.imageView)
+        val image = findViewById<ImageView>(R.id.event_image)
 
         image.setImageResource(R.drawable.semlogo)
 
