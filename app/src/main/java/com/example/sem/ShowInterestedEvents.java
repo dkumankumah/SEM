@@ -28,6 +28,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 public class ShowInterestedEvents extends AppCompatActivity implements recyclerAdapter.RecyclerViewClickListener {
@@ -37,11 +39,14 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private BottomNavigationView bottomNav;
+    private String userRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_events);
+
+        userRole = "";
 
         recyclerView = findViewById(R.id.recycler_view_events);
         allEventsList = new ArrayList<>();
@@ -162,9 +167,14 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
         startActivity(intent);
     }
 
-    private void setAdapter() {
+    @Override
+    public void deleteEvent(@NotNull Event currentEvent, int adapterPosition) {
+        Log.d(TAG, "deletedEvent: ");
+    }
+
+    private void setAdapter(String role) {
         String interested = "interested";
-        recyclerAdapter adapter = new recyclerAdapter(userInterestedEventsList, this, interested);
+        recyclerAdapter adapter = new recyclerAdapter(userInterestedEventsList, this, interested, role);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -206,6 +216,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                 if(document.exists()) {
                     ArrayList<String> attendingEventIds = (ArrayList<String>) document.get("following");
                     Log.d("attendingEvents: ", attendingEventIds.toString());
+                    userRole = (String) document.get("role");
                     userInterestedEventsIds.addAll(attendingEventIds);;
 
                     for(Event event : allEventsList){
@@ -214,11 +225,16 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                             userInterestedEventsList.add(event);
                         }
                         // Notify RecyclerView adapter of data changes
-                        setAdapter();
+                        setAdapter(userRole);
                         recyclerView.getAdapter().notifyDataSetChanged();
                     }
                 }
             }
         });
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+        super.onPointerCaptureChanged(hasCapture);
     }
 }

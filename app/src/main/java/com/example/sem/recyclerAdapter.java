@@ -1,7 +1,10 @@
 package com.example.sem;
 
+import static android.view.View.INVISIBLE;
 import static androidx.core.content.ContextCompat.getColor;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +17,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Objects;
 
 public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyViewHolder> {
@@ -25,15 +29,19 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
     private ArrayList<String> userAttendingEventIds;
     private ArrayList<String> userFollowingEventIds;
     private String eventsListType;
+    private String userRole;
 
     public interface RecyclerViewClickListener {
         void recyclerViewListClicked(View v, int position);
+
+        void deleteEvent(@NotNull Event currentEvent, int adapterPosition);
     }
 
-    public recyclerAdapter(ArrayList<Event> eventsList, RecyclerViewClickListener recyclerViewClickListener, String eventListType) {
+    public recyclerAdapter(ArrayList<Event> eventsList, RecyclerViewClickListener recyclerViewClickListener, String eventListType, String userRole) {
         this.eventsList = eventsList;
         this.itemListener = recyclerViewClickListener;
         this.eventsListType = eventListType;
+        this.userRole = userRole;
 
     }
 
@@ -44,6 +52,9 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
         private ImageView rsvpImage;
         private ImageView eventImage;
         private CardView cardView;
+        private ImageView editButton;
+        private ImageView deleteButton;
+
 
         public MyViewHolder(final View view){
             super(view);
@@ -53,7 +64,15 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             rsvpImage = view.findViewById(R.id.event_status);
             eventImage = view.findViewById(R.id.event_image);
             cardView = view.findViewById(R.id.eventCard);
+
+            editButton = view.findViewById(R.id.edit_button);
+            deleteButton = view.findViewById(R.id.delete_button);
             view.setOnClickListener(this);
+
+            if(userRole.equals("STUDENT")) {
+                editButton.setVisibility(INVISIBLE);
+                deleteButton.setVisibility(INVISIBLE);
+            }
         }
 
         @Override
@@ -72,6 +91,7 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
 
     @Override
     public void onBindViewHolder(@NonNull recyclerAdapter.MyViewHolder holder, int position) {
+        Event currentEvent = eventsList.get(position);
         String title = eventsList.get(position).getEventName();
         String category = eventsList.get(position).getEventCategory();
         holder.eventTitle.setText(title);
@@ -97,6 +117,27 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                     holder.rsvpImage.setImageResource(R.drawable.watching);
                 }
             }
+        }
+
+        AdminDashboardActivity adminDashboardActivity = new AdminDashboardActivity();
+        String userRole = adminDashboardActivity.getRole();
+        if(userRole.equals("ADMIN")) {
+
+            // Set up delete button click listener
+            holder.deleteButton.setOnClickListener(v -> {
+                ShowAllEvents activity = (ShowAllEvents) v.getContext();
+                activity.deleteEvent(currentEvent, holder.getAdapterPosition());
+            });
+
+            // Set up edit button click listener
+            holder.editButton.setOnClickListener(v -> {
+                ShowAllEvents activity = (ShowAllEvents) v.getContext();
+                Intent intent = new Intent(activity, EventFormActivity.class);
+                intent.putExtra("docId", currentEvent.getDocId());
+                intent.putExtra("event", currentEvent);
+                activity.startActivity(intent);
+            });
+
         }
 
         // Resolve and set the card background color based on the category

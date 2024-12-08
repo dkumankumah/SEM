@@ -30,6 +30,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 
 
@@ -40,10 +42,12 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private BottomNavigationView bottomNav;
+    private String userRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userRole = "";
         setContentView(R.layout.all_events);
 
         recyclerView = findViewById(R.id.recycler_view_events);
@@ -139,6 +143,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                 if(document.exists()) {
                     ArrayList<String> attendingEventIds = (ArrayList<String>) document.get("attending");
                     Log.d("attendingEvents: ", attendingEventIds.toString());
+                    userRole = (String) document.get("role");
                     userAttendingEventsIds.addAll(attendingEventIds);
                     Log.d("ids: ", String.valueOf(userAttendingEventsIds.size()));
                     Log.d("allevents", String.valueOf(allEventsList.size()));
@@ -149,7 +154,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                             userAttendingEventsList.add(event);
                         }
                         // Notify RecyclerView adapter of data changes
-                        setAdapter();
+                        setAdapter(userRole);
                         recyclerView.getAdapter().notifyDataSetChanged();
                     }
                 }
@@ -205,12 +210,28 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         startActivity(intent);
     }
 
-    private void setAdapter() {
+    @Override
+    public void deleteEvent(@NotNull Event currentEvent, int adapterPosition) {
+
+    }
+
+    private void setAdapter(String role) {
         String myEvents = "myEvents";
-        recyclerAdapter adapter = new recyclerAdapter(userAttendingEventsList, this, myEvents);
+        recyclerAdapter adapter = new recyclerAdapter(userAttendingEventsList, this, myEvents, userRole);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
     }
+
+//                List<Integer> northPhillyZips = new ArrayList<>();
+//            northPhillyZips.addAll(Arrays.asList(19120, 19121, 19122, 19123, 19125, 19126, 19130, 19132, 19133, 19134, 19137, 19140, 19141));
+//         forEach(event : allEventsList){
+//              if(northPhillyZips.contains(extractZipCode(event.location()){
+//                    place the marker
+//              }
+//                else{
+//                    //hide the marker?  //do nothing?
+//              }
+//          }
 }

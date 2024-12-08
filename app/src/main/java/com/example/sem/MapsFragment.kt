@@ -3,12 +3,13 @@ package com.example.sem
 import android.location.Geocoder
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.example.sem.model.Event
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -18,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
+import java.util.Arrays
 
 /**
  * A simple [Fragment] subclass.
@@ -33,6 +35,11 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var db: FirebaseFirestore
     private lateinit var geocoder: Geocoder
     private lateinit var selectedEvent: Event
+    private lateinit var events : List<Event>
+    private lateinit var allEvents : Button
+
+
+    private var mFloatingActionButton: FloatingActionButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +59,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
+
         mapFragment?.getMapAsync(this)
 
         // Initialize firestore database
@@ -63,6 +71,16 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         // initialize view
         setupSearchView(view)
         setupFloatingActionButton(view)
+
+        allEvents = view.findViewById<Button>(R.id.allEvents)
+
+        allEvents.setOnClickListener {
+            mMap.clear()
+            loadEvents()
+            allEvents.setVisibility(View.INVISIBLE)
+        }
+
+        allEvents.setVisibility(View.INVISIBLE)
 
         value?.let { Log.d("VALUE", it) }
     }
@@ -76,7 +94,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         // retrieving apartments from database
         db.collection("eventsForTest").get()
             .addOnSuccessListener { documents ->
-                val events = documents.mapNotNull { it.toObject(Event::class.java) }
+                events = documents.mapNotNull { it.toObject(Event::class.java) }
                 events.forEach { event ->
                     // get geocode for every single apartment and mark it
                     val location = geocodeAddress(event)
@@ -159,11 +177,99 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setupFloatingActionButton(view: View) {
-        val fab = view.findViewById<FloatingActionButton>(R.id.fabCamera)
+        val fab = view.findViewById<FloatingActionButton>(R.id.fab)
         val optionsMenu = view.findViewById<View>(R.id.options_menu)
         fab.setOnClickListener {
             optionsMenu.visibility = if (optionsMenu.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         }
+
+        view.findViewById<View>(R.id.option_north_philly).setOnClickListener {
+            allEvents.setVisibility(View.VISIBLE)
+            val northPhillyZips: ArrayList<Int> = ArrayList()
+            northPhillyZips.addAll(
+                Arrays.asList(
+                    19120,
+                    19121,
+                    19122,
+                    19123,
+                    19125,
+                    19126,
+                    19130,
+                    19132,
+                    19133,
+                    19134,
+                    19137,
+                    19140,
+                    19141
+                )
+            );
+
+            mMap.clear()
+
+            events.forEach{event ->
+                val eventZipCode = extractZipCode(event.location)?.toIntOrNull()
+                if (eventZipCode != null && northPhillyZips.contains(eventZipCode)) {
+                    geocodeAddress(event)?.let { it1 -> addMarkerForEvent(event, it1) }
+                }else{
+
+                }
+            }
+        }
+
+
+        view.findViewById<View>(R.id.option_south_philly).setOnClickListener{
+            allEvents.setVisibility(View.VISIBLE)
+            val southPhillyZips: ArrayList<Any> = ArrayList<Any>()
+            southPhillyZips.addAll(
+                Arrays.asList(19112, 19145, 19146, 19147, 19148)
+            );
+
+            mMap.clear()
+
+            events.forEach{event ->
+                val eventZipCode = extractZipCode(event.location)?.toIntOrNull()
+                if (eventZipCode != null && southPhillyZips.contains(eventZipCode)) {
+                    geocodeAddress(event)?.let { it1 -> addMarkerForEvent(event, it1) }
+                }else{
+
+                }
+            }
+
+
+        }
+
+        view.findViewById<View>(R.id.option_west_philly).setOnClickListener {
+            allEvents.setVisibility(View.VISIBLE)
+            //zoom to 39.973654, -75.226556 radius 3 miles
+            val westPhillyZips: ArrayList<Any> = ArrayList<Any>()
+            westPhillyZips.addAll(
+                Arrays.asList(19104, 19131, 19139, 19142, 19151)
+            );
+            mMap.clear()
+
+            events.forEach{event ->
+                val eventZipCode = extractZipCode(event.location)?.toIntOrNull()
+                if (eventZipCode != null && westPhillyZips.contains(eventZipCode)) {
+                    geocodeAddress(event)?.let { it1 -> addMarkerForEvent(event, it1) }
+                }else{
+
+                }
+            }
+        }
+
+//        view.findViewById<View>(R.id.option_center_city).setOnClickListener{
+//            //show only events with zip code 19102, 19103, 19106–19107, 19109, 19146–19147
+////            List<Integer> centerCityPhillyZips = new ArrayList<>();
+////            centerCityPhillyZips.addAll(Arrays.asList(19102, 19103, 19106–19107, 19109, 19146, 19147));
+////         forEach(event : allEventsList){
+////              if(centerCityPhillyZips.contains(extractZipCode(event.location()){
+////                    place the marker
+////              }
+////                else{
+////                    //hide the marker?  //do nothing?
+////              }
+////          }
+//        }
 
 //        view.findViewById<View>(R.id.option_clear_map).setOnClickListener {
 //            mMap.clear()
@@ -176,5 +282,15 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
 //            optionsMenu.v
 //        }
     }
+
+    private fun extractZipCode(address: String): String? {
+        val regex = Regex("\\b\\d{5}\\b")
+        val matchResult = regex.find(address)
+        return matchResult?.value
+    }
+
+//    private fun extractEvents(eventsList : List<Event>, zipArray : Array<Any>) : List<Event>{
+//        for(Event)
+//    }
 
 }

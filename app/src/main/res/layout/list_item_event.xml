@@ -30,12 +30,32 @@
             tools:srcCompat="@drawable/placeholderimage" />
 
         <ImageView
+            android:id="@+id/edit_button"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            android:src="@drawable/edit_icon"
+            app:layout_constraintBottom_toTopOf="@+id/delete_button"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout" />
+
+        <ImageView
+            android:id="@+id/delete_button"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_margin="4dp"
+            android:padding="4dp"
+            android:src="@drawable/trash_icon"
+            app:layout_constraintBottom_toTopOf="@+id/event_status"
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout" />
+
+        <ImageView
             android:id="@+id/event_status"
-            android:layout_width="42dp"
-            android:layout_height="38dp"
-            android:layout_margin="10dp"
+            android:layout_width="32dp"
+            android:layout_height="28dp"
+            android:layout_margin="4dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="@+id/linearLayout" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -53,6 +73,7 @@
                 android:id="@+id/textview_event_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginRight="40dp"
                 android:text="Title"
                 android:textSize="20sp"
                 android:textStyle="normal|bold" />
@@ -62,6 +83,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6sp"
+                android:layout_marginRight="40dp"
                 android:text="Date"
                 android:textSize="20sp"
                 android:textStyle="italic" />
@@ -71,6 +93,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6sp"
+                android:layout_marginRight="40dp"
                 android:layout_marginBottom="6sp"
                 android:text="Category"
                 android:textSize="20sp" />

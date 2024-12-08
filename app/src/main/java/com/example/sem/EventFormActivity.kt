@@ -174,20 +174,26 @@ class EventFormActivity : AppCompatActivity(), OnMapReadyCallback {
             showTimePickerDialog()
         }
 
-//        gradeSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(
-//                parent: AdapterView<*>, view: View?, position: Int, id: Long
-//            ) {
-//                if (position != 0) {
-//                    val selectedGrade = parent.getItemAtPosition(position) as String
-//                    addGradeChip(selectedGrade)
-//                    // Reset spinner selection to prompt
-//                    gradeSpinner.setSelection(0)
-//                }
-//            }
-//
-//            override fun onNothingSelected(parent: AdapterView<*>) {}
-//        }
+        val docId = intent.getStringExtra("docId")
+        val eventToEdit = intent.getSerializableExtra("event") as? Event
+
+        if (eventToEdit != null && docId != null && docId.isNotEmpty()) {
+            // We are in edit mode, populate fields
+            eventTitle.setText(eventToEdit.eventName)
+            eventDescription.setText(eventToEdit.eventDescription)
+            eventDate.setText(eventToEdit.eventDate)
+            eventTime.setText(eventToEdit.eventTime)
+            placeAutoComplete.setText(eventToEdit.location)
+            eventManager.setText(eventToEdit.eventManager)
+            attendingCount.setText(eventToEdit.attendingCount.toString())
+
+            // Set event type spinner selection
+            val eventTypeIndex = (eventTypeSpinner.adapter as ArrayAdapter<String>)
+                .getPosition(eventToEdit.eventCategory)
+            if (eventTypeIndex >= 0) {
+                eventTypeSpinner.setSelection(eventTypeIndex)
+            }
+        }
 
         // Submit button click listener
         submitButton.setOnClickListener {
@@ -381,42 +387,20 @@ class EventFormActivity : AppCompatActivity(), OnMapReadyCallback {
             return
         }
 
+        val docId = intent.getStringExtra("docId")
+
         // Generate 'eventId'
-        val eventId = generateEventId()
+        val eventId: String
+        if (docId != null && docId.isNotEmpty()) {
+            // Use the existing eventId from the eventToEdit (passed from Intent)
+            val eventToEdit = intent.getSerializableExtra("event") as? Event
+            eventId = eventToEdit?.eventId ?: generateEventId()
+        } else {
+            // New event, generate a new eventId
+            eventId = generateEventId()
+        }
 
-        // Create an event object with required fields
-//        val event = hashMapOf(
-//            "attendingCount" to attendingCountNumber,
-//            "eventDate" to formattedDate,
-//            "eventTime" to formattedTime,
-//            "eventDescription" to description,
-//            "eventId" to eventId,
-//            "eventManager" to eventManagerText,
-//            "eventName" to title,
-//            "forClass" to selectedGrades,
-//            "eventCategory" to eventType,
-//            "location" to location
-//        )
-
-        val event = Event(attendingCountNumber, formattedDate, eventType, description, eventId, eventManagerText, title, formattedTime, location)
-
-//        val event = hashMapOf(
-//            "attendingCount" to attendingCountNumber,
-//            "dateCreated" to dateCreatedTimestamp,
-//            "eventDate" to eventTimestamp,
-//            "eventDescription" to description,
-//            "eventId" to eventId,
-//            "eventManager" to eventManagerText,
-//            "eventName" to title,
-//            "forClass" to selectedGrades,
-//            "eventCategory" to eventType,
-//            "location" to location
-//            "location" to hashMapOf(
-//                "latitude" to selectedLocationLatLng!!.latitude,
-//                "longitude" to selectedLocationLatLng!!.longitude,
-//                "address" to location
-//            )
-//        )
+        val event = Event(attendingCountNumber, formattedDate, eventType, description, eventId, eventManagerText, title, formattedTime, location, attendingCountNumber, 0, docId = docId ?: "")
 
         // Show a progress dialog
         val progressDialog = ProgressDialog(this)
@@ -426,6 +410,7 @@ class EventFormActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // Upload image if selected
         if (selectedImageUri != null) {
+            // Upload image and then call addOrUpdateEventInFirestore(event, docId, progressDialog)
             val storageRef = FirebaseStorage.getInstance().reference
             val imageRef = storageRef.child("event_images/$eventId.jpg")
 
@@ -438,18 +423,48 @@ class EventFormActivity : AppCompatActivity(), OnMapReadyCallback {
             }.addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val downloadUri = task.result
-//                    event["eventImageUrl"] = downloadUri.toString()
+                    // If needed, set event image URL here
+                    // event.eventImageUrl = downloadUri.toString()
 
-                    // Proceed to add the event to Firestore
-                    addEventToFirestore(event, progressDialog)
+                    addOrUpdateEventInFirestore(event, docId, progressDialog)
                 } else {
                     progressDialog.dismiss()
                     Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show()
                 }
             }
         } else {
-            // No image selected, proceed to add event without imageUrl
-            addEventToFirestore(event, progressDialog)
+            // No image selected, proceed to add/update event without imageUrl
+            addOrUpdateEventInFirestore(event, docId, progressDialog)
+        }
+    }
+
+    private fun addOrUpdateEventInFirestore(event: Event, docId: String?, progressDialog: ProgressDialog) {
+        val collectionRef = db.collection("eventsForTest")
+
+        val task = if (docId.isNullOrEmpty()) {
+            // New event
+            collectionRef.add(event)
+        } else {
+            // Update existing event
+            // Use `set()` to overwrite the event
+            collectionRef.document(docId).set(event)
+        }
+
+        task.addOnSuccessListener { documentReference ->
+            progressDialog.dismiss()
+            if (docId.isNullOrEmpty()) {
+                Toast.makeText(this, "Event Created", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Event Updated", Toast.LENGTH_SHORT).show()
+            }
+
+            val intent = Intent(this, AdminDashboardActivity::class.java)
+            startActivity(intent)
+            finish()
+        }.addOnFailureListener { e ->
+            progressDialog.dismiss()
+            Log.w("EventForm", "Error saving event", e)
+            Toast.makeText(this, "Failed to save event", Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -15,7 +15,8 @@ data class Event(
     var location: String = "",
     var numberAttending: Int = 0,
     var numberFollowing: Int = 0,
+    var docId: String = ""
 ) : Serializable {
     // No-argument constructor for Firebase
-    constructor() : this(0,   "", "", "" , "", "", "", "", "", 0, 0)
+    constructor() : this(0,   "", "", "" , "", "", "", "", "", 0, 0, "")
 }
