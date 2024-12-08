@@ -35,6 +35,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var geocoder: Geocoder
     private lateinit var selectedEvent: Event
 
+
     private var mFloatingActionButton: FloatingActionButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -169,21 +170,39 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
             optionsMenu.visibility = if (optionsMenu.visibility == View.VISIBLE) View.GONE else View.VISIBLE
         }
 
-        view.findViewById<View>(R.id.option_north_philly).setOnClickListener{
-            val northPhillyZips: ArrayList<Any> = ArrayList<Any>()
+        view.findViewById<View>(R.id.option_north_philly).setOnClickListener {
+            val northPhillyZips: ArrayList<Int> = ArrayList<Int>()
             northPhillyZips.addAll(
-                Arrays.asList(19120, 19121, 19122, 19123, 19125, 19126, 19130, 19132, 19133, 19134, 19137, 19140, 19141)
+                Arrays.asList(
+                    19120,
+                    19121,
+                    19122,
+                    19123,
+                    19125,
+                    19126,
+                    19130,
+                    19132,
+                    19133,
+                    19134,
+                    19137,
+                    19140,
+                    19141
+                )
             );
             val zipCode = extractZipCode(selectedEvent.location)
-//            fun forEach(event: Event in events) {
-//                if (northPhillyZips.contains(zipCode));
-//                run {
-//                    //show the marker
-//                }
-//                run {
-//                    //hide the marker
-//                }
+            if (northPhillyZips.contains(zipCode) : <Int>);
+            run {
+                //show the marker
             }
+            run {
+                //hide the marker
+
+            }
+            events.forEach{event ->
+                val eventZipCode = extractZipCode(event.location)
+            }
+        }
+
 
         view.findViewById<View>(R.id.option_south_philly).setOnClickListener{
             val southPhillyZips: ArrayList<Any> = ArrayList<Any>()
@@ -191,33 +210,27 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 Arrays.asList(19112, 19145, 19146, 19147, 19148)
             );
             val zipCode = extractZipCode(selectedEvent.location)
-//            fun forEach(event: Event in events) {
-//                if (southPhillyZips.contains(zipCode));
-//                run {
-//                    //show the marker
-//                }
-//                run {
-//                    //hide the marker
-//                }
+
 
         }
 
-        view.findViewById<View>(R.id.option_west_philly).setOnClickListener{
+        view.findViewById<View>(R.id.option_west_philly).setOnClickListener {
             //zoom to 39.973654, -75.226556 radius 3 miles
             val westPhillyZips: ArrayList<Any> = ArrayList<Any>()
             westPhillyZips.addAll(
                 Arrays.asList(19104, 19131, 19139, 19142, 19151)
             );
             val zipCode = extractZipCode(selectedEvent.location)
-//            fun forEach(event: Event in events) {
-//                if (westPhillyZips.contains(zipCode));
-//                run {
-//                    //show the marker
-//                }
-//                run {
-//                    //hide the marker
-//                }
+            fun forEach(event: Event in events) {
+                if (westPhillyZips.contains(zipCode));
+                run {
+                    //show the marker
+                }
+                run {
+                    //hide the marker
+                }
 
+            }
         }
 
 //        view.findViewById<View>(R.id.option_center_city).setOnClickListener{
@@ -250,6 +263,10 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val regex = Regex("\\b\\d{5}\\b")
         val matchResult = regex.find(address)
         return matchResult?.value
+    }
+
+    private fun extractEvents(eventsList : List<Event>, zipArray : Array<Any>) : List<Event>{
+        for(Event)
     }
 
 }

@@ -39,11 +39,14 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private BottomNavigationView bottomNav;
+    private String userRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_events);
+
+        userRole = "";
 
         recyclerView = findViewById(R.id.recycler_view_events);
         allEventsList = new ArrayList<>();
@@ -169,9 +172,9 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
         Log.d(TAG, "deletedEvent: ");
     }
 
-    private void setAdapter() {
+    private void setAdapter(String role) {
         String interested = "interested";
-        recyclerAdapter adapter = new recyclerAdapter(userInterestedEventsList, this, interested);
+        recyclerAdapter adapter = new recyclerAdapter(userInterestedEventsList, this, interested, role);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -213,6 +216,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                 if(document.exists()) {
                     ArrayList<String> attendingEventIds = (ArrayList<String>) document.get("following");
                     Log.d("attendingEvents: ", attendingEventIds.toString());
+                    userRole = (String) document.get("role");
                     userInterestedEventsIds.addAll(attendingEventIds);;
 
                     for(Event event : allEventsList){
@@ -221,7 +225,7 @@ public class ShowInterestedEvents extends AppCompatActivity implements recyclerA
                             userInterestedEventsList.add(event);
                         }
                         // Notify RecyclerView adapter of data changes
-                        setAdapter();
+                        setAdapter(userRole);
                         recyclerView.getAdapter().notifyDataSetChanged();
                     }
                 }

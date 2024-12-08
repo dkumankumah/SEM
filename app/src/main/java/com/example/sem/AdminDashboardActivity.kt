@@ -24,6 +24,10 @@ class AdminDashboardActivity : AppCompatActivity() {
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var userId: String
     private lateinit var addBtn: Button
+    public var role:String = ""
+        get() {
+            return field;
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -163,7 +167,7 @@ class AdminDashboardActivity : AppCompatActivity() {
             .addOnSuccessListener { document ->
                 if (document != null) {
                     val user = document.toObject(User::class.java)!!
-                    val role = user.role
+                    role = user.role
 
                     if(role == "ADMIN") {
                         addBtn.visibility= View.VISIBLE;

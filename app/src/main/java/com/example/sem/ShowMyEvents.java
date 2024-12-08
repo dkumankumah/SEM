@@ -42,10 +42,12 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
     private RecyclerView recyclerView;
     private FirebaseFirestore db;
     private BottomNavigationView bottomNav;
+    private String userRole;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userRole = "";
         setContentView(R.layout.all_events);
 
         recyclerView = findViewById(R.id.recycler_view_events);
@@ -141,6 +143,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                 if(document.exists()) {
                     ArrayList<String> attendingEventIds = (ArrayList<String>) document.get("attending");
                     Log.d("attendingEvents: ", attendingEventIds.toString());
+                    userRole = (String) document.get("role");
                     userAttendingEventsIds.addAll(attendingEventIds);
                     Log.d("ids: ", String.valueOf(userAttendingEventsIds.size()));
                     Log.d("allevents", String.valueOf(allEventsList.size()));
@@ -151,7 +154,7 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
                             userAttendingEventsList.add(event);
                         }
                         // Notify RecyclerView adapter of data changes
-                        setAdapter();
+                        setAdapter(userRole);
                         recyclerView.getAdapter().notifyDataSetChanged();
                     }
                 }
@@ -212,9 +215,9 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
 
     }
 
-    private void setAdapter() {
+    private void setAdapter(String role) {
         String myEvents = "myEvents";
-        recyclerAdapter adapter = new recyclerAdapter(userAttendingEventsList, this, myEvents);
+        recyclerAdapter adapter = new recyclerAdapter(userAttendingEventsList, this, myEvents, userRole);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
