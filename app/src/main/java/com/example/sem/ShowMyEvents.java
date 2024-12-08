@@ -220,4 +220,15 @@ public class ShowMyEvents extends AppCompatActivity implements recyclerAdapter.R
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
     }
+
+//                List<Integer> northPhillyZips = new ArrayList<>();
+//            northPhillyZips.addAll(Arrays.asList(19120, 19121, 19122, 19123, 19125, 19126, 19130, 19132, 19133, 19134, 19137, 19140, 19141));
+//         forEach(event : allEventsList){
+//              if(northPhillyZips.contains(extractZipCode(event.location()){
+//                    place the marker
+//              }
+//                else{
+//                    //hide the marker?  //do nothing?
+//              }
+//          }
 }
