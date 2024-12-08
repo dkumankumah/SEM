@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -34,6 +35,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
     private lateinit var db: FirebaseFirestore
     private lateinit var geocoder: Geocoder
     private lateinit var selectedEvent: Event
+    private lateinit var events : List<Event>
+    private lateinit var allEvents : Button
 
 
     private var mFloatingActionButton: FloatingActionButton? = null
@@ -69,6 +72,16 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         setupSearchView(view)
         setupFloatingActionButton(view)
 
+        allEvents = view.findViewById<Button>(R.id.allEvents)
+
+        allEvents.setOnClickListener {
+            mMap.clear()
+            loadEvents()
+            allEvents.setVisibility(View.INVISIBLE)
+        }
+
+        allEvents.setVisibility(View.INVISIBLE)
+
         value?.let { Log.d("VALUE", it) }
     }
 
@@ -81,7 +94,7 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         // retrieving apartments from database
         db.collection("eventsForTest").get()
             .addOnSuccessListener { documents ->
-                val events = documents.mapNotNull { it.toObject(Event::class.java) }
+                events = documents.mapNotNull { it.toObject(Event::class.java) }
                 events.forEach { event ->
                     // get geocode for every single apartment and mark it
                     val location = geocodeAddress(event)
@@ -171,7 +184,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         }
 
         view.findViewById<View>(R.id.option_north_philly).setOnClickListener {
-            val northPhillyZips: ArrayList<Int> = ArrayList<Int>()
+            allEvents.setVisibility(View.VISIBLE)
+            val northPhillyZips: ArrayList<Int> = ArrayList()
             northPhillyZips.addAll(
                 Arrays.asList(
                     19120,
@@ -189,47 +203,57 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                     19141
                 )
             );
-            val zipCode = extractZipCode(selectedEvent.location)
-            if (northPhillyZips.contains(zipCode) : <Int>);
-            run {
-                //show the marker
-            }
-            run {
-                //hide the marker
 
-            }
+            mMap.clear()
+
             events.forEach{event ->
-                val eventZipCode = extractZipCode(event.location)
+                val eventZipCode = extractZipCode(event.location)?.toIntOrNull()
+                if (eventZipCode != null && northPhillyZips.contains(eventZipCode)) {
+                    geocodeAddress(event)?.let { it1 -> addMarkerForEvent(event, it1) }
+                }else{
+
+                }
             }
         }
 
 
         view.findViewById<View>(R.id.option_south_philly).setOnClickListener{
+            allEvents.setVisibility(View.VISIBLE)
             val southPhillyZips: ArrayList<Any> = ArrayList<Any>()
             southPhillyZips.addAll(
                 Arrays.asList(19112, 19145, 19146, 19147, 19148)
             );
-            val zipCode = extractZipCode(selectedEvent.location)
+
+            mMap.clear()
+
+            events.forEach{event ->
+                val eventZipCode = extractZipCode(event.location)?.toIntOrNull()
+                if (eventZipCode != null && southPhillyZips.contains(eventZipCode)) {
+                    geocodeAddress(event)?.let { it1 -> addMarkerForEvent(event, it1) }
+                }else{
+
+                }
+            }
 
 
         }
 
         view.findViewById<View>(R.id.option_west_philly).setOnClickListener {
+            allEvents.setVisibility(View.VISIBLE)
             //zoom to 39.973654, -75.226556 radius 3 miles
             val westPhillyZips: ArrayList<Any> = ArrayList<Any>()
             westPhillyZips.addAll(
                 Arrays.asList(19104, 19131, 19139, 19142, 19151)
             );
-            val zipCode = extractZipCode(selectedEvent.location)
-            fun forEach(event: Event in events) {
-                if (westPhillyZips.contains(zipCode));
-                run {
-                    //show the marker
-                }
-                run {
-                    //hide the marker
-                }
+            mMap.clear()
 
+            events.forEach{event ->
+                val eventZipCode = extractZipCode(event.location)?.toIntOrNull()
+                if (eventZipCode != null && westPhillyZips.contains(eventZipCode)) {
+                    geocodeAddress(event)?.let { it1 -> addMarkerForEvent(event, it1) }
+                }else{
+
+                }
             }
         }
 
@@ -265,8 +289,8 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         return matchResult?.value
     }
 
-    private fun extractEvents(eventsList : List<Event>, zipArray : Array<Any>) : List<Event>{
-        for(Event)
-    }
+//    private fun extractEvents(eventsList : List<Event>, zipArray : Array<Any>) : List<Event>{
+//        for(Event)
+//    }
 
 }
