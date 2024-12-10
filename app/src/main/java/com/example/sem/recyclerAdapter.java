@@ -119,9 +119,6 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
             }
         }
 
-        AdminDashboardActivity adminDashboardActivity = new AdminDashboardActivity();
-        String userRole = adminDashboardActivity.getRole();
-        if(userRole.equals("ADMIN")) {
 
             // Set up delete button click listener
             holder.deleteButton.setOnClickListener(v -> {
@@ -138,7 +135,6 @@ public class recyclerAdapter extends RecyclerView.Adapter<recyclerAdapter.MyView
                 activity.startActivity(intent);
             });
 
-        }
 
         // Resolve and set the card background color based on the category
         int backgroundColor;
