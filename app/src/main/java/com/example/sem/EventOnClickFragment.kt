@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -20,6 +21,7 @@ class EventOnClickFragment : Fragment() {
     private lateinit var mTextViewDescription: TextView
     private lateinit var selectedEvent: Event
     private lateinit var showMapBtn : Button
+    private lateinit var imageView: ImageView
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -46,13 +48,15 @@ class EventOnClickFragment : Fragment() {
         mTextViewCategory = view.findViewById<TextView>(R.id.textview_category)
         mTextViewDescription = view.findViewById<TextView>(R.id.textview_description)
         showMapBtn = view.findViewById(R.id.btn_show_on_map)
+        imageView = view.findViewById(R.id.imageView)
 
-        val title = "Event title: " + selectedEvent.eventName
-        val address = "Street Address: " + selectedEvent.location
+        val title = selectedEvent.eventName
+        val address = selectedEvent.location
         val date = "Date: " + selectedEvent.eventDate
         val time = "Starting at: " + selectedEvent.eventTime
         val category = "Type of Event: " + selectedEvent.eventCategory
         val description = "Details: " + selectedEvent.eventDescription
+        imageView.setImageResource(R.drawable.placeholderimage)
 
         mTextViewTitle.text = title
         mTextViewAddress.text = address

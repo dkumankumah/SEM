@@ -40,14 +40,15 @@
     <!--floating action button-->
 
     <!--options menu-->
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="107dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="39dp"
         android:src="@android:drawable/ic_menu_add"
         app:backgroundTint="@color/material_dynamic_primary60"
         app:fabSize="normal"
