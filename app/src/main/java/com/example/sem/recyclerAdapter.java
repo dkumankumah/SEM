@@ -4,7 +4,6 @@ import static android.view.View.INVISIBLE;
 import static androidx.core.content.ContextCompat.getColor;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

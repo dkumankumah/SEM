@@ -50,21 +50,21 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.all_events);
 
-        Intent intent = getIntent();
+        //initialize variables
         userRole = "";
+        allEventsList = new ArrayList<>();
 
+        //get intent extra
+        Intent intent = getIntent();
         eventCategory = intent.getStringExtra("type");
 
+        //initialize views
         recyclerView = findViewById(R.id.recycler_view_events);
-        allEventsList = new ArrayList<>();
         bottomNav = findViewById(R.id.bottomNav);
 
         // Initialize Firestore and Firebase
         FirebaseApp.initializeApp(this);
         db = FirebaseFirestore.getInstance();
-
-        // Initialize RecyclerView
-        recyclerView = findViewById(R.id.recycler_view_events);
 
         //fetch data from firebase
         fetchEventData();
@@ -74,9 +74,6 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
         //implement swipe left/right
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(callBackMethod);
         itemTouchHelper.attachToRecyclerView(recyclerView);
-
-        // Set the initial selected item
-        //bottomNav.setSelectedItemId(R.id.nav_list);
 
         // Navigation bar to all other activities
         bottomNav.setOnItemSelectedListener(new BottomNavigationView.OnItemSelectedListener() {
@@ -111,7 +108,6 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                 }
             }
         });
-
     }
 
     // Method to fetch events from Firestore
@@ -159,7 +155,6 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
                 userAttendingEventsIds = new ArrayList<>();
                 userInterestedEventsIds = new ArrayList<>();
                 userRole = (String) document.get("role");
-                //Log.d("role", userRole);
                 ArrayList<String> attendingEventIds = (ArrayList<String>) document.get("attending");
                 for(String str : attendingEventIds){
                     userAttendingEventsIds.add(str);
@@ -287,7 +282,6 @@ public class ShowAllEvents extends AppCompatActivity implements recyclerAdapter.
 
     private void setAdapter(String role) {
         String allEvents = "allEvent";
-        Log.d("role", userRole + "line 290");
         recyclerAdapter adapter = new recyclerAdapter(allEventsList, this, allEvents, role);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
