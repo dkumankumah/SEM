@@ -1,6 +1,5 @@
 package com.example.sem
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +7,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.sem.model.Event
 
@@ -29,8 +27,6 @@ class EventOnClickFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_event_on_click, container, false)
-
-        //TODO add button functionality
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -66,7 +62,6 @@ class EventOnClickFragment : Fragment() {
         mTextViewDescription.text = description
 
         showMapBtn.setOnClickListener {
-//            Toast.makeText(context, "TESTING", Toast.LENGTH_LONG).show()
             val fragment = MapsFragment()
             val bundle = Bundle()
             bundle.putSerializable("ADDRESS", selectedEvent.eventId)
@@ -77,7 +72,6 @@ class EventOnClickFragment : Fragment() {
                 .addToBackStack(null)
                 .commit()
         }
-
     }
 
 }

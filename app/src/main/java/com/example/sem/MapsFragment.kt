@@ -21,11 +21,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.firestore.FirebaseFirestore
 import java.util.Arrays
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MapsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class MapsFragment : Fragment(), OnMapReadyCallback {
 
     private var value: String? = null
@@ -256,31 +251,6 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
                 }
             }
         }
-
-//        view.findViewById<View>(R.id.option_center_city).setOnClickListener{
-//            //show only events with zip code 19102, 19103, 19106–19107, 19109, 19146–19147
-////            List<Integer> centerCityPhillyZips = new ArrayList<>();
-////            centerCityPhillyZips.addAll(Arrays.asList(19102, 19103, 19106–19107, 19109, 19146, 19147));
-////         forEach(event : allEventsList){
-////              if(centerCityPhillyZips.contains(extractZipCode(event.location()){
-////                    place the marker
-////              }
-////                else{
-////                    //hide the marker?  //do nothing?
-////              }
-////          }
-//        }
-
-//        view.findViewById<View>(R.id.option_clear_map).setOnClickListener {
-//            mMap.clear()
-//            loadEvents()
-//            optionsMenu.visibility = View.GONE
-//        }
-
-//        view.findViewById<View>(R.id.option_add_marker).setOnClickListener {
-//            // Implement add marker functionality
-//            optionsMenu.v
-//        }
     }
 
     private fun extractZipCode(address: String): String? {
@@ -288,9 +258,4 @@ class MapsFragment : Fragment(), OnMapReadyCallback {
         val matchResult = regex.find(address)
         return matchResult?.value
     }
-
-//    private fun extractEvents(eventsList : List<Event>, zipArray : Array<Any>) : List<Event>{
-//        for(Event)
-//    }
-
 }
